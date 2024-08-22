@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,27 +6,43 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     IMove _move;
+    FSM<StateEnum> _fsm;
 
     private void Awake()
     {
         _move = GetComponent<IMove>();
     }
 
-    private void Update()
+    private void Start()
     {
-        var h = Input.GetAxis("Horizontal");
-        var v = Input.GetAxis("Vertical");
+        InitializeFSM();
+    }
 
-        Vector3 dir = new Vector3(h, 0, v);
+    public void InitializeFSM()
+    {
+        _fsm = new FSM<StateEnum>();
+        var idle = new PlayerIdleState<StateEnum>(_fsm, StateEnum.Move, _move);
+        var move = new PlayerMoveState(_fsm, _move);
 
-        if (h == 0 && v == 0)
-        {
-            _move.Move(Vector3.zero);
-        }
-        else
-        {
-            _move.Move(dir.normalized);
-            _move.Look(dir);
-        }
+        idle.AddTransition(StateEnum.Move, move);
+
+        move.AddTransition(StateEnum.Idle, idle);
+
+        _fsm.SetInitial(idle);
+    }
+
+    void Update()
+    {
+        _fsm.OnUpdate();
+    }
+
+    private void FixedUpdate()
+    {
+        _fsm.OnFixedUpdate();
+    }
+
+    private void LateUpdate()
+    {
+        _fsm.OnLateUpdate();
     }
 }
