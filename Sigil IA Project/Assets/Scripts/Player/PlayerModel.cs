@@ -4,12 +4,19 @@ using UnityEngine;
 
 public class PlayerModel : MonoBehaviour, IMove
 {
-    Rigidbody _rb;
+    public Rigidbody _rb;
     public float Speed;
+
+    Rigidbody IMove.rb { get => _rb;}
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+    }
+
+    private void Update()
+    {
+        Debug.Log($"Velocity is {_rb.velocity}");
     }
 
     public void Move(Vector3 dir)
