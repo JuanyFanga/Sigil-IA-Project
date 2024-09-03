@@ -1,20 +1,10 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : Entity
 {
     IMove _move;
     FSM<StateEnum> _fsm;
     ITreeNode _root;
-
-    private void Awake()
-    {
-        _move = GetComponent<IMove>();
-    }
 
     private void Start()
     {
@@ -50,7 +40,8 @@ public class PlayerController : MonoBehaviour
 
     private bool IsMoving()
     {
-        return _move.rb.velocity != Vector3.zero;
+        //return _move.rb.velocity != Vector3.zero;
+        return true;
     }
 
     void Update()
