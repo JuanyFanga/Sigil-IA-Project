@@ -13,7 +13,9 @@ public class NPCController : MonoBehaviour
 
     private void Start()
     {
-        
+        InitializedSteering();
+        InitializedFSM();
+        InitializedTree();
     }
 
     void InitializedSteering()
@@ -41,20 +43,31 @@ public class NPCController : MonoBehaviour
         fsm = new FSM<StateEnum>(idle);
     }
 
-    public void InitializeTree()
+    public void InitializedTree()
     {
         var idle = new ActionTree(() => fsm.Transition(StateEnum.Move));
         var move = new ActionTree(() => fsm.Transition(StateEnum.Idle));
 
-        //var qIsMoving = new QuestionTree(IsMoving, move, idle);
-        var qInView = new QuestionTree(InView, move, idle);
+        var qDistance = new QuestionTree(InProximty, move, idle);
+        var qInView = new QuestionTree(InView, qDistance, idle);
         var qIsExist = new QuestionTree(() => transform.position != null, qInView, idle);
 
-        //root = qIsExist;
+        root = qIsExist;
     }
 
     private bool InView()
     {
         return true;
+    }
+
+    private bool InProximty()
+    {
+        return Vector3.Distance(target.transform.position, transform.position) <= 10f; // ACA DESPUES PONEMOS UNA VARIABLE DE LA DISTANCIA. ¿QUE POR QUE NO PUSE LA VARIABLE YO? EH... NO SE, DIJE YA FUE PONGO UN FLOAT ASI NOMAS. BUENO, PORFA NO ME BORREN, SOY UN CONCEPTO TEMPORAL :).
+    }
+
+    private void Update()
+    {
+        fsm.OnUpdate();
+        root.Execute();
     }
 }
