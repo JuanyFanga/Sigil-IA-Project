@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour, IMove
 {
-    Rigidbody _rb;
+    public Rigidbody _rb;
     public float speed;
     protected virtual void Awake()
     {

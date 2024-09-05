@@ -27,7 +27,7 @@ public class PlayerMoveState : State<StateEnum>
         else
         {
             _move.Move(dir.normalized);
-            _move.Look(dir.normalized);
+            _move.Look(dir);
         }
     }
 }

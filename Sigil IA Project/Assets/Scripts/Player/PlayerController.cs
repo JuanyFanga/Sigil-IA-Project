@@ -1,15 +1,23 @@
 using UnityEngine;
 
-public class PlayerController : Entity
+public class PlayerController : MonoBehaviour
 {
     IMove _move;
     FSM<StateEnum> _fsm;
     ITreeNode _root;
+    Rigidbody _rb;
+
+    private void Awake()
+    {
+        _move = GetComponent<IMove>();
+        _rb = GetComponent<Rigidbody>();
+    }
 
     private void Start()
     {
         InitializeFSM();
         InitializeTree();
+        Debug.Log("Start del players");
     }
 
     public void InitializeFSM()
@@ -19,7 +27,6 @@ public class PlayerController : Entity
         var move = new PlayerMoveState(_fsm, _move);
 
         idle.AddTransition(StateEnum.Move, move);
-
         move.AddTransition(StateEnum.Idle, idle);
 
         _fsm.SetInitial(idle);
@@ -28,8 +35,8 @@ public class PlayerController : Entity
     public void InitializeTree()
     {
         //Actions
-        var idle = new ActionTree(() => _fsm.Transition(StateEnum.Move));
-        var move = new ActionTree(() => _fsm.Transition(StateEnum.Idle));
+        var idle = new ActionTree(() => _fsm.Transition(StateEnum.Idle));
+        var move = new ActionTree(() => _fsm.Transition(StateEnum.Move));
 
         //Questions
         var qIsMoving = new QuestionTree(IsMoving, move, idle);
@@ -40,14 +47,15 @@ public class PlayerController : Entity
 
     private bool IsMoving()
     {
-        //return _move.rb.velocity != Vector3.zero;
-        return true;
+        //Revisar por qué esto anda cuando quiere
+        return _rb.velocity.magnitude >= 0;
     }
 
     void Update()
     {
         _fsm.OnUpdate();
         _root.Execute();
+        //Debug.Log($"Velocity is {_rb.velocity.magnitude}");
     }
 
     private void FixedUpdate()
