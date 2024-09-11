@@ -9,6 +9,4 @@ public class NPCIdleState : State<StateEnum>
         base.Enter();
         Debug.Log("Entre al estado");
     }
-
-
 }

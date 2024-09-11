@@ -9,6 +9,7 @@ public class NPCModel : Entity
     public float radius;
     public float angle;
     public float personalArea;
+    public float farAwayDistanceFromPlayer;
     public LayerMask obsMask;
     ObstacleAvoidance _obs;
     protected override void Awake()
@@ -33,6 +34,8 @@ public class NPCModel : Entity
         Gizmos.DrawWireSphere(transform.position, radius);
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, personalArea);
+        Gizmos.color = Color.white;
+        Gizmos.DrawWireSphere(transform.position, farAwayDistanceFromPlayer);
 
         Gizmos.color = Color.red;
         Gizmos.DrawRay(transform.position, Quaternion.Euler(0, angle / 2, 0) * transform.forward * radius);

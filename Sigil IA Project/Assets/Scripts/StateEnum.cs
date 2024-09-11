@@ -2,5 +2,6 @@ public enum StateEnum
 {
     Idle,
     Move,
-    Scape
+    Scape,
+    GoHome
 }
