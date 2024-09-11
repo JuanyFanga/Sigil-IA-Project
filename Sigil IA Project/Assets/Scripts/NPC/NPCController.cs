@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class NPCController : MonoBehaviour
@@ -12,7 +13,9 @@ public class NPCController : MonoBehaviour
     private FSM<StateEnum> fsm;
     private ITreeNode root;
     private ISteering steering;
-    private ISteering seekSteering;
+    bool hasBeenSeen;
+
+    float cooldown = 2;
 
     private bool hasItSeenYou = false;
 
@@ -25,7 +28,6 @@ public class NPCController : MonoBehaviour
 
     private void InitializedSteering()
     {
-        seekSteering = new Seek(transform, safeHouse);
         var evade = new Evade(transform, target, timePrediction);
         steering = evade;
     }
@@ -58,28 +60,64 @@ public class NPCController : MonoBehaviour
         var scape = new ActionTree(() => fsm.Transition(StateEnum.Scape));
         var goHome = new ActionTree(() => fsm.Transition(StateEnum.GoHome));
 
-        var qIsScaping = new QuestionTree(InProximity, goHome, scape);
-        var qInView = new QuestionTree(InView, qIsScaping, idle);
-        var qIsExist = new QuestionTree(() => target != null, qInView, idle);
+
+
+        var qInProximityAfterSeeing = new QuestionTree(InProximityAfterSeeing, goHome, idle);
+
+        var qInView = new QuestionTree(InView, scape, qInProximityAfterSeeing);
+   
+        var qIsClose = new QuestionTree(InProximity, qInView, qInProximityAfterSeeing);
+        
+        var qIsExist = new QuestionTree(() => target != null, qIsClose, idle);
 
         root = qIsExist;
     }
     
     private bool InView()
     {
-        return los.CheckRange(target.transform) && los.CheckAngle(target.transform) && los.CheckView(target.transform);
+        if (los.CheckRange(target.transform) && los.CheckAngle(target.transform) && los.CheckView(target.transform))
+        {
+            hasBeenSeen = true;
+            return true;
+        }
+
+        else
+        {
+            return false;
+        }
     }
 
     private bool InProximity()
     {
-        ChangeSteering(seekSteering);
-        Debug.Log($"The distance is: {Vector3.Distance(target.transform.position, transform.position)}");
-        return Vector3.Distance(target.transform.position, transform.position) >= 5f;
+        //return true;
+        return Vector3.Distance(transform.position, target.position) <= 5;
+        //return isInProximity;
+    }
+
+    private bool InProximityAfterSeeing()
+    {
+        if (hasBeenSeen)
+        {
+            return Vector3.Distance(transform.position, target.position) <= 5;
+        }
+        else
+        { 
+            return false; 
+        }
+        //return isInProximity;
     }
 
     private void Update()
     {
         fsm.OnUpdate();
         root.Execute();
+
+        //if (Vector3.Distance(target.transform.position, transform.position) >= 5f)
+        //{
+        //    isInProximity = true;
+        //}
+
+        ////Debug.Log($"The distance is: {Vector3.Distance(target.transform.position, transform.position)}");
+        //Debug.Log($"In proximity: {isInProximity}");
     }
 }
