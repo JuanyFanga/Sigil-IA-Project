@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class NPCScapeState : State<StateEnum>
 {
     private IMove _move;
     private ISteering _steering;
-    private Transform _entity;
-    private Transform _target;
+    //private Transform _entity;
+    //private Transform _target;
+
+    public Action OnScape = delegate { };
 
     public NPCScapeState(IMove move, ISteering steering)
     {
@@ -25,8 +28,19 @@ public class NPCScapeState : State<StateEnum>
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("Entre a escapar");
-        //Aca crear evento para que los enemigos se acerquen
-        //Sphere Overlap para alertar a los enemigos de dentro de esa esfera con un evento y de ahi se encarga guara
+        //var lastPos = _entity.position;
+
+        //Crear un overlapp sphere, preguntar
+        //por todos los objetos del overlapp, si tienen el
+        //script de enemigo o su interfaz se les pase a alguna funcion la ultima
+        //ubicacion conocida para que ellos los busquen, charlarlo con guara
+
+        OnScape();
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+
     }
 }

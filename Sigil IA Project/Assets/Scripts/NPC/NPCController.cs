@@ -11,29 +11,17 @@ public class NPCController : MonoBehaviour
     [SerializeField] private Transform safeHouse;
     private FSM<StateEnum> fsm;
     private ITreeNode root;
-    private ISteering steering;
-    private ISteering seekSteering;
 
+    //Bools
     private bool hasItSeenYou = false;
+    private bool alreadyScaped = false;
+
+
 
     private void Start()
     {
-        InitializedSteering();
         InitializedFSM();
         InitializedTree();
-    }
-
-    private void InitializedSteering()
-    {
-        seekSteering = new Seek(transform, safeHouse);
-        var evade = new Evade(transform, target, timePrediction);
-        steering = evade;
-    }
-
-    public void ChangeSteering(ISteering _steering)
-    {
-        steering = _steering;
-        Debug.Log(steering);
     }
 
     private void InitializedFSM()
@@ -41,13 +29,15 @@ public class NPCController : MonoBehaviour
         IMove entityMove = GetComponent<IMove>();
 
         var idle = new NPCIdleState();
-        var scape = new NPCScapeState(entityMove, steering);
+        var scape = new NPCScapeState(entityMove, new Evade(transform, target, timePrediction));
         var goHome = new NPCGoingHomeState(entityMove, safeHouse, transform);
 
         idle.AddTransition(StateEnum.Scape, scape);
         idle.AddTransition(StateEnum.GoHome, goHome);
         scape.AddTransition(StateEnum.GoHome, goHome);
         goHome.AddTransition(StateEnum.Scape, scape);
+
+        scape.OnScape += OnScape;
 
         fsm = new FSM<StateEnum>(idle);
     }
@@ -58,11 +48,15 @@ public class NPCController : MonoBehaviour
         var scape = new ActionTree(() => fsm.Transition(StateEnum.Scape));
         var goHome = new ActionTree(() => fsm.Transition(StateEnum.GoHome));
 
-        var qIsScaping = new QuestionTree(InProximity, goHome, scape);
-        var qInView = new QuestionTree(InView, qIsScaping, idle);
+        var qInProximity = new QuestionTree(InProximity, goHome, scape);
+        var qIsScaping = new QuestionTree(HasAlreadyScaped, qInProximity, idle);
+        var qInView = new QuestionTree(InView, scape, qIsScaping);
         var qIsExist = new QuestionTree(() => target != null, qInView, idle);
 
         root = qIsExist;
+
+
+        //Agregar si lo tocamos por atras se gire y comience el ciclo de escaparse
     }
     
     private bool InView()
@@ -72,9 +66,17 @@ public class NPCController : MonoBehaviour
 
     private bool InProximity()
     {
-        ChangeSteering(seekSteering);
-        Debug.Log($"The distance is: {Vector3.Distance(target.transform.position, transform.position)}");
-        return Vector3.Distance(target.transform.position, transform.position) >= 5f;
+        return Vector3.Distance(target.transform.position, transform.position) >= maxFarDistance;
+    }
+
+    private bool HasAlreadyScaped()
+    {
+        return alreadyScaped;
+    }
+
+    private void OnScape()
+    {
+        alreadyScaped = true;
     }
 
     private void Update()
