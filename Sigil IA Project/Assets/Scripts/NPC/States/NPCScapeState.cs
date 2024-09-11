@@ -4,19 +4,25 @@ using UnityEngine;
 
 public class NPCScapeState : State<StateEnum>
 {
-    private IMove move;
-    private ISteering steering;
+    private IMove _move;
+    private ISteering _steering;
 
     public NPCScapeState(IMove move, ISteering steering)
     {
-        this.move = move;
-        this.steering = steering;
+        _move = move;
+        _steering = steering;
     }
 
     public override void Execute()
     {
         base.Execute();
-        Vector3 dir = steering.GetDir();
-        move.Move(dir.normalized);
+        Vector3 dir = _steering.GetDir();
+        _move.Move(dir.normalized);
+    }
+
+    public override void Enter()
+    {
+        base.Enter();
+        Debug.Log("Entre a escapar aaaa que miedo");
     }
 }

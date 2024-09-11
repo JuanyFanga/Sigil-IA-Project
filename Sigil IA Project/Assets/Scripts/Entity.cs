@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour, IMove
 {
-    public Rigidbody _rb;
+    private Rigidbody _rb;
     public float speed;
     protected virtual void Awake()
     {
         _rb = GetComponent<Rigidbody>();
     }
-    public void Move(Vector3 dir)
+    public virtual void Move(Vector3 dir)
     {
         dir = dir.normalized;
         dir *= speed;

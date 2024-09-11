@@ -7,7 +7,7 @@ public class NPCIdleState : State<StateEnum>
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("Entre al estado pete este dale tomas");
+        Debug.Log("Entre al estado");
     }
 
 
