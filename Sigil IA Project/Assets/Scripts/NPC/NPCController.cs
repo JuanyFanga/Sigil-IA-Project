@@ -54,9 +54,6 @@ public class NPCController : MonoBehaviour
         var qIsExist = new QuestionTree(() => target != null, qInView, idle);
 
         root = qIsExist;
-
-
-        //Agregar si lo tocamos por atras se gire y comience el ciclo de escaparse
     }
     
     private bool InView()
@@ -83,5 +80,21 @@ public class NPCController : MonoBehaviour
     {
         fsm.OnUpdate();
         root.Execute();
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        //Se gira hacia quien lo choca, si el LOS funcionase bien deberia detectar que es el player y seguir con el ritmo del arbol
+
+        Quaternion lookRotation = Quaternion.LookRotation((collision.transform.position - transform.position).normalized);
+        transform.rotation = lookRotation;
+        root.Execute();
+
+        //Si choca con el player transiciona sin preguntar a scape
+
+        //if (collision.gameObject.layer == 3)
+        //{
+        //    fsm.Transition(StateEnum.Scape);
+        //}
     }
 }
