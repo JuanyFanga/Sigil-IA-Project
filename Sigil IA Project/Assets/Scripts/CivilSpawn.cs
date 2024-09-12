@@ -6,6 +6,13 @@ public class CivilSpawn : MonoBehaviour
 {
     [SerializeField] private List<Transform> _spawnPoints;
     [SerializeField] private Transform _playerTransform;
+    [SerializeField] private GameObject _civilEnemy;
+    [SerializeField] private float enemyCount;
+
+    private void Start()
+    {
+        SetSpawn();
+    }
 
     public void SetSpawn()
     {
@@ -16,6 +23,14 @@ public class CivilSpawn : MonoBehaviour
             _spawners[_spawnPoints[i]] = Vector3.Distance(_spawnPoints[i].position, _playerTransform.position);
         }
 
-        MyRandoms.Roulette(_spawners);
+        for (int i = 0; i <= enemyCount; i++)
+        {
+            Transform newSpawnTransform = MyRandoms.Roulette(_spawners);
+
+            if (newSpawnTransform.childCount == 0)
+            {
+                Instantiate(_civilEnemy, newSpawnTransform);
+            }
+        }
     }
 }
