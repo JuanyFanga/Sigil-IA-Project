@@ -5,22 +5,21 @@ using UnityEngine;
 public class NPCGoingHomeState : State<StateEnum>
 {
     private IMove _move;
-    private Transform _safeHouse;
     private Transform _entity;
+    private ISteering _steering;
 
-    public NPCGoingHomeState(IMove move, Transform safeHouse, Transform entity)
+    public NPCGoingHomeState(IMove move, Transform entity, ISteering steering)
     {
         _move = move;
-        _safeHouse = safeHouse;
         _entity = entity;
+        _steering = steering;
     }
 
     public override void Execute()
     {
         base.Execute();
-        Vector3 dir = _safeHouse.position - _entity.position;
+        Vector3 dir = _steering.GetDir();
         _move.Move(dir.normalized);
-        _move.Look(dir);
     }
 
     public override void Enter()

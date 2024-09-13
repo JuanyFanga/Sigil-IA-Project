@@ -9,12 +9,14 @@ public class NPCController : MonoBehaviour
     [SerializeField] private float timePrediction;
     [SerializeField] private float maxFarDistance;
     [SerializeField] private Transform safeHouse;
+    [SerializeField] private float callingSphereRadius;
     private FSM<StateEnum> fsm;
     private ITreeNode root;
 
     //Bools
     private bool hasItSeenYou = false;
     private bool alreadyScaped = false;
+    private bool isSoClose = false;
 
 
 
@@ -29,8 +31,8 @@ public class NPCController : MonoBehaviour
         IMove entityMove = GetComponent<IMove>();
 
         var idle = new NPCIdleState();
-        var scape = new NPCScapeState(entityMove, new Evade(transform, target, timePrediction));
-        var goHome = new NPCGoingHomeState(entityMove, safeHouse, transform);
+        var scape = new NPCScapeState(entityMove, new Evade(transform, target, timePrediction), transform, callingSphereRadius);
+        var goHome = new NPCGoingHomeState(entityMove, transform, new Seek(safeHouse, transform));
 
         idle.AddTransition(StateEnum.Scape, scape);
         idle.AddTransition(StateEnum.GoHome, goHome);
@@ -51,6 +53,7 @@ public class NPCController : MonoBehaviour
         var qInProximity = new QuestionTree(InProximity, goHome, scape);
         var qIsScaping = new QuestionTree(HasAlreadyScaped, qInProximity, idle);
         var qInView = new QuestionTree(InView, scape, qIsScaping);
+       // var qIsClose = new QuestionTree(IsSoClose, qInView, idle);
         var qIsExist = new QuestionTree(() => target != null, qInView, idle);
 
         root = qIsExist;
@@ -76,6 +79,11 @@ public class NPCController : MonoBehaviour
         alreadyScaped = true;
     }
 
+    private bool IsSoClose()
+    {
+        return isSoClose;
+    }
+
     private void Update()
     {
         fsm.OnUpdate();
@@ -86,15 +94,10 @@ public class NPCController : MonoBehaviour
     {
         //Se gira hacia quien lo choca, si el LOS funcionase bien deberia detectar que es el player y seguir con el ritmo del arbol
 
-        Quaternion lookRotation = Quaternion.LookRotation((collision.transform.position - transform.position).normalized);
-        transform.rotation = lookRotation;
-        root.Execute();
-
-        //Si choca con el player transiciona sin preguntar a scape
-
-        //if (collision.gameObject.layer == 3)
-        //{
-        //    fsm.Transition(StateEnum.Scape);
-        //}
+        transform.rotation = Quaternion.LookRotation((collision.transform.position - transform.position).normalized);
+        if (collision.gameObject.layer == 3)
+        {
+            fsm.Transition(StateEnum.Scape);
+        }
     }
 }

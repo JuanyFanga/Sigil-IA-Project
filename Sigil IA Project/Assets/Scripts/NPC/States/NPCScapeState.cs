@@ -7,15 +7,17 @@ public class NPCScapeState : State<StateEnum>
 {
     private IMove _move;
     private ISteering _steering;
-    //private Transform _entity;
-    //private Transform _target;
+    private Transform _entityPos;
+    private float _sphereRadius;
 
     public Action OnScape = delegate { };
 
-    public NPCScapeState(IMove move, ISteering steering)
+    public NPCScapeState(IMove move, ISteering steering, Transform entityPos, float SphereRadius)
     {
         _move = move;
         _steering = steering;
+        _entityPos = entityPos;
+        _sphereRadius = SphereRadius;
     }
 
     public override void Execute()
@@ -28,19 +30,26 @@ public class NPCScapeState : State<StateEnum>
     public override void Enter()
     {
         base.Enter();
-        //var lastPos = _entity.position;
-
-        //Crear un overlapp sphere, preguntar
-        //por todos los objetos del overlapp, si tienen el
-        //script de enemigo o su interfaz se les pase a alguna funcion la ultima
-        //ubicacion conocida para que ellos los busquen, charlarlo con guara
-
+        Debug.Log("Entre a escapar aaaaa");
+        Collider[] enemies = Physics.OverlapSphere(_entityPos.position, _sphereRadius);
+        foreach (var enemyCollider in enemies)
+        {
+            IViolentEnemy enemy = enemyCollider.GetComponent<IViolentEnemy>();
+            if (enemy != null)
+            {
+                enemy.KnowingLastPosition(_entityPos);
+                Debug.Log("Ya envie la ultima localizacion");
+            }
+            else
+            {
+                Debug.Log("No pude enviar la ultima localizacion pq no hay nadie cerca");
+            }
+        }
         OnScape();
     }
 
     public override void Exit()
     {
         base.Exit();
-
     }
 }
