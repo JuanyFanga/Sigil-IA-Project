@@ -47,11 +47,12 @@ public class EnemyController : MonoBehaviour
     private void InitializedTree()
     {
         var idle = new ActionTree(() => fsm.Transition(StateEnum.Idle));
-        var scape = new ActionTree(() => fsm.Transition(StateEnum.Scape));
-        var goHome = new ActionTree(() => fsm.Transition(StateEnum.GoHome));
+        var patrol = new ActionTree(() => fsm.Transition(StateEnum.Patrol));
+        var chase = new ActionTree(() => fsm.Transition(StateEnum.Chase));
+        var find = new ActionTree(()=> fsm.Transition(StateEnum.Find));
 
-        var qIsScaping = new QuestionTree(InProximity, goHome, scape);
-        var qInView = new QuestionTree(InView, qIsScaping, idle);
+        var qIsChasing = new QuestionTree(InProximity, chase, find);
+        var qInView = new QuestionTree(InView, qIsChasing , idle);
         var qIsExist = new QuestionTree(() => target != null, qInView, idle);
 
         root = qIsExist;
