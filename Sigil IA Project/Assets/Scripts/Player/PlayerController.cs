@@ -17,7 +17,6 @@ public class PlayerController : MonoBehaviour
     {
         InitializeFSM();
         InitializeTree();
-        Debug.Log("Start del players");
     }
 
     public void InitializeFSM()
@@ -34,11 +33,9 @@ public class PlayerController : MonoBehaviour
 
     public void InitializeTree()
     {
-        //Actions
         var idle = new ActionTree(() => _fsm.Transition(StateEnum.Idle));
         var move = new ActionTree(() => _fsm.Transition(StateEnum.Move));
 
-        //Questions
         var qIsMoving = new QuestionTree(IsMoving, move, idle);
         var qIsExist = new QuestionTree(() => transform.position != null, qIsMoving, idle);
 
@@ -55,7 +52,6 @@ public class PlayerController : MonoBehaviour
     {
         _fsm.OnUpdate();
         _root.Execute();
-        //Debug.Log($"Velocity is {_rb.velocity.magnitude}");
     }
 
     private void FixedUpdate()

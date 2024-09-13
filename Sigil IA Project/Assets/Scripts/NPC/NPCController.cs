@@ -14,7 +14,6 @@ public class NPCController : MonoBehaviour
     private ITreeNode root;
 
     //Bools
-    private bool hasItSeenYou = false;
     private bool alreadyScaped = false;
     private bool isSoClose = false;
 
@@ -22,8 +21,13 @@ public class NPCController : MonoBehaviour
 
     private void Start()
     {
-        InitializedFSM();
-        InitializedTree();
+        if (LevelManager.Instance != null)
+        {
+            safeHouse = LevelManager.Instance.SafeZoneTransform;
+            target = LevelManager.Instance.PlayerRb;
+            InitializedFSM();
+            InitializedTree();
+        }
     }
 
     private void InitializedFSM()
@@ -53,7 +57,6 @@ public class NPCController : MonoBehaviour
         var qInProximity = new QuestionTree(InProximity, goHome, scape);
         var qIsScaping = new QuestionTree(HasAlreadyScaped, qInProximity, idle);
         var qInView = new QuestionTree(InView, scape, qIsScaping);
-       // var qIsClose = new QuestionTree(IsSoClose, qInView, idle);
         var qIsExist = new QuestionTree(() => target != null, qInView, idle);
 
         root = qIsExist;
@@ -93,6 +96,7 @@ public class NPCController : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         //Se gira hacia quien lo choca, si el LOS funcionase bien deberia detectar que es el player y seguir con el ritmo del arbol
+        //pero como eso no pasa tengo que forzar la transicion hacia el escape
 
         transform.rotation = Quaternion.LookRotation((collision.transform.position - transform.position).normalized);
         if (collision.gameObject.layer == 3)
