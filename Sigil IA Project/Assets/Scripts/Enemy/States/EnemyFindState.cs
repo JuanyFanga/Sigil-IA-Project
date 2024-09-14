@@ -9,7 +9,7 @@ public class EnemyFindState : State<StateEnum>
     private Transform _entity;
     private bool _hasReachedLocation = false;
     private float _waitTime = 10f;
-    public Action OnwaitOver = delegate();
+    public Action OnwaitOver = delegate{};
 
 
     public EnemyFindState(Transform lastKnownLocation, IMove move, Transform entity)
@@ -23,7 +23,7 @@ public class EnemyFindState : State<StateEnum>
         base.Execute();
         if (Vector3.Distance(_entity.position, _lastKnownLocation.position) <= 0.5f)
         {
-          _waitTime -= _waitTime.deltaTime;
+          _waitTime -= Time.deltaTime;
         }
         if(_waitTime <= 0)
         {

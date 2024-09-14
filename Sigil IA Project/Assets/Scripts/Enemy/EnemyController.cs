@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyController : MonoBehaviour, IViolent
+public class EnemyController : MonoBehaviour, IViolentEnemy
 {
     public Rigidbody target;
     public LineOfSight los;
@@ -17,12 +17,12 @@ public class EnemyController : MonoBehaviour, IViolent
     private bool wasChasing = false;
     private bool hasArrived = false;
     private bool isAlerted = false;
-    private transform originPoint;
+    private Transform originPoint;
     
 
     private void Start()
     {
-        originPoint = transform.position;
+        originPoint = transform;
         InitializedSteering();
         InitializedFSM();
         InitializedTree();
@@ -68,7 +68,7 @@ public class EnemyController : MonoBehaviour, IViolent
         attack.AddTransition(StateEnum.Chase,chase);
 
         patrol.OnArrived += OnArrivedToPatrol;
-        find.OnwaitOver += ;
+        find.OnwaitOver += WaitOver;
 
 
         fsm = new FSM<StateEnum>(idle);
@@ -87,8 +87,8 @@ public class EnemyController : MonoBehaviour, IViolent
         var qIsInRange = new QuestionTree(InRange, attack, chase); // Lo tengo en rango de ataque? - Si(Ataca) - No(Persigue)
         var qIsChase = new QuestionTree(() => wasChasing, find , qIsPatrol); // Lo estaba persiguiendo? - Si(Busca al PJ) - No(Se fija si es patrullante?)
         var qInView = new QuestionTree(InView, qIsInRange, qIsChase);// Lo estoy viendo? - Si(Se fija si esta a alcance de ataque) - No(Se fija si lo estaba persiguiendo)
-        var qIsExist = new QuestionTree(() => target != null, qIsAlerted, qIsPatrol); // existe el target? - Si(Se fija si lo ve) - No(Se fija si es patrullante)
         var qIsAlerted = new QuestionTree(()=> isAlerted, qIsInRange , qInView); // Esta alertado?
+        var qIsExist = new QuestionTree(() => target != null, qIsAlerted, qIsPatrol); // existe el target? - Si(Se fija si lo ve) - No(Se fija si es patrullante)
     }
 
     private bool InView()
@@ -148,9 +148,9 @@ public class EnemyController : MonoBehaviour, IViolent
         root.Execute();
     }
 
-    private void KnowingLastPosition(Transform lastKnownPosition)
+    public void KnowingLastPosition(Transform lastKnownPosition)
     {
-        target = lastKnownPosition;
+        target.position = lastKnownPosition.position;
         isAlerted = true;
         //fsm.Transition(StateEnum.Chase)
     }
