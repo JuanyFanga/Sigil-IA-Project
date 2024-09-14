@@ -24,6 +24,6 @@ public class EnemyChaseState : State<StateEnum>
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("Enemigo entro al estado");
+        Debug.Log("Enemy entered Chase State");
     }
 }
