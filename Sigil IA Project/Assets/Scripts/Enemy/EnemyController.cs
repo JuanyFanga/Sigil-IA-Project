@@ -17,10 +17,12 @@ public class EnemyController : MonoBehaviour, IViolent
     private bool wasChasing = false;
     private bool hasArrived = false;
     private bool isAlerted = false;
+    private transform originPoint;
     
 
     private void Start()
     {
+        originPoint = transform.position;
         InitializedSteering();
         InitializedFSM();
         InitializedTree();
@@ -66,6 +68,7 @@ public class EnemyController : MonoBehaviour, IViolent
         attack.AddTransition(StateEnum.Chase,chase);
 
         patrol.OnArrived += OnArrivedToPatrol;
+        find.OnwaitOver += ;
 
 
         fsm = new FSM<StateEnum>(idle);
@@ -110,6 +113,15 @@ public class EnemyController : MonoBehaviour, IViolent
         else
         {
             indice ++;
+        }
+    }
+
+    private void WaitOver()
+    {
+        wasChasing = false;
+        if(! patroller)
+        {
+            patroller = true;
         }
     }
 

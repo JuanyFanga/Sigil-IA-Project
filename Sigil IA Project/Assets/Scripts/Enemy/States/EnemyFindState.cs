@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
 public class EnemyFindState : State<StateEnum>
 {
     private Transform _lastKnownLocation;
@@ -9,6 +9,8 @@ public class EnemyFindState : State<StateEnum>
     private Transform _entity;
     private bool _hasReachedLocation = false;
     private float _waitTime = 10f;
+    public Action OnwaitOver = delegate();
+
 
     public EnemyFindState(Transform lastKnownLocation, IMove move, Transform entity)
     {
@@ -19,14 +21,13 @@ public class EnemyFindState : State<StateEnum>
     public override void Execute()
     {
         base.Execute();
-
-        if (!_hasReachedLocation && Vector3.Distance(_entity.position, _lastKnownLocation.position) < 0.5f)
+        if (Vector3.Distance(_entity.position, _lastKnownLocation.position) <= 0.5f)
         {
-            _hasReachedLocation = true;
+          _waitTime -= _waitTime.deltaTime;
         }
-        if(_hasReachedLocation)
+        if(_waitTime <= 0)
         {
-            //pasar a Idle con Timer
+            OnwaitOver();
         }
     }
     public override void Enter()
