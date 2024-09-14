@@ -15,6 +15,7 @@ public class EnemyController : MonoBehaviour
     private int indice = 0;
     [SerializeField] private bool patroller;
     private bool wasChasing = false;
+    private bool hasArrived = false;
     
 
     private void Start()
@@ -27,8 +28,8 @@ public class EnemyController : MonoBehaviour
     private void InitializedSteering()
     {
         var pursuit = new Pursuit(transform, target, timePrediction);
-        var seek = new Seek(target.transform, transform);
-        steering = pursuit;
+        var seek = new Seek(patrolPoints[indice], transform);
+        steering = seek;
     }
 
     public void ChangeSteering(ISteering _steering)
@@ -42,7 +43,7 @@ public class EnemyController : MonoBehaviour
         IAttack attack1 = GetComponent<IAttack>();
 
         var idle = new EnemyIdleState();
-        var patrol = new EnemyPatrolState(entityMove,steering);
+        var patrol = new EnemyPatrolState(entityMove, new Seek(patrolPoints[indice], transform), transform, patrolPoints[indice]);
         var chase = new EnemySteeringState(entityMove,new Pursuit(transform, target, timePrediction));
         var find = new EnemyFindState(transform,entityMove, target.transform);
         var attack = new EnemyAttackState(attack1);
@@ -62,6 +63,8 @@ public class EnemyController : MonoBehaviour
         find.AddTransition(StateEnum.Idle,idle);
 
         attack.AddTransition(StateEnum.Chase,chase);
+
+        patrol.OnArrived += OnArrivedToPatrol;
 
 
         fsm = new FSM<StateEnum>(idle);
@@ -93,6 +96,24 @@ public class EnemyController : MonoBehaviour
         ChangeSteering(seekSteering);
         Debug.Log($"The distance is: {Vector3.Distance(target.transform.position, transform.position)}");
         return Vector3.Distance(target.transform.position, transform.position) >= 2f;
+    }
+
+    private void OnArrivedToPatrol()
+    {
+        hasArrived = true;
+        if (indice >= patrolPoints.Length)
+        {
+            indice = 0;
+        }
+        else
+        {
+            indice ++;
+        }
+    }
+
+    private bool HasArrived()
+    {
+        return hasArrived;
     }
 
     private void IndiceController()
