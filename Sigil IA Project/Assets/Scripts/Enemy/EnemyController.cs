@@ -7,12 +7,14 @@ public class EnemyController : MonoBehaviour
     public Rigidbody target;
     public LineOfSight los;
     [SerializeField] private float timePrediction;
-    [SerializeField] List<Transform> patrolPoints;
+    [SerializeField] Transform[] patrolPoints;
     private FSM<StateEnum> fsm;
     private ITreeNode root;
     private ISteering steering;
     private ISteering seekSteering;
+    private int indice = 0;
     [SerializeField] private bool patroller;
+    private bool wasChasing = false;
     
 
     private void Start()
@@ -40,20 +42,25 @@ public class EnemyController : MonoBehaviour
         IAttack attack1 = GetComponent<IAttack>();
 
         var idle = new EnemyIdleState();
-        var patrol = new EnemyPatrolState(patrolPoints,entityMove,transform);
-        var chase = new EnemyChaseState(entityMove,transform,target.transform);
+        var patrol = new EnemyPatrolState(patrolPoints[indice],entityMove,transform);
+        var chase = new EnemySteeringState(entityMove,new Pursuit(transform, target, timePrediction));
         var find = new EnemyFindState(transform,entityMove, target.transform);
         var attack = new EnemyAttackState(attack1);
 
 
         idle.AddTransition(StateEnum.Patrol, patrol);
         idle.AddTransition(StateEnum.Chase, chase);
+
         patrol.AddTransition(StateEnum.Idle,idle);
         patrol.AddTransition(StateEnum.Chase,chase);
+
         chase.AddTransition(StateEnum.Find,find);
         chase.AddTransition(StateEnum.Attack,attack);
+
         find.AddTransition(StateEnum.Chase,chase);
         find.AddTransition(StateEnum.Attack,attack);
+        find.AddTransition(StateEnum.Idle,idle);
+
         attack.AddTransition(StateEnum.Chase,chase);
 
 
@@ -69,11 +76,11 @@ public class EnemyController : MonoBehaviour
         var attack = new ActionTree(() => fsm.Transition(StateEnum.Attack));
 
 
-        var qIsChasing = new QuestionTree(InProximity, chase, find); 
-        var qInView = new QuestionTree(InView, qIsChasing, idle); 
-        var qIsPatrol = new QuestionTree(() => patroller, patrol, idle); 
-        var qIsExist = new QuestionTree(() => target != null, qInView, qIsPatrol); 
-        //var qIsInRange = new QuestionTree(InRange, attack, chase);
+        var qIsPatrol = new QuestionTree(() => patroller, patrol, idle); // Soy un Enemigo que patrulla? - Si(Patrulla) -No(Idle)
+        var qIsInRange = new QuestionTree(InRange, attack, chase); // Lo tengo en rango de ataque? - Si(Ataca) - No(Persigue)
+        var qIsChase = new QuestionTree(() => wasChasing, find , qIsPatrol); // Lo estaba persiguiendo? - Si(Busca al PJ) - No(Se fija si es patrullante?)
+        var qInView = new QuestionTree(InView, qIsInRange, qIsChase);// Lo estoy viendo? - Si(Se fija si esta a alcance de ataque) - No(Se fija si lo estaba persiguiendo)
+        var qIsExist = new QuestionTree(() => target != null, qInView, qIsPatrol); // existe el target? - Si(Se fija si lo ve) - No(Se fija si es patrullante)
     }
 
     private bool InView()
@@ -81,11 +88,23 @@ public class EnemyController : MonoBehaviour
         return los.CheckRange(target.transform) && los.CheckAngle(target.transform) && los.CheckView(target.transform);
     }
 
-    private bool InProximity()
+    private bool InRange()
     {
         ChangeSteering(seekSteering);
         Debug.Log($"The distance is: {Vector3.Distance(target.transform.position, transform.position)}");
-        return Vector3.Distance(target.transform.position, transform.position) >= 5f;
+        return Vector3.Distance(target.transform.position, transform.position) >= 2f;
+    }
+
+    private void IndiceController()
+    {
+        if(Vector3.Distance(transform.position , patrolPoints[indice].position) < 2f)
+        {
+            if(indice == patrolPoints.Length){
+                indice = 0;
+            }else{
+                indice ++;
+            }
+        }
     }
 
     private void Update()

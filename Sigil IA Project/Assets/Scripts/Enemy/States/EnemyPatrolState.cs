@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class EnemyPatrolState : State<StateEnum>
 {
-    private List<Transform> _patrolPoints;
+    private Transform _patrolPoints;
     private IMove _move;
     private Transform _entity;
-    public EnemyPatrolState(List<Transform> patrolPoints, IMove move, Transform entity)
+    public EnemyPatrolState(Transform patrolPoints, IMove move, Transform entity)
     {
         _patrolPoints = patrolPoints;
         _move = move;
@@ -16,10 +16,17 @@ public class EnemyPatrolState : State<StateEnum>
     public override void Execute()
     {
         base.Execute();
+        
     }
     public override void Enter()
     {
         base.Enter();
         Debug.Log("Enemigo entro al estado");
+        _move.Move(_patrolPoints.position);
+        if(Vector3.Distance(_entity.position , _patrolPoints.position) < 2f)
+        {
+            //mover a estado Idle con Timer
+        }
+
     }
 }
