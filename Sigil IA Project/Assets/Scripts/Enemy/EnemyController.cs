@@ -42,7 +42,7 @@ public class EnemyController : MonoBehaviour
         IAttack attack1 = GetComponent<IAttack>();
 
         var idle = new EnemyIdleState();
-        var patrol = new EnemyPatrolState(patrolPoints[indice],entityMove,transform);
+        var patrol = new EnemyPatrolState(entityMove,steering);
         var chase = new EnemySteeringState(entityMove,new Pursuit(transform, target, timePrediction));
         var find = new EnemyFindState(transform,entityMove, target.transform);
         var attack = new EnemyAttackState(attack1);
