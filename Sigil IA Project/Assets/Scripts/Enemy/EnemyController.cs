@@ -36,10 +36,25 @@ public class EnemyController : MonoBehaviour
     private void InitializedFSM()
     {
         IMove entityMove = GetComponent<IMove>();
+        IAttack attack1 = GetComponent<IAttack>();
 
-        var idle = new NPCIdleState();
+        var idle = new EnemyIdleState();
+        var patrol = new EnemyPatrolState(patrolPoints,entityMove,transform);
+        var chase = new EnemyChaseState(entityMove,transform,target.transform);
+        var find = new EnemyFindState(transform,entityMove, target.transform);
+        var attack = new EnemyAttackState(attack1);
 
-        idle.AddTransition(StateEnum.Idle, idle);
+
+        idle.AddTransition(StateEnum.Patrol, patrol);
+        idle.AddTransition(StateEnum.Chase, chase);
+        patrol.AddTransition(StateEnum.Idle,idle);
+        patrol.AddTransition(StateEnum.Chase,chase);
+        chase.AddTransition(StateEnum.Find,find);
+        chase.AddTransition(StateEnum.Attack,attack);
+        find.AddTransition(StateEnum.Chase,chase);
+        find.AddTransition(StateEnum.Attack,attack);
+        attack.AddTransition(StateEnum.Chase,chase);
+
 
         fsm = new FSM<StateEnum>(idle);
     }
@@ -49,13 +64,15 @@ public class EnemyController : MonoBehaviour
         var idle = new ActionTree(() => fsm.Transition(StateEnum.Idle));
         var patrol = new ActionTree(() => fsm.Transition(StateEnum.Patrol));
         var chase = new ActionTree(() => fsm.Transition(StateEnum.Chase));
-        var find = new ActionTree(()=> fsm.Transition(StateEnum.Find));
+        var find = new ActionTree(() => fsm.Transition(StateEnum.Find));
+        var attack = new ActionTree(() => fsm.Transition(StateEnum.Attack));
 
-        var qIsChasing = new QuestionTree(InProximity, chase, find);
-        var qInView = new QuestionTree(InView, qIsChasing , idle);
-        var qIsExist = new QuestionTree(() => target != null, qInView, idle);
 
-        root = qIsExist;
+        var qIsChasing = new QuestionTree(InProximity, chase, find); 
+        var qInView = new QuestionTree(InView, qIsChasing, idle); 
+        var qIsPatrol = new QuestionTree(() => patroller, patrol, idle); 
+        var qIsExist = new QuestionTree(() => target != null, qInView, qIsPatrol); 
+        var qIsInRange = new QuestionTree(InRange, attack, chase);
     }
 
     private bool InView()

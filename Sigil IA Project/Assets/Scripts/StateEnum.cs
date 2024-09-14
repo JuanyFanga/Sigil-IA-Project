@@ -6,5 +6,6 @@ public enum StateEnum
     GoHome,
     Patrol,
     Chase,
-    Find
+    Find,
+    Attack
 }
