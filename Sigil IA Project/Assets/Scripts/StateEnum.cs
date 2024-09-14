@@ -3,5 +3,8 @@ public enum StateEnum
     Idle,
     Move,
     Scape,
-    GoHome
+    GoHome,
+    Patrol,
+    Chase,
+    Find
 }
