@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyController : MonoBehaviour
+public class EnemyController : MonoBehaviour, IViolent
 {
     public Rigidbody target;
     public LineOfSight los;
@@ -16,6 +16,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private bool patroller;
     private bool wasChasing = false;
     private bool hasArrived = false;
+    private bool isAlerted = false;
     
 
     private void Start()
@@ -83,7 +84,8 @@ public class EnemyController : MonoBehaviour
         var qIsInRange = new QuestionTree(InRange, attack, chase); // Lo tengo en rango de ataque? - Si(Ataca) - No(Persigue)
         var qIsChase = new QuestionTree(() => wasChasing, find , qIsPatrol); // Lo estaba persiguiendo? - Si(Busca al PJ) - No(Se fija si es patrullante?)
         var qInView = new QuestionTree(InView, qIsInRange, qIsChase);// Lo estoy viendo? - Si(Se fija si esta a alcance de ataque) - No(Se fija si lo estaba persiguiendo)
-        var qIsExist = new QuestionTree(() => target != null, qInView, qIsPatrol); // existe el target? - Si(Se fija si lo ve) - No(Se fija si es patrullante)
+        var qIsExist = new QuestionTree(() => target != null, qIsAlerted, qIsPatrol); // existe el target? - Si(Se fija si lo ve) - No(Se fija si es patrullante)
+        var qIsAlerted = new QuestionTree(()=> isAlerted, qIsInRange , qInView); // Esta alertado?
     }
 
     private bool InView()
@@ -132,5 +134,12 @@ public class EnemyController : MonoBehaviour
     {
         fsm.OnUpdate();
         root.Execute();
+    }
+
+    private void KnowingLastPosition(Transform lastKnownPosition)
+    {
+        target = lastKnownPosition;
+        isAlerted = true;
+        //fsm.Transition(StateEnum.Chase)
     }
 }
