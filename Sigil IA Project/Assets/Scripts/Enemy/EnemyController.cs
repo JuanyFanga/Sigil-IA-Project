@@ -69,31 +69,41 @@ public class EnemyController : MonoBehaviour
         var find = new ActionTree(()=> fsm.Transition(StateEnum.Find));
         var attack = new ActionTree(()=> fsm.Transition(StateEnum.Attack));
 
-        var qIsChasing = new QuestionTree(InProximity, chase, find);
-        var qInView = new QuestionTree(InView, qIsChasing , idle);
-        var qIsPatrol = new QuestionTree(()=> patroller, patrol, idle);
+
+        var qLostSight = new QuestionTree(InView , chase , find);
+        var qIsChasing = new QuestionTree(InProximity, attack, qLostSight); 
+        var qInView = new QuestionTree(InView, qIsChasing , idle); 
+        var qIsPatrol = new QuestionTree(() => patroller, patrol, idle);
         var qIsExist = new QuestionTree(() => target != null, qInView, qIsPatrol);
-        var qIsInRange = new QuestionTree(InRange,attack,chase);
+
+
+        //var qIsChasing = new QuestionTree(InProximity, chase, find);
+        //var qInView = new QuestionTree(InView, qIsChasing , idle);
+        //var qIsPatrol = new QuestionTree(()=> patroller, patrol, qInView);
+        //var qIsExist = new QuestionTree(() => target != null,  qIsPatrol , qInView);
+        //var qIsInRange = new QuestionTree(InRange,attack,chase);
 
         root = qIsExist;
     }
 
     private bool InView()
     {
+        Debug.Log("InView: ");
+        Debug.Log(los.CheckRange(target.transform) && los.CheckAngle(target.transform) && los.CheckView(target.transform));
         return los.CheckRange(target.transform) && los.CheckAngle(target.transform) && los.CheckView(target.transform);
     }
 
     private bool InProximity()
     {
         ChangeSteering(seekSteering);
-        Debug.Log($"The distance is: {Vector3.Distance(target.transform.position, transform.position)}");
+        Debug.Log("InProximity: ");
+        Debug.Log(Vector3.Distance(target.transform.position, transform.position) >= 5f);
         return Vector3.Distance(target.transform.position, transform.position) >= 5f;
     }
 
     private bool InRange()
     {
         ChangeSteering(seekSteering);
-        Debug.Log($"The distance is: {Vector3.Distance(target.transform.position, transform.position)}");
         return Vector3.Distance(target.transform.position, transform.position) >= 1f;
     }
 
