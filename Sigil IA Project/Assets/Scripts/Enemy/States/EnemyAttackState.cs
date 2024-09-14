@@ -12,13 +12,15 @@ public class EnemyAttackState : State<StateEnum>
     public override void Enter()
     {
         base.Enter();
+        Debug.Log("Entro al ataque");
     }
     public override void Execute()
     {
-        if (_attack.Cooldown == null || !_attack.Cooldown.IsCooldown())
+        /*if (_attack.Cooldown == null || !_attack.Cooldown.IsCooldown())
         {
             _attack.Attack();
         }
+        */
         base.Execute();
     }
 }

@@ -19,4 +19,10 @@ public class EnemySteeringState : State<StateEnum>
         Vector3 dir = _steering.GetDir();
         _move.Move(dir.normalized);
     }
+
+    public override void Enter()
+    {
+        base.Enter();
+        Debug.Log("CHASE CHASE CHASE");
+    }
 }

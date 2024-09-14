@@ -22,9 +22,10 @@ public class EnemyPatrolState : State<StateEnum>
         base.Execute();
         Vector3 dir = _steering.GetDir();
         _move.Move(dir.normalized);
-
+        //Debug.Log(_target.position);
         if (Vector3.Distance(_entity.position, _target.position) <= 0.5f)
         {
+            //Debug.Log(_target.position);
             OnArrived();
         }
     }

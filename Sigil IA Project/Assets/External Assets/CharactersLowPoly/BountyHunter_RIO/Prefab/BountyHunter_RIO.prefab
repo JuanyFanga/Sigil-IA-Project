@@ -34,8 +34,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8567136432372391834}
   - {fileID: 7442025716131865964}
+  - {fileID: 8567136432372391834}
   - {fileID: 1631717708244200913}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -54,7 +54,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!136 &850100679754789231
 CapsuleCollider:
@@ -103,13 +103,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ceac9a297a5a0ab4bb573f3fe7102291, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  los: {fileID: 0}
+  _target: {fileID: 0}
   timePrediction: 10
   patrolPoints:
   - {fileID: 0}
   - {fileID: 0}
   patroller: 0
+  isAlerted: 0
+  originPoint: {fileID: 0}
 --- !u!114 &8347810504299062617
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,9 +124,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
-  radius: 5
-  angle: 50
-  personalArea: 5
+  radius: 3
+  angle: 200
+  personalArea: 2
   obsMask:
     serializedVersion: 2
     m_Bits: 64
@@ -202,7 +203,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6794978574611549760}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3327914233319166938
 MonoBehaviour:
@@ -229,6 +230,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6794978574611549760}
     m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 710767f33357e7746886ce660d34ff9d, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 710767f33357e7746886ce660d34ff9d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

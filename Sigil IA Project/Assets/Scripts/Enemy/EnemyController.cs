@@ -88,7 +88,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         
         //var qIsChase = new QuestionTree(() => wasChasing, find , qIsPatrol); // Lo estaba persiguiendo? - Si(Busca al PJ) - No(Se fija si es patrullante?)
         
-        var qInView = new QuestionTree(InView, idle, patrol);// Lo estoy viendo? - Si(Se fija si esta a alcance de ataque) - No(Se fija si lo estaba persiguiendo)
+        var qInView = new QuestionTree(InView, qIsInRange, patrol);// Lo estoy viendo? - Si(Se fija si esta a alcance de ataque) - No(Se fija si lo estaba persiguiendo)
 
         //var qIsAlerted = new QuestionTree(InAlerted, chase , idle); // Esta alertado?
         
@@ -99,15 +99,15 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
 
     private bool InView()
     {
-        Debug.Log($"Enemy is trying to see youuu");
+        //Debug.Log($"Enemy is trying to see youuu");
 
         return _los.CheckRange(_target.transform) && _los.CheckAngle(_target.transform) && _los.CheckView(_target.transform);
     }
 
     private bool InRange()
     {
-        Debug.Log($"The distance is: {Vector3.Distance(_target.transform.position, transform.position)}");
-        return Vector3.Distance(_target.transform.position, transform.position) >= 2f;
+        //Debug.Log($"The distance is: {Vector3.Distance(_target.transform.position, transform.position)}");
+        return Vector3.Distance(_target.transform.position, transform.position) <= 4f;
     }
 
     private bool InAlerted()
@@ -149,18 +149,18 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
 
     private void IndiceController()
     {
-        if (indice == patrolPoints.Length -1)
+        if (indice >= patrolPoints.Length - 1)  // Check if it reached the last point
         {
-            indice++;
+            indice = 0; 
         }
-
         else
         {
-            indice = 0;
+            indice++; 
         }
 
-        Debug.Log($"El length es {patrolPoints.Length}");
-        Debug.Log($"El indice es {indice}");
+        //Debug.Log($"El position del patrol point es: {patrolPoints[indice].position}");
+        //Debug.Log($"El patrol point es: {patrolPoints[indice]}");
+        //Debug.Log($"El indice es {indice}");
         newPatrolPosition.position = patrolPoints[indice].position;
 
     }
