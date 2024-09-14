@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour, IViolentEnemy
 {
-    public Rigidbody target;
-    public LineOfSight los;
+    [SerializeField] private Rigidbody _target;
+    private LineOfSight _los;
     [SerializeField] private float timePrediction;
     [SerializeField] Transform[] patrolPoints;
     private FSM<StateEnum> fsm;
@@ -16,40 +16,40 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
     [SerializeField] private bool patroller;
     private bool wasChasing = false;
     private bool hasArrived = false;
-    private bool isAlerted = false;
-    private Transform originPoint;
-    
+    [SerializeField] private bool isAlerted = false;
+    [SerializeField] private Transform originPoint;
+    private Transform newPatrolPosition;
+
+    private void Awake()
+    {
+        _los = GetComponentInChildren<LineOfSight>();
+    }
 
     private void Start()
     {
-        originPoint = transform;
-        InitializedSteering();
+        newPatrolPosition = patrolPoints[0];
+
+        InitializeEnemy();
         InitializedFSM();
         InitializedTree();
     }
 
-    private void InitializedSteering()
+    private void InitializeEnemy()
     {
-        var pursuit = new Pursuit(transform, target, timePrediction);
-        var seek = new Seek(patrolPoints[indice], transform);
-        steering = seek;
-    }
-
-    public void ChangeSteering(ISteering _steering)
-    {
-        steering = _steering;
+        transform.position = originPoint.position;
+        transform.rotation = originPoint.rotation;
     }
 
     private void InitializedFSM()
     {
         IMove entityMove = GetComponent<IMove>();
-        IAttack attack1 = GetComponent<IAttack>();
+        IAttack entityAttack = GetComponent<IAttack>();
 
         var idle = new EnemyIdleState();
-        var patrol = new EnemyPatrolState(entityMove, new Seek(patrolPoints[indice], transform), transform, patrolPoints[indice]);
-        var chase = new EnemySteeringState(entityMove,new Pursuit(transform, target, timePrediction));
-        var find = new EnemyFindState(transform,entityMove, target.transform);
-        var attack = new EnemyAttackState(attack1);
+        var patrol = new EnemyPatrolState(entityMove, new Seek(newPatrolPosition, transform), transform, newPatrolPosition);
+        var chase = new EnemySteeringState(entityMove,new Pursuit(transform, _target, timePrediction));
+        var find = new EnemyFindState(transform,entityMove, _target.transform);
+        var attack = new EnemyAttackState(entityAttack);
 
 
         idle.AddTransition(StateEnum.Patrol, patrol);
@@ -67,7 +67,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
 
         attack.AddTransition(StateEnum.Chase,chase);
 
-        patrol.OnArrived += OnArrivedToPatrol;
+        patrol.OnArrived += IndiceController;
         find.OnwaitOver += WaitOver;
 
 
@@ -85,22 +85,36 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
 
         var qIsPatrol = new QuestionTree(() => patroller, patrol, idle); // Soy un Enemigo que patrulla? - Si(Patrulla) -No(Idle)
         var qIsInRange = new QuestionTree(InRange, attack, chase); // Lo tengo en rango de ataque? - Si(Ataca) - No(Persigue)
-        var qIsChase = new QuestionTree(() => wasChasing, find , qIsPatrol); // Lo estaba persiguiendo? - Si(Busca al PJ) - No(Se fija si es patrullante?)
-        var qInView = new QuestionTree(InView, qIsInRange, qIsChase);// Lo estoy viendo? - Si(Se fija si esta a alcance de ataque) - No(Se fija si lo estaba persiguiendo)
-        var qIsAlerted = new QuestionTree(()=> isAlerted, qIsInRange , qInView); // Esta alertado?
-        var qIsExist = new QuestionTree(() => target != null, qIsAlerted, qIsPatrol); // existe el target? - Si(Se fija si lo ve) - No(Se fija si es patrullante)
+        
+        //var qIsChase = new QuestionTree(() => wasChasing, find , qIsPatrol); // Lo estaba persiguiendo? - Si(Busca al PJ) - No(Se fija si es patrullante?)
+        
+        var qInView = new QuestionTree(InView, idle, patrol);// Lo estoy viendo? - Si(Se fija si esta a alcance de ataque) - No(Se fija si lo estaba persiguiendo)
+
+        //var qIsAlerted = new QuestionTree(InAlerted, chase , idle); // Esta alertado?
+        
+        var qIsExist = new QuestionTree(() => _target != null, qInView, idle); // existe el target? - Si(Se fija si lo ve) - No(Se fija si es patrullante)
+
+        root = qIsExist;
     }
 
     private bool InView()
     {
-        return los.CheckRange(target.transform) && los.CheckAngle(target.transform) && los.CheckView(target.transform);
+        Debug.Log($"Enemy is trying to see youuu");
+
+        return _los.CheckRange(_target.transform) && _los.CheckAngle(_target.transform) && _los.CheckView(_target.transform);
     }
 
     private bool InRange()
     {
-        ChangeSteering(seekSteering);
-        Debug.Log($"The distance is: {Vector3.Distance(target.transform.position, transform.position)}");
-        return Vector3.Distance(target.transform.position, transform.position) >= 2f;
+        Debug.Log($"The distance is: {Vector3.Distance(_target.transform.position, transform.position)}");
+        return Vector3.Distance(_target.transform.position, transform.position) >= 2f;
+    }
+
+    private bool InAlerted()
+    {
+        Debug.Log($"Enemy has been alerted");
+
+        return isAlerted;
     }
 
     private void OnArrivedToPatrol()
@@ -110,10 +124,13 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         {
             indice = 0;
         }
+
         else
         {
             indice ++;
         }
+
+        
     }
 
     private void WaitOver()
@@ -132,14 +149,20 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
 
     private void IndiceController()
     {
-        if(Vector3.Distance(transform.position , patrolPoints[indice].position) < 2f)
+        if (indice == patrolPoints.Length -1)
         {
-            if(indice == patrolPoints.Length){
-                indice = 0;
-            }else{
-                indice ++;
-            }
+            indice++;
         }
+
+        else
+        {
+            indice = 0;
+        }
+
+        Debug.Log($"El length es {patrolPoints.Length}");
+        Debug.Log($"El indice es {indice}");
+        newPatrolPosition.position = patrolPoints[indice].position;
+
     }
 
     private void Update()
@@ -150,7 +173,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
 
     public void KnowingLastPosition(Transform lastKnownPosition)
     {
-        target.position = lastKnownPosition.position;
+        _target.position = lastKnownPosition.position;
         isAlerted = true;
         //fsm.Transition(StateEnum.Chase)
     }

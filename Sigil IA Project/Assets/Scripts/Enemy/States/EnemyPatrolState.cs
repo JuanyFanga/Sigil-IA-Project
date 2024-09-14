@@ -22,14 +22,18 @@ public class EnemyPatrolState : State<StateEnum>
         base.Execute();
         Vector3 dir = _steering.GetDir();
         _move.Move(dir.normalized);
+
         if (Vector3.Distance(_entity.position, _target.position) <= 0.5f)
         {
             OnArrived();
         }
     }
+
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("Enemigo entro al estado");
+        Debug.Log("Enemigo entro al estado de patrullajeee");
     }
+
+
 }
