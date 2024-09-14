@@ -7,12 +7,13 @@ public class EnemyController : MonoBehaviour
     public Rigidbody target;
     public LineOfSight los;
     [SerializeField] private float timePrediction;
+    [SerializeField] List<Transform> patrolPoints;
     private FSM<StateEnum> fsm;
     private ITreeNode root;
     private ISteering steering;
     private ISteering seekSteering;
-
-    private bool hasItSeenYou = false;
+    [SerializeField] private bool patroller;
+    
 
     private void Start()
     {
@@ -72,7 +73,7 @@ public class EnemyController : MonoBehaviour
         var qInView = new QuestionTree(InView, qIsChasing, idle); 
         var qIsPatrol = new QuestionTree(() => patroller, patrol, idle); 
         var qIsExist = new QuestionTree(() => target != null, qInView, qIsPatrol); 
-        var qIsInRange = new QuestionTree(InRange, attack, chase);
+        //var qIsInRange = new QuestionTree(InRange, attack, chase);
     }
 
     private bool InView()
