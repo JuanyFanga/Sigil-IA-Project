@@ -60,6 +60,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
 
         chase.AddTransition(StateEnum.Find,find);
         chase.AddTransition(StateEnum.Attack,attack);
+        chase.AddTransition(StateEnum.Patrol,patrol); //esto lo hice para que no siga de largo si me pierde de vista por ahora, cuando funcione todo de CHASE deberia ir a FIND
 
         find.AddTransition(StateEnum.Chase,chase);
         find.AddTransition(StateEnum.Attack,attack);

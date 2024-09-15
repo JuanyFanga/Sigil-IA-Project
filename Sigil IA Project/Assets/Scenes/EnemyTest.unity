@@ -214,7 +214,7 @@ Transform:
   m_GameObject: {fileID: 57868335}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 6.92, y: 0.791, z: -8.42}
-  m_LocalScale: {x: 6.4629273, y: 1, z: 1.0541766}
+  m_LocalScale: {x: 6.4629273, y: 3.0131, z: 1.0541766}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -230,6 +230,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: 22106dc63dce41746ad234a91af2d657, type: 3}
       propertyPath: m_Name
       value: Building Sky_big_color01
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 22106dc63dce41746ad234a91af2d657, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 22106dc63dce41746ad234a91af2d657, type: 3}
       propertyPath: m_RootOrder
@@ -288,6 +292,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Building_Residential_color03
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 0064eb002f3790247969e12119bbf9d2, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 0064eb002f3790247969e12119bbf9d2, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -344,6 +352,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: 260808cfd9b21994d8c3007a7bc9934c, type: 3}
       propertyPath: m_Name
       value: Building_Gas Station
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 260808cfd9b21994d8c3007a7bc9934c, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 260808cfd9b21994d8c3007a7bc9934c, type: 3}
       propertyPath: m_RootOrder
@@ -402,6 +414,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Building_Clothing
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 0c7bcaa85c9494849bc7a0a18b7f3324, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 0c7bcaa85c9494849bc7a0a18b7f3324, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -458,6 +474,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: 92dcd407350173049ab8c86482fadf42, type: 3}
       propertyPath: m_Name
       value: Building_House_01_color03
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 92dcd407350173049ab8c86482fadf42, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 92dcd407350173049ab8c86482fadf42, type: 3}
       propertyPath: m_RootOrder
@@ -529,12 +549,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1756613569}
     - target: {fileID: 2192245104008000207, guid: 7166087c57f18214f9cc1622ff2e3113, type: 3}
+      propertyPath: patroller
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2192245104008000207, guid: 7166087c57f18214f9cc1622ff2e3113, type: 3}
       propertyPath: originPoint
       value: 
       objectReference: {fileID: 1180087209}
     - target: {fileID: 2192245104008000207, guid: 7166087c57f18214f9cc1622ff2e3113, type: 3}
       propertyPath: timePrediction
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2192245104008000207, guid: 7166087c57f18214f9cc1622ff2e3113, type: 3}
       propertyPath: patrolPoints.Array.size
@@ -560,6 +584,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3327914233319166938, guid: 7166087c57f18214f9cc1622ff2e3113, type: 3}
+      propertyPath: range
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 5431646394304467204, guid: 7166087c57f18214f9cc1622ff2e3113, type: 3}
       propertyPath: m_Mass
       value: 1
@@ -578,7 +606,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6794978574611549760, guid: 7166087c57f18214f9cc1622ff2e3113, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.31
+      value: 0.03
       objectReference: {fileID: 0}
     - target: {fileID: 6794978574611549760, guid: 7166087c57f18214f9cc1622ff2e3113, type: 3}
       propertyPath: m_LocalPosition.z
@@ -627,6 +655,10 @@ PrefabInstance:
     - target: {fileID: 8347810504299062617, guid: 7166087c57f18214f9cc1622ff2e3113, type: 3}
       propertyPath: angle
       value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 8347810504299062617, guid: 7166087c57f18214f9cc1622ff2e3113, type: 3}
+      propertyPath: speed
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8347810504299062617, guid: 7166087c57f18214f9cc1622ff2e3113, type: 3}
       propertyPath: radius
@@ -1108,6 +1140,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: 65abb0f1b521f834bae80ea4c9d93734, type: 3}
       propertyPath: m_Name
       value: Building_Bakery
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 65abb0f1b521f834bae80ea4c9d93734, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 65abb0f1b521f834bae80ea4c9d93734, type: 3}
       propertyPath: m_RootOrder
