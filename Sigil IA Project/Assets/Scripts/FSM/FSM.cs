@@ -7,6 +7,8 @@ public class FSM<T>
 {
     IState<T> _current;
     public Action<T, IState<T>, IState<T>> onTransition = delegate { };
+    private IState<T> _previousState;
+    public IState<T> PreviousState => _previousState;
     public FSM() { }
     public FSM(IState<T> init)
     {
@@ -37,6 +39,7 @@ public class FSM<T>
         IState<T> newState = _current.GetTransition(input);
         if (newState == null) return;
         var previousState = _current;
+        _previousState = previousState;
         _current.Exit();
         _current = newState;
         _current.Enter();

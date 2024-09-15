@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class EnemyController : MonoBehaviour, IViolentEnemy
 {
@@ -69,7 +70,6 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         attack.AddTransition(StateEnum.Chase,chase);
 
         patrol.OnArrived += IndiceController;
-        find.OnwaitOver += WaitOver;
 
 
         fsm = new FSM<StateEnum>(idle);
@@ -84,16 +84,23 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         var attack = new ActionTree(() => fsm.Transition(StateEnum.Attack));
 
 
-        var qIsPatrol = new QuestionTree(() => patroller, patrol, idle); // Soy un Enemigo que patrulla? - Si(Patrulla) -No(Idle)
-        var qIsInRange = new QuestionTree(InRange, attack, chase); // Lo tengo en rango de ataque? - Si(Ataca) - No(Persigue)
-        
-        //var qIsChase = new QuestionTree(() => wasChasing, find , qIsPatrol); // Lo estaba persiguiendo? - Si(Busca al PJ) - No(Se fija si es patrullante?)
-        
-        var qInView = new QuestionTree(InView, qIsInRange, patrol);// Lo estoy viendo? - Si(Se fija si esta a alcance de ataque) - No(Se fija si lo estaba persiguiendo)
+        var qIsPatrol = new QuestionTree(() => patroller, patrol, idle);
+        // Soy un Enemigo que patrulla? - Si(Patrulla) -No(Idle)
 
-        //var qIsAlerted = new QuestionTree(InAlerted, chase , idle); // Esta alertado?
+        var qIsChase = new QuestionTree(PreviousState, find, qIsPatrol);
+        // Lo estaba persiguiendo? - Si(Busca al PJ) - No(Se fija si es patrullante?)
+
+        var qIsInRange = new QuestionTree(InRange, attack, chase);
+        // Lo tengo en rango de ataque? - Si(Ataca) - No(Persigue)
+
+        var qInView = new QuestionTree(InView, qIsInRange, qIsChase);
+        // Lo estoy viendo? - Si(Se fija si esta a alcance de ataque) - No(Se fija si lo estaba persiguiendo)
+
+        //var qIsAlerted = new QuestionTree(InAlerted, chase , idle); 
+        // Esta alertado?
         
-        var qIsExist = new QuestionTree(() => _target != null, qInView, idle); // existe el target? - Si(Se fija si lo ve) - No(Se fija si es patrullante)
+        var qIsExist = new QuestionTree(() => _target != null, qInView, idle); 
+        // existe el target? - Si(Se fija si lo ve) - No(Se fija si es patrullante)
 
         root = qIsExist;
     }
@@ -118,6 +125,15 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         return isAlerted;
     }
 
+    private bool PreviousState() 
+    {
+        Debug.Log(fsm.PreviousState);
+        bool res = fsm.PreviousState is EnemySteeringState;
+        Debug.Log(res);
+        if (fsm.PreviousState is EnemySteeringState) { return true; }
+        else { return false; }
+    }
+
     private void OnArrivedToPatrol()
     {
         hasArrived = true;
@@ -133,16 +149,6 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
 
         
     }
-
-    private void WaitOver()
-    {
-        wasChasing = false;
-        if(! patroller)
-        {
-            patroller = true;
-        }
-    }
-
     private bool HasArrived()
     {
         return hasArrived;
