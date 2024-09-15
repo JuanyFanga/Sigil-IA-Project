@@ -1,9 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 using UnityEngine.Video;
-using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
@@ -19,7 +16,7 @@ public class MainMenu : MonoBehaviour
 
     public void LoadLevelByName(string sceneName)
     {
-        SceneManager.LoadScene(sceneName);
+        LoadLevel.LoadSceneByName(sceneName);
     }
 
     public void ExitGame()
