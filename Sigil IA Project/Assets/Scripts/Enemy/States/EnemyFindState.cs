@@ -21,19 +21,18 @@ public class EnemyFindState : State<StateEnum>
     public override void Execute()
     {
         base.Execute();
-        if (Vector3.Distance(_entity.position, _lastKnownLocation.position) <= 0.5f)
+        //Debug.Log(Vector3.Distance(_entity.position, _lastKnownLocation.position));
+        //Debug.Log(_waitTime);
+        if (Vector3.Distance(_entity.position, _lastKnownLocation.position) <= 5f)
         {
           _waitTime -= Time.deltaTime;
         }
-        if(_waitTime <= 0)
-        {
-            OnwaitOver();
-        }
+        if(_waitTime < 0) { OnwaitOver(); } 
     }
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("Enemy entered Find state");
+        Debug.Log("FIND FIND FIND");
         _move.Move(_lastKnownLocation.position);
     }
 }

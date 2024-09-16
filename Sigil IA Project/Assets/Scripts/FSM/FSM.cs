@@ -8,6 +8,7 @@ public class FSM<T>
     IState<T> _current;
     public Action<T, IState<T>, IState<T>> onTransition = delegate { };
     private IState<T> _previousState;
+    public IState<T> currentState => _current;
     public IState<T> PreviousState => _previousState;
     public FSM() { }
     public FSM(IState<T> init)

@@ -15,11 +15,12 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
     private ISteering seekSteering;
     private int indice = 0;
     [SerializeField] private bool patroller;
-    private bool wasChasing = false;
+    private bool IsOverWaitTime = false;
     private bool hasArrived = false;
     [SerializeField] private bool isAlerted = false;
     [SerializeField] private Transform originPoint;
     private Transform newPatrolPosition;
+    private Transform LastPlayerPosition;
 
     private void Awake()
     {
@@ -29,7 +30,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
     private void Start()
     {
         newPatrolPosition = patrolPoints[0];
-
+        LastPlayerPosition = _target.transform;
         InitializeEnemy();
         InitializedFSM();
         InitializedTree();
@@ -49,7 +50,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         var idle = new EnemyIdleState();
         var patrol = new EnemyPatrolState(entityMove, new Seek(newPatrolPosition, transform), transform, newPatrolPosition);
         var chase = new EnemySteeringState(entityMove,new Pursuit(transform, _target, timePrediction));
-        var find = new EnemyFindState(transform,entityMove, _target.transform);
+        var find = new EnemyFindState(LastPlayerPosition, entityMove, transform);
         var attack = new EnemyAttackState(entityAttack);
 
 
@@ -70,6 +71,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         attack.AddTransition(StateEnum.Chase,chase);
 
         patrol.OnArrived += IndiceController;
+        find.OnwaitOver += WaitisOver;
 
 
         fsm = new FSM<StateEnum>(idle);
@@ -90,6 +92,8 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         var qIsChase = new QuestionTree(PreviousState, find, qIsPatrol);
         // Lo estaba persiguiendo? - Si(Busca al PJ) - No(Se fija si es patrullante?)
 
+        var qIsOverFind = new QuestionTree(FindOverCheck, qIsPatrol, find);
+
         var qIsInRange = new QuestionTree(InRange, attack, chase);
         // Lo tengo en rango de ataque? - Si(Ataca) - No(Persigue)
 
@@ -108,8 +112,13 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
     private bool InView()
     {
         //Debug.Log($"Enemy is trying to see youuu");
-
-        return _los.CheckRange(_target.transform) && _los.CheckAngle(_target.transform) && _los.CheckView(_target.transform);
+        if(_los.CheckRange(_target.transform) && _los.CheckAngle(_target.transform) && _los.CheckView(_target.transform)) 
+        {
+            LastPlayerPosition = _target.transform;
+            Debug.Log(LastPlayerPosition.position);
+            return true;
+        }
+        else { return false; }
     }
 
     private bool InRange()
@@ -118,58 +127,28 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         return Vector3.Distance(_target.transform.position, transform.position) <= 4f;
     }
 
-    private bool InAlerted()
-    {
-        Debug.Log($"Enemy has been alerted");
+    private bool InAlerted() { return isAlerted; }
 
-        return isAlerted;
+    private bool PreviousState()
+    {
+        if(fsm.currentState is EnemySteeringState) { return true; }
+        return false;
     }
 
-    private bool PreviousState() 
-    {
-        Debug.Log(fsm.PreviousState);
-        bool res = fsm.PreviousState is EnemySteeringState;
-        Debug.Log(res);
-        if (fsm.PreviousState is EnemySteeringState) { return true; }
-        else { return false; }
-    }
+    private void WaitisOver() { IsOverWaitTime = true; }
+    private bool FindOverCheck() { return fsm.PreviousState is EnemySteeringState && IsOverWaitTime == true; }
 
     private void OnArrivedToPatrol()
     {
         hasArrived = true;
-        if (indice >= patrolPoints.Length)
-        {
-            indice = 0;
-        }
-
-        else
-        {
-            indice ++;
-        }
-
-        
+        if (indice >= patrolPoints.Length){ indice = 0; } else{ indice ++; } 
     }
-    private bool HasArrived()
-    {
-        return hasArrived;
-    }
+    private bool HasArrived() { return hasArrived; }
 
     private void IndiceController()
     {
-        if (indice >= patrolPoints.Length - 1)  // Check if it reached the last point
-        {
-            indice = 0; 
-        }
-        else
-        {
-            indice++; 
-        }
-
-        //Debug.Log($"El position del patrol point es: {patrolPoints[indice].position}");
-        //Debug.Log($"El patrol point es: {patrolPoints[indice]}");
-        //Debug.Log($"El indice es {indice}");
+        if (indice >= patrolPoints.Length - 1) { indice = 0; } else { indice++; }
         newPatrolPosition.position = patrolPoints[indice].position;
-
     }
 
     private void Update()
