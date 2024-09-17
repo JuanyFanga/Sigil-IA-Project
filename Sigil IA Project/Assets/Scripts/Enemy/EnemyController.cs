@@ -62,11 +62,12 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
 
         chase.AddTransition(StateEnum.Find,find);
         chase.AddTransition(StateEnum.Attack,attack);
-        chase.AddTransition(StateEnum.Patrol,patrol); //esto lo hice para que no siga de largo si me pierde de vista por ahora, cuando funcione todo de CHASE deberia ir a FIND
+        //chase.AddTransition(StateEnum.Patrol,patrol); //esto lo hice para que no siga de largo si me pierde de vista por ahora, cuando funcione todo de CHASE deberia ir a FIND
 
         find.AddTransition(StateEnum.Chase,chase);
         find.AddTransition(StateEnum.Attack,attack);
-        find.AddTransition(StateEnum.Idle,idle);
+        find.AddTransition(StateEnum.Idle, idle);
+        find.AddTransition(StateEnum.Patrol, patrol);
 
         attack.AddTransition(StateEnum.Chase,chase);
 
@@ -89,10 +90,10 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         var qIsPatrol = new QuestionTree(() => patroller, patrol, idle);
         // Soy un Enemigo que patrulla? - Si(Patrulla) -No(Idle)
 
-        var qIsChase = new QuestionTree(PreviousState, find, qIsPatrol);
-        // Lo estaba persiguiendo? - Si(Busca al PJ) - No(Se fija si es patrullante?)
-
         var qIsOverFind = new QuestionTree(FindOverCheck, qIsPatrol, find);
+
+        var qIsChase = new QuestionTree(PreviousState, qIsOverFind, qIsPatrol);
+        // Lo estaba persiguiendo? - Si(Busca al PJ) - No(Se fija si es patrullante?)
 
         var qIsInRange = new QuestionTree(InRange, attack, chase);
         // Lo tengo en rango de ataque? - Si(Ataca) - No(Persigue)
@@ -131,7 +132,8 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
 
     private bool PreviousState()
     {
-        if(fsm.currentState is EnemySteeringState) { return true; }
+        if(fsm.currentState is EnemySteeringState && !InView()) { return true; }
+        if(fsm.PreviousState is EnemySteeringState && !InView()) { return true; }
         return false;
     }
 
