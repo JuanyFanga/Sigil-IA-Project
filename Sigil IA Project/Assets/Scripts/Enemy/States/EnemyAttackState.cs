@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EnemyAttackState : State<StateEnum>
 {
@@ -22,5 +23,6 @@ public class EnemyAttackState : State<StateEnum>
         }
         */
         base.Execute();
+        SceneManager.LoadScene("DefeatScreen");
     }
 }
