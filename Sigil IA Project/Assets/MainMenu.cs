@@ -1,16 +1,18 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.Video;
 
 public class MainMenu : MonoBehaviour
 {
-    [SerializeField] private VideoPlayer videoPlayer;
+    public AudioMixer audioMixer;
     [SerializeField] private List<Sprite> soundSwitches;
 
     public void SwitchVolume(UnityEngine.UI.Button thisButton)
     {
-        bool muted = videoPlayer.GetDirectAudioMute(0);
-        videoPlayer.SetDirectAudioMute(0, !muted);
+        audioMixer.GetFloat("MasterVolume", out float volume);
+        bool muted = (volume <= -79f);
+        audioMixer.SetFloat("MasterVolume", muted ? 0f : -80f);
         thisButton.image.sprite = soundSwitches[muted ? 0 : 1];
     }
 
