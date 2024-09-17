@@ -2,17 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.UIElements;
 public class EnemyFindState : State<StateEnum>
 {
-    private Transform _lastKnownLocation;
+    private Vector3 _lastKnownLocation;
     private IMove _move;
     private Transform _entity;
-    private bool _hasReachedLocation = false;
     private float _waitTime = 10f;
     public Action OnwaitOver = delegate{};
 
 
-    public EnemyFindState(Transform lastKnownLocation, IMove move, Transform entity)
+
+    public EnemyFindState(Vector3 lastKnownLocation, IMove move, Transform entity)
     {
         _lastKnownLocation = lastKnownLocation;
         _move = move;
@@ -21,18 +22,24 @@ public class EnemyFindState : State<StateEnum>
     public override void Execute()
     {
         base.Execute();
-        //Debug.Log(Vector3.Distance(_entity.position, _lastKnownLocation.position));
-        //Debug.Log(_waitTime);
-        if (Vector3.Distance(_entity.position, _lastKnownLocation.position) <= 5f)
+        Debug.Log(Vector3.Distance(_entity.position, _lastKnownLocation));
+        if (Vector3.Distance(_entity.position, _lastKnownLocation) <= 8f)
         {
-          _waitTime -= Time.deltaTime;
+            _move.Move(Vector3.zero);
+            _move.Look(_lastKnownLocation);
+            _waitTime -= Time.deltaTime;
         }
-        if(_waitTime < 0) { OnwaitOver(); } 
+        if(_waitTime < 0) 
+        {
+            OnwaitOver();
+            _waitTime = 10;
+        } 
     }
     public override void Enter()
     {
         base.Enter();
+        //if(_waitTime < 0) { _waitTime = 10f; }
         Debug.Log("FIND FIND FIND");
-        _move.Move(_lastKnownLocation.position);
+        _move.Move((_lastKnownLocation - _entity.position).normalized);
     }
 }

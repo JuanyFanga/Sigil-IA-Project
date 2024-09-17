@@ -26,4 +26,9 @@ public class Entity : MonoBehaviour, IMove
         Vector3 dir = target.position - transform.position;
         Look(dir);
     }
+
+    public void Velocity(Vector3 dir)
+    {
+        _rb.velocity = dir;
+    }
 }

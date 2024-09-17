@@ -20,7 +20,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
     [SerializeField] private bool isAlerted = false;
     [SerializeField] private Transform originPoint;
     private Transform newPatrolPosition;
-    private Transform LastPlayerPosition;
+    private Vector3 LastPlayerPosition;
 
     private void Awake()
     {
@@ -30,7 +30,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
     private void Start()
     {
         newPatrolPosition = patrolPoints[0];
-        LastPlayerPosition = _target.transform;
+        LastPlayerPosition = _target.transform.position;
         InitializeEnemy();
         InitializedFSM();
         InitializedTree();
@@ -62,18 +62,18 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
 
         chase.AddTransition(StateEnum.Find,find);
         chase.AddTransition(StateEnum.Attack,attack);
-        //chase.AddTransition(StateEnum.Patrol,patrol); //esto lo hice para que no siga de largo si me pierde de vista por ahora, cuando funcione todo de CHASE deberia ir a FIND
 
         find.AddTransition(StateEnum.Chase,chase);
-        find.AddTransition(StateEnum.Attack,attack);
-        find.AddTransition(StateEnum.Idle, idle);
         find.AddTransition(StateEnum.Patrol, patrol);
 
         attack.AddTransition(StateEnum.Chase,chase);
+        attack.AddTransition(StateEnum.Idle, idle);
+        attack.AddTransition(StateEnum.Patrol, patrol);
+        attack.AddTransition(StateEnum.Find, find);
 
         patrol.OnArrived += IndiceController;
         find.OnwaitOver += WaitisOver;
-
+        chase.OnEnd += OnEndofChase;
 
         fsm = new FSM<StateEnum>(idle);
     }
@@ -112,11 +112,9 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
 
     private bool InView()
     {
-        //Debug.Log($"Enemy is trying to see youuu");
         if(_los.CheckRange(_target.transform) && _los.CheckAngle(_target.transform) && _los.CheckView(_target.transform)) 
         {
-            LastPlayerPosition = _target.transform;
-            Debug.Log(LastPlayerPosition.position);
+            LastPlayerPosition = _target.transform.position;
             return true;
         }
         else { return false; }
@@ -124,8 +122,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
 
     private bool InRange()
     {
-        //Debug.Log($"The distance is: {Vector3.Distance(_target.transform.position, transform.position)}");
-        return Vector3.Distance(_target.transform.position, transform.position) <= 1f;
+        return Vector3.Distance(_target.transform.position, transform.position) <= 3f;
     }
 
     private bool InAlerted() { return isAlerted; }
@@ -138,7 +135,13 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
     }
 
     private void WaitisOver() { IsOverWaitTime = true; }
-    private bool FindOverCheck() { return fsm.PreviousState is EnemySteeringState && IsOverWaitTime == true; }
+    private void OnEndofChase() { LastPlayerPosition = _target.transform.position; }
+    private bool FindOverCheck() 
+    { 
+        if( fsm.PreviousState is EnemySteeringState && IsOverWaitTime == true) {  return true; }
+        if (fsm.PreviousState is EnemyFindState && IsOverWaitTime == true) { return true; }
+        return false;
+    }
 
     private void OnArrivedToPatrol()
     {
@@ -163,6 +166,5 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
     {
         _target.position = lastKnownPosition.position;
         isAlerted = true;
-        //fsm.Transition(StateEnum.Chase)
     }
 }

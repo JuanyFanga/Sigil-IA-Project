@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class EnemyChaseState : State<StateEnum>
 {
     IMove _move;
     Transform _entity;
     Transform _target;
+    public Action OnEnd = delegate{};
     public EnemyChaseState(IMove move, Transform entity, Transform target)
     {
         _move = move;
@@ -25,5 +27,11 @@ public class EnemyChaseState : State<StateEnum>
     {
         base.Enter();
         Debug.Log("CHASE CHASE CHASE");
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        OnEnd();
     }
 }

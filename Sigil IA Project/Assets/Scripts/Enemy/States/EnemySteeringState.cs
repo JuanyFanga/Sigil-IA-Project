@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class EnemySteeringState : State<StateEnum>
 {
     IMove _move;
     ISteering _steering;
+    public Action OnEnd = delegate { };
     public EnemySteeringState(IMove move, ISteering steering)
     {
         _move = move;
@@ -24,5 +26,10 @@ public class EnemySteeringState : State<StateEnum>
     {
         base.Enter();
         Debug.Log("CHASE CHASE CHASE");
+    }
+    public override void Exit()
+    {
+        base.Exit();
+        OnEnd();
     }
 }
