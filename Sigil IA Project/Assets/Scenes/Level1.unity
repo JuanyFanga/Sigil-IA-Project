@@ -10173,10 +10173,6 @@ PrefabInstance:
       propertyPath: safeHouse
       value: 
       objectReference: {fileID: 219523379}
-    - target: {fileID: -4874924911548634624, guid: d28bcaa128ebb09488353d95fe788eb8, type: 3}
-      propertyPath: m_UseGravity
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5395648031685905897, guid: d28bcaa128ebb09488353d95fe788eb8, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -10224,6 +10220,10 @@ PrefabInstance:
     - target: {fileID: 8742528687180652966, guid: d28bcaa128ebb09488353d95fe788eb8, type: 3}
       propertyPath: m_Name
       value: NPC
+      objectReference: {fileID: 0}
+    - target: {fileID: 8742528687180652966, guid: d28bcaa128ebb09488353d95fe788eb8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d28bcaa128ebb09488353d95fe788eb8, type: 3}
@@ -14232,7 +14232,7 @@ MonoBehaviour:
   - {fileID: 1777884523}
   - {fileID: 1756405130}
   _playerTransform: {fileID: 1171680251}
-  _civilEnemy: {fileID: 1839677550}
+  _civilEnemy: {fileID: 8742528687180652966, guid: d28bcaa128ebb09488353d95fe788eb8, type: 3}
   enemyCount: 10
 --- !u!4 &1553032277
 Transform:
@@ -16833,11 +16833,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.6140441, y: 2.623557, z: 0.29345813}
   m_Center: {x: -0.0000009536743, y: 1.3109593, z: 0.0031333272}
---- !u!1 &1839677550 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8742528687180652966, guid: d28bcaa128ebb09488353d95fe788eb8, type: 3}
-  m_PrefabInstance: {fileID: 1111573374}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1846082793
 GameObject:
   m_ObjectHideFlags: 0
