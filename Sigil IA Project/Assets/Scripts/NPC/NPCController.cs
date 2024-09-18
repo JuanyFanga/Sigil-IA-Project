@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class NPCController : MonoBehaviour
@@ -25,9 +26,10 @@ public class NPCController : MonoBehaviour
         {
             safeHouse = LevelManager.Instance.SafeZoneTransform;
             target = LevelManager.Instance.PlayerRb;
-            InitializedFSM();
-            InitializedTree();
         }
+
+        InitializedFSM();
+        InitializedTree();
     }
 
     private void InitializedFSM()
@@ -91,6 +93,11 @@ public class NPCController : MonoBehaviour
     {
         fsm.OnUpdate();
         root.Execute();
+
+        if (Vector3.Distance(safeHouse.position, transform.position) <= 0.5)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)

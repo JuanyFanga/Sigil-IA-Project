@@ -18,6 +18,8 @@ public class EnemyAttackState : State<StateEnum>
     public override void Execute()
     {
         base.Execute();
+
+        //Hacer que pase un tiempo y después cargar la escena de derrota
         SceneManager.LoadScene("DefeatScreen");
     }
 }

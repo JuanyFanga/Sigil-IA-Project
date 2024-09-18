@@ -59,6 +59,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
 
         patrol.AddTransition(StateEnum.Idle,idle);
         patrol.AddTransition(StateEnum.Chase,chase);
+        patrol.AddTransition(StateEnum.Find,find);
 
         chase.AddTransition(StateEnum.Find,find);
         chase.AddTransition(StateEnum.Attack,attack);
@@ -97,14 +98,14 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
 
         var qIsInRange = new QuestionTree(InRange, attack, chase);
         // Lo tengo en rango de ataque? - Si(Ataca) - No(Persigue)
+        
+        var qIsAlerted = new QuestionTree(IsAlerted, find , qIsChase);
+        // Esta alertado?
 
-        var qInView = new QuestionTree(InView, qIsInRange, qIsChase);
+        var qInView = new QuestionTree(InView, qIsInRange, qIsAlerted);
         // Lo estoy viendo? - Si(Se fija si esta a alcance de ataque) - No(Se fija si lo estaba persiguiendo)
 
-        var qIsAlerted = new QuestionTree(IsAlerted, find , qInView); 
-        // Esta alertado?
-        
-        var qIsExist = new QuestionTree(() => _target != null, qIsAlerted, idle); 
+        var qIsExist = new QuestionTree(() => _target != null, qInView, idle); 
         // existe el target? - Si(Se fija si lo ve) - No(Se fija si es patrullante)
 
         root = qIsExist;
@@ -134,7 +135,12 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         return false;
     }
 
-    private void WaitisOver() { IsOverWaitTime = true; }
+    private void WaitisOver() 
+    { 
+        IsOverWaitTime = true;
+        isAlerted = false;
+    }
+
     private void OnEndofChase() { LastPlayerPosition = _target.transform.position; }
     private bool FindOverCheck() 
     { 

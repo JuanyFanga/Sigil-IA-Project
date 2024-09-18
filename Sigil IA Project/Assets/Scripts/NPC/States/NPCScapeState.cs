@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using Unity.VisualScripting.FullSerializer;
 using Unity.VisualScripting;
+using System.Collections.Generic;
 
 public class NPCScapeState : State<StateEnum>
 {
@@ -22,31 +23,27 @@ public class NPCScapeState : State<StateEnum>
     {
         base.Execute();
         Vector3 dir = _steering.GetDir();
-        Collider[] enemies = Physics.OverlapSphere(_entityPos.position, _sphereRadius);
-        foreach (IViolentEnemy enemyCollider in enemies)
-        {
-            Debug.Log("Intento de alertar");
-            //IViolentEnemy enemy = enemyCollider.GetComponent<IViolentEnemy>;
-            //if (enemy != null)
-            //{
-            enemyCollider.KnowingLastPosition(_entityPos);
-            //}
-        }
         _move.Move(dir.normalized);
     }
     public override void Enter()
     {
         base.Enter();
         Debug.Log("Entro al estado de Escape");
+        
         Collider[] enemies = Physics.OverlapSphere(_entityPos.position, _sphereRadius);
-        foreach (IViolentEnemy enemyCollider in enemies)
+
+        //Debug.Log($"Los enemigos collideados fueron {enemies}");
+
+        foreach (Collider enemyCollider in enemies)
         {
-            Debug.Log("Intento de alertar");
+            IViolentEnemy enemy = enemyCollider.GetComponent<IViolentEnemy>();
+
             //IViolentEnemy enemy = enemyCollider.GetComponent<IViolentEnemy>;
-            //if (enemy != null)
-            //{
-            enemyCollider.KnowingLastPosition(_entityPos);
-            //}
+            if (enemy != null)
+            {
+                Debug.Log($"Los enemigos collideados fueron {enemyCollider.name}");
+                enemy.KnowingLastPosition(_entityPos);
+            }
         }
         OnScape();
     }
