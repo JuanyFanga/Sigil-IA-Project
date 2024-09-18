@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class YoSoyViolento : MonoBehaviour, IViolentEnemy
 {
-    public void KnowingLastPosition(Transform lastKnownPosition)
+    public void KnowingLastPosition()
     {
     }
 }

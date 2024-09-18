@@ -52,7 +52,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         var idle = new EnemyIdleState();
         var patrol = new EnemyPatrolState(entityMove, new Seek(newPatrolPosition, transform), transform, newPatrolPosition);
         var chase = new EnemySteeringState(entityMove,new Pursuit(transform, _target, timePrediction));
-        var find = new EnemyFindState(LastPlayerPosition, entityMove, transform,new Seek(LastPPos,transform));
+        var find = new EnemyFindState(LastPlayerPosition, entityMove, transform,new Seek(LastPPos, transform));
         var attack = new EnemyAttackState(entityAttack);
 
 
@@ -133,9 +133,15 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
 
     private bool PreviousState()
     {
-        if(fsm.currentState is EnemySteeringState && !InView()) { return true; }
-        if(fsm.PreviousState is EnemySteeringState && !InView()) { return true; }
-        return false;
+        if((fsm.PreviousState is EnemySteeringState || fsm.currentState is EnemySteeringState) && !InView()) 
+        { 
+            return true; 
+        }
+
+        else
+        {
+            return false;
+        }
     }
 
     private void WaitisOver() 
@@ -175,10 +181,10 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         root.Execute();
     }
 
-    public void KnowingLastPosition(Transform lastKnownPosition)
+    public void KnowingLastPosition()
     {
-        Debug.Log("Enemy Alerted");
-        LastPlayerPosition = lastKnownPosition.position;
+        LastPlayerPosition = _target.transform.position;
+        LastPPos.position = LastPlayerPosition;
         isAlerted = true;
     }
 }

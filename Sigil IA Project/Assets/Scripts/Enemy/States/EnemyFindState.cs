@@ -24,28 +24,36 @@ public class EnemyFindState : State<StateEnum>
     public override void Execute()
     {
         base.Execute();
-        Debug.Log(_waitTime);
-        if (Vector3.Distance(_entity.position, _lastKnownLocation) <= 1f)
-        {
-            //_move.Move(Vector3.zero);
-            _move.Look(_lastKnownLocation);
-            _waitTime -= Time.deltaTime;
-        }
-        else
-        {
-            Vector3 dir = _steering.GetDir();
-            _move.Move(dir.normalized);
-        }
-        if(_waitTime <= 0.9f) 
+
+        if (_waitTime <= 0f)
         {
             OnwaitOver();
-        } 
+        }
+
+        else
+        {
+            if (Vector3.Distance(_entity.position, _lastKnownLocation) <= 4f)
+            {
+                Debug.Log("Close to last position!!");
+                _move.Move(Vector3.zero);
+                _move.Velocity(Vector3.zero);
+                _move.Look(_lastKnownLocation);
+                _waitTime -= Time.deltaTime;
+            }
+
+            else
+            {
+                Vector3 dir = _steering.GetDir();
+                _move.Move(dir.normalized);
+            }
+        }
     }
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("FIND FIND FIND");
+        //Debug.Log("FIND FIND FIND");
         _waitTime = 5f;
+        Debug.Log(_waitTime);
     }
 
     public override void Exit()

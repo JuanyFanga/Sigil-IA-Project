@@ -38,11 +38,10 @@ public class NPCScapeState : State<StateEnum>
         {
             IViolentEnemy enemy = enemyCollider.GetComponent<IViolentEnemy>();
 
-            //IViolentEnemy enemy = enemyCollider.GetComponent<IViolentEnemy>;
             if (enemy != null)
             {
-                Debug.Log($"Los enemigos collideados fueron {enemyCollider.name}");
-                enemy.KnowingLastPosition(_entityPos);
+                //Debug.Log($"La posición del NPC era {_entityPos.position}");
+                enemy.KnowingLastPosition();
             }
         }
         OnScape();

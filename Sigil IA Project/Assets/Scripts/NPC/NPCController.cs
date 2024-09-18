@@ -108,7 +108,8 @@ public class NPCController : MonoBehaviour
         transform.rotation = Quaternion.LookRotation((collision.transform.position - transform.position).normalized);
         if (collision.gameObject.layer == 3)
         {
-            fsm.Transition(StateEnum.Scape);
+            //fsm.Transition(StateEnum.Scape);
+            InView();
         }
     }
 }
