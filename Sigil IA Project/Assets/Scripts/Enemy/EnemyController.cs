@@ -32,8 +32,6 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
     private void Start()
     {
         newPatrolPosition = patrolPoints[0];
-        //LastPlayerPosition = _target.transform.position;
-        //LastPPos.position = LastPlayerPosition;
         
         InitializeEnemy();
         InitializedFSM();
@@ -119,12 +117,13 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
     {
         if(_los.CheckRange(_target.transform) && _los.CheckAngle(_target.transform) && _los.CheckView(_target.transform)) 
         {
-            //LastPlayerPosition = _target.transform.position;
-            //_lastPlayerPos.position = _target.transform.position;
-            //Debug.Log($"Last player pos is: {_lastPlayerPos.position}");
             return true;
         }
-        else { return false; }
+
+        else 
+        { 
+            return false; 
+        }
     }
 
     private bool InRange()
@@ -155,8 +154,6 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
 
     private void OnEndofChase() 
     {
-        //LastPlayerPosition = _target.transform.position;
-        //_lastPlayerPos.position = _target.transform.position;
         IsOverWaitTime = false;
     }
     private bool FindOverCheck() 
@@ -183,15 +180,10 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
     {
         fsm.OnUpdate();
         root.Execute();
-
-        //Debug.Log($"Target position is: {_target.transform.position}");
-        //Debug.Log($"Target position is: {_lastPlayerPos.transform.position}");
     }
 
     public void KnowingLastPosition()
     {
-        //LastPlayerPosition = _target.transform.position;
-        //_lastPlayerPos.position = _target.transform.position;
         isAlerted = true;
     }
 }

@@ -33,9 +33,8 @@ public class EnemyFindState : State<StateEnum>
 
         else
         {
-            if (Vector3.Distance(_entity.position, _lastKnowLocation) <= 15f)
+            if (Vector3.Distance(_entity.position, _lastKnowLocation) <= 5f)
             {
-                Debug.Log("Close to last position!!");
                 _move.Move(Vector3.zero);
                 _move.Velocity(Vector3.zero);
                 _move.Look(_lastKnowLocation);
@@ -48,14 +47,12 @@ public class EnemyFindState : State<StateEnum>
                 _move.Move(dir.normalized);
             }
         }
-        
-        //Debug.Log($"Distancia entre el enemigo y el Last point es:{Vector3.Distance(_entity.position, _lastKnownLocation)} ");
 
     }
     public override void Enter()
     {
         base.Enter();
-        //Debug.Log("FIND FIND FIND");
+        Debug.Log("Entró al estado de FIND");
         _waitTime = 5f;
         _lastKnowLocation = _lastKnownTransform.position;
     }

@@ -25,7 +25,7 @@ public class EnemySteeringState : State<StateEnum>
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("CHASE CHASE CHASE");
+        Debug.Log("Entró al estado de CHASE");
     }
     public override void Exit()
     {
