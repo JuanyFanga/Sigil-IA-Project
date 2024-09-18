@@ -28,11 +28,10 @@ public class NPCScapeState : State<StateEnum>
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("Entro al estado de Escape");
+
+        Debug.Log("Entro al estado de ESCAPE");
         
         Collider[] enemies = Physics.OverlapSphere(_entityPos.position, _sphereRadius);
-
-        //Debug.Log($"Los enemigos collideados fueron {enemies}");
 
         foreach (Collider enemyCollider in enemies)
         {
@@ -40,7 +39,6 @@ public class NPCScapeState : State<StateEnum>
 
             if (enemy != null)
             {
-                //Debug.Log($"La posición del NPC era {_entityPos.position}");
                 enemy.KnowingLastPosition();
             }
         }

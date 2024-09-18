@@ -22,7 +22,6 @@ public class CameraManager : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Entrooo");
             SetCameraPosition();
         }
     }
