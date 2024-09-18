@@ -5,9 +5,10 @@ using UnityEngine;
 public class LevelEnding : MonoBehaviour
 {
     [SerializeField] private string nextLevelName;
-    private void OnCollisionEnter(Collision collision)
+
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.layer == 3)
+        if (other.gameObject.layer == 3)
         {
             LoadLevel.LoadSceneByName(nextLevelName);
         }
