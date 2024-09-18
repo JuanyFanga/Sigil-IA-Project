@@ -22,7 +22,6 @@ public class EnemyFindState : State<StateEnum>
     public override void Execute()
     {
         base.Execute();
-        Debug.Log(Vector3.Distance(_entity.position, _lastKnownLocation));
         if (Vector3.Distance(_entity.position, _lastKnownLocation) <= 8f)
         {
             _move.Move(Vector3.zero);

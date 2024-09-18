@@ -101,10 +101,10 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         var qInView = new QuestionTree(InView, qIsInRange, qIsChase);
         // Lo estoy viendo? - Si(Se fija si esta a alcance de ataque) - No(Se fija si lo estaba persiguiendo)
 
-        //var qIsAlerted = new QuestionTree(InAlerted, chase , idle); 
+        var qIsAlerted = new QuestionTree(IsAlerted, find , qInView); 
         // Esta alertado?
         
-        var qIsExist = new QuestionTree(() => _target != null, qInView, idle); 
+        var qIsExist = new QuestionTree(() => _target != null, qIsAlerted, idle); 
         // existe el target? - Si(Se fija si lo ve) - No(Se fija si es patrullante)
 
         root = qIsExist;
@@ -125,7 +125,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         return Vector3.Distance(_target.transform.position, transform.position) <= 3f;
     }
 
-    private bool InAlerted() { return isAlerted; }
+    private bool IsAlerted() { return isAlerted; }
 
     private bool PreviousState()
     {
@@ -164,7 +164,8 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
 
     public void KnowingLastPosition(Transform lastKnownPosition)
     {
-        _target.position = lastKnownPosition.position;
+        Debug.Log("Enemy Alerted");
+        LastPlayerPosition = lastKnownPosition.position;
         isAlerted = true;
     }
 }
