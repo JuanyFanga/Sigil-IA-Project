@@ -21,6 +21,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
     [SerializeField] private Transform originPoint;
     private Transform newPatrolPosition;
     private Vector3 LastPlayerPosition;
+    [SerializeField] private Transform LastPPos;
 
     private void Awake()
     {
@@ -31,6 +32,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
     {
         newPatrolPosition = patrolPoints[0];
         LastPlayerPosition = _target.transform.position;
+        LastPPos.position = LastPlayerPosition;
         InitializeEnemy();
         InitializedFSM();
         InitializedTree();
@@ -50,7 +52,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         var idle = new EnemyIdleState();
         var patrol = new EnemyPatrolState(entityMove, new Seek(newPatrolPosition, transform), transform, newPatrolPosition);
         var chase = new EnemySteeringState(entityMove,new Pursuit(transform, _target, timePrediction));
-        var find = new EnemyFindState(LastPlayerPosition, entityMove, transform);
+        var find = new EnemyFindState(LastPlayerPosition, entityMove, transform,new Seek(LastPPos,transform));
         var attack = new EnemyAttackState(entityAttack);
 
 
@@ -116,6 +118,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         if(_los.CheckRange(_target.transform) && _los.CheckAngle(_target.transform) && _los.CheckView(_target.transform)) 
         {
             LastPlayerPosition = _target.transform.position;
+            LastPPos.position = LastPlayerPosition;
             return true;
         }
         else { return false; }
@@ -141,7 +144,11 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         isAlerted = false;
     }
 
-    private void OnEndofChase() { LastPlayerPosition = _target.transform.position; }
+    private void OnEndofChase() 
+    { 
+        LastPlayerPosition = _target.transform.position;
+        IsOverWaitTime = false;
+    }
     private bool FindOverCheck() 
     { 
         if( fsm.PreviousState is EnemySteeringState && IsOverWaitTime == true) {  return true; }
