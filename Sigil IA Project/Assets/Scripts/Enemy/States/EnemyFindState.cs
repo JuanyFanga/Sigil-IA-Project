@@ -25,9 +25,9 @@ public class EnemyFindState : State<StateEnum>
     {
         base.Execute();
         Debug.Log(_waitTime);
-        if (Vector3.Distance(_entity.position, _lastKnownLocation) <= 8f)
+        if (Vector3.Distance(_entity.position, _lastKnownLocation) <= 1f)
         {
-            _move.Move(Vector3.zero);
+            //_move.Move(Vector3.zero);
             _move.Look(_lastKnownLocation);
             _waitTime -= Time.deltaTime;
         }

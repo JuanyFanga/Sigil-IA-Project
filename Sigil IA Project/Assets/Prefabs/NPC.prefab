@@ -2208,10 +2208,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bef455fb8d64d84fa20d7b9eb9ccb54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
-  radius: 5
-  angle: 50
-  personalArea: 5
+  speed: 3
+  radius: 2
+  angle: 200
+  personalArea: 1
   farAwayDistanceFromPlayer: 10
   obsMask:
     serializedVersion: 2
@@ -2233,6 +2233,7 @@ MonoBehaviour:
   timePrediction: 10
   maxFarDistance: 10
   safeHouse: {fileID: 0}
+  callingSphereRadius: 100
 --- !u!114 &366699712954312391
 MonoBehaviour:
   m_ObjectHideFlags: 0

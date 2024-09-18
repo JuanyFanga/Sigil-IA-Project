@@ -126,7 +126,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
 
     private bool InRange()
     {
-        return Vector3.Distance(_target.transform.position, transform.position) <= 3f;
+        return Vector3.Distance(_target.transform.position, transform.position) <= 2f;
     }
 
     private bool IsAlerted() { return isAlerted; }
