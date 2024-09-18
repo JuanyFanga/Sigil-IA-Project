@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
     {
         _fsm = new FSM<StateEnum>();
         var idle = new PlayerIdleState<StateEnum>(_fsm, StateEnum.Move, _move);
-        var move = new PlayerMoveState(_fsm, _move);
+        var move = new PlayerMoveState(_fsm, _move, Camera.main.transform);
 
         idle.AddTransition(StateEnum.Move, move);
         move.AddTransition(StateEnum.Idle, idle);
