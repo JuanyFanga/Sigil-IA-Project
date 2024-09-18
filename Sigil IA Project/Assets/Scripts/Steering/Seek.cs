@@ -13,7 +13,6 @@ public class Seek : ISteering
         _entity = entity;
     }
 
-
     public Vector3 GetDir()
     {
         // B -A

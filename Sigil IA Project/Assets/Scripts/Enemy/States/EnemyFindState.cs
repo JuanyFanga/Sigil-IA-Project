@@ -5,7 +5,8 @@ using System;
 using UnityEngine.UIElements;
 public class EnemyFindState : State<StateEnum>
 {
-    private Vector3 _lastKnownLocation;
+    private Transform _lastKnownTransform;
+    private Vector3 _lastKnowLocation;
     private IMove _move;
     private ISteering _steering;
     private Transform _entity;
@@ -14,9 +15,9 @@ public class EnemyFindState : State<StateEnum>
 
 
 
-    public EnemyFindState(Vector3 lastKnownLocation, IMove move, Transform entity, ISteering steering)
+    public EnemyFindState(Transform lastKnownLocation, IMove move, Transform entity, ISteering steering)
     {
-        _lastKnownLocation = lastKnownLocation;
+        _lastKnownTransform = lastKnownLocation;
         _move = move;
         _entity = entity;
         _steering = steering;
@@ -24,7 +25,7 @@ public class EnemyFindState : State<StateEnum>
     public override void Execute()
     {
         base.Execute();
-
+        Debug.Log(_lastKnowLocation);
         if (_waitTime <= 0f)
         {
             OnwaitOver();
@@ -32,12 +33,12 @@ public class EnemyFindState : State<StateEnum>
 
         else
         {
-            if (Vector3.Distance(_entity.position, _lastKnownLocation) <= 4f)
+            if (Vector3.Distance(_entity.position, _lastKnowLocation) <= 15f)
             {
                 Debug.Log("Close to last position!!");
                 _move.Move(Vector3.zero);
                 _move.Velocity(Vector3.zero);
-                _move.Look(_lastKnownLocation);
+                _move.Look(_lastKnowLocation);
                 _waitTime -= Time.deltaTime;
             }
 
@@ -47,13 +48,16 @@ public class EnemyFindState : State<StateEnum>
                 _move.Move(dir.normalized);
             }
         }
+        
+        //Debug.Log($"Distancia entre el enemigo y el Last point es:{Vector3.Distance(_entity.position, _lastKnownLocation)} ");
+
     }
     public override void Enter()
     {
         base.Enter();
         //Debug.Log("FIND FIND FIND");
         _waitTime = 5f;
-        Debug.Log(_waitTime);
+        _lastKnowLocation = _lastKnownTransform.position;
     }
 
     public override void Exit()

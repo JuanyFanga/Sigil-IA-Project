@@ -21,18 +21,20 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
     [SerializeField] private Transform originPoint;
     private Transform newPatrolPosition;
     private Vector3 LastPlayerPosition;
-    [SerializeField] private Transform LastPPos;
+    private Transform _lastPlayerPos;
 
     private void Awake()
     {
+        _lastPlayerPos = _target.transform;
         _los = GetComponentInChildren<LineOfSight>();
     }
 
     private void Start()
     {
         newPatrolPosition = patrolPoints[0];
-        LastPlayerPosition = _target.transform.position;
-        LastPPos.position = LastPlayerPosition;
+        //LastPlayerPosition = _target.transform.position;
+        //LastPPos.position = LastPlayerPosition;
+        
         InitializeEnemy();
         InitializedFSM();
         InitializedTree();
@@ -52,7 +54,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         var idle = new EnemyIdleState();
         var patrol = new EnemyPatrolState(entityMove, new Seek(newPatrolPosition, transform), transform, newPatrolPosition);
         var chase = new EnemySteeringState(entityMove,new Pursuit(transform, _target, timePrediction));
-        var find = new EnemyFindState(LastPlayerPosition, entityMove, transform,new Seek(LastPPos, transform));
+        var find = new EnemyFindState(_lastPlayerPos, entityMove, transform,new Seek(_lastPlayerPos, transform));
         var attack = new EnemyAttackState(entityAttack);
 
 
@@ -117,8 +119,9 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
     {
         if(_los.CheckRange(_target.transform) && _los.CheckAngle(_target.transform) && _los.CheckView(_target.transform)) 
         {
-            LastPlayerPosition = _target.transform.position;
-            LastPPos.position = LastPlayerPosition;
+            //LastPlayerPosition = _target.transform.position;
+            //_lastPlayerPos.position = _target.transform.position;
+            //Debug.Log($"Last player pos is: {_lastPlayerPos.position}");
             return true;
         }
         else { return false; }
@@ -151,8 +154,9 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
     }
 
     private void OnEndofChase() 
-    { 
-        LastPlayerPosition = _target.transform.position;
+    {
+        //LastPlayerPosition = _target.transform.position;
+        //_lastPlayerPos.position = _target.transform.position;
         IsOverWaitTime = false;
     }
     private bool FindOverCheck() 
@@ -179,12 +183,15 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
     {
         fsm.OnUpdate();
         root.Execute();
+
+        //Debug.Log($"Target position is: {_target.transform.position}");
+        //Debug.Log($"Target position is: {_lastPlayerPos.transform.position}");
     }
 
     public void KnowingLastPosition()
     {
-        LastPlayerPosition = _target.transform.position;
-        LastPPos.position = LastPlayerPosition;
+        //LastPlayerPosition = _target.transform.position;
+        //_lastPlayerPos.position = _target.transform.position;
         isAlerted = true;
     }
 }
