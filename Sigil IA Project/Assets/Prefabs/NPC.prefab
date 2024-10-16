@@ -2228,7 +2228,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 879b0af7de256e64e9aed465254dbb57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
+  target: {fileID: 408646543124867677, guid: 96f5ce20348387a4b833db3e109038e2, type: 3}
   los: {fileID: 7579230383583942709}
   timePrediction: 10
   maxFarDistance: 10

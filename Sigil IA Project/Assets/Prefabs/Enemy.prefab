@@ -185,7 +185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ceac9a297a5a0ab4bb573f3fe7102291, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _target: {fileID: 0}
+  _target: {fileID: 408646543124867677, guid: 96f5ce20348387a4b833db3e109038e2, type: 3}
   timePrediction: 0.2
   patrolPoints:
   - {fileID: 0}
@@ -194,7 +194,6 @@ MonoBehaviour:
   patroller: 1
   isAlerted: 0
   originPoint: {fileID: 0}
-  LastPPos: {fileID: 0}
 --- !u!114 &1667084874690617637
 MonoBehaviour:
   m_ObjectHideFlags: 0
