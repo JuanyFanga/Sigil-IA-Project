@@ -15,26 +15,6 @@ public class PlayerMoveState : State<StateEnum>
         _camera = camera;
     }
 
-    ///------ Movimiento dependiente de la camara, como Resident Evil ------
-    //public override void FixedExecute()
-    //{
-    //    var h = Input.GetAxis("Horizontal");
-    //    var v = Input.GetAxis("Vertical");
-    //    Vector3 movement = Vector3.zero;
-    //    movement += Input.GetAxis("Horizontal") * _camera.transform.right;
-    //    movement += Input.GetAxis("Vertical") * _camera.transform.forward;
-
-    //    if (h == 0 && v == 0)
-    //    {
-    //        _fsm.Transition(StateEnum.Idle);
-    //    }
-    //    else
-    //    {
-    //        _move.Move(movement.normalized);
-    //        _move.Look(movement);
-    //    }
-    //}
-
     public override void FixedExecute()
     {
         var h = Input.GetAxis("Horizontal");
