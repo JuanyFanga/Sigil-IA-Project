@@ -10,6 +10,8 @@ public class EnemyModel : Entity
     public float personalArea;
     public LayerMask obsMask;
     ObstacleAvoidance _obs;
+
+    IAttack _attack;
     protected override void Awake()
     {
         base.Awake();
@@ -22,6 +24,11 @@ public class EnemyModel : Entity
         dir.y = 0;
         Look(dir);
         base.Move(dir);
+    }
+
+    public void Attack()
+    {
+
     }
 
     private void OnDrawGizmosSelected()

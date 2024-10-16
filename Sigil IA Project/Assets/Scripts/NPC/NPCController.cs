@@ -16,9 +16,6 @@ public class NPCController : MonoBehaviour
 
     //Bools
     private bool alreadyScaped = false;
-    private bool isSoClose = false;
-
-
 
     private void Start()
     {
@@ -39,11 +36,13 @@ public class NPCController : MonoBehaviour
         var idle = new NPCIdleState();
         var scape = new NPCScapeState(entityMove, new Evade(transform, target, timePrediction), transform, callingSphereRadius);
         var goHome = new NPCGoingHomeState(entityMove, transform, new Seek(safeHouse, transform));
+        var dead = new NPCDeadState(gameObject);
 
         idle.AddTransition(StateEnum.Scape, scape);
         idle.AddTransition(StateEnum.GoHome, goHome);
         scape.AddTransition(StateEnum.GoHome, goHome);
         goHome.AddTransition(StateEnum.Scape, scape);
+        goHome.AddTransition(StateEnum.Dead, dead);
 
         scape.OnScape += OnScape;
 
@@ -55,8 +54,10 @@ public class NPCController : MonoBehaviour
         var idle = new ActionTree(() => fsm.Transition(StateEnum.Idle));
         var scape = new ActionTree(() => fsm.Transition(StateEnum.Scape));
         var goHome = new ActionTree(() => fsm.Transition(StateEnum.GoHome));
+        var dead = new ActionTree(() => fsm.Transition(StateEnum.Dead));
 
-        var qInProximity = new QuestionTree(InProximity, goHome, scape);
+        var qIsDead = new QuestionTree(IsCloseToHouse, dead, goHome);
+        var qInProximity = new QuestionTree(InProximity, qIsDead, scape);
         var qIsScaping = new QuestionTree(HasAlreadyScaped, qInProximity, idle);
         var qInView = new QuestionTree(InView, scape, qIsScaping);
         var qIsExist = new QuestionTree(() => target != null, qInView, idle);
@@ -84,32 +85,27 @@ public class NPCController : MonoBehaviour
         alreadyScaped = true;
     }
 
-    private bool IsSoClose()
+    private bool IsCloseToHouse()
     {
-        return isSoClose;
+        return Vector3.Distance(safeHouse.position, transform.position) <= 0.5;
     }
 
     private void Update()
     {
         fsm.OnUpdate();
         root.Execute();
-
-        if (Vector3.Distance(safeHouse.position, transform.position) <= 0.5)
-        {
-            Destroy(gameObject);
-        }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         //Se gira hacia quien lo choca, si el LOS funcionase bien deberia detectar que es el player y seguir con el ritmo del arbol
         //pero como eso no pasa tengo que forzar la transicion hacia el escape
+        //transform.rotation = Quaternion.LookRotation((collision.transform.position - transform.position).normalized);
 
-        transform.rotation = Quaternion.LookRotation((collision.transform.position - transform.position).normalized);
         if (collision.gameObject.layer == 3)
         {
-            //fsm.Transition(StateEnum.Scape);
-            InView();
+            fsm.Transition(StateEnum.Scape);
+            //InView();
         }
     }
 }

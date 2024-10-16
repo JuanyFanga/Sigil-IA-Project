@@ -7,5 +7,7 @@ public enum StateEnum
     Patrol,
     Chase,
     Find,
-    Attack
+    Attack,
+    Dead, 
+    Alert
 }
