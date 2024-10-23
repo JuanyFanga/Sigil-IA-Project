@@ -19,4 +19,16 @@ public class Seek : ISteering
 
         return (_target.position - _entity.position).normalized;
     }
+
+    public Transform Target
+    {
+        get
+        {
+            return _target;
+        }
+        set
+        {
+            _target = value;
+        }
+    }
 }
