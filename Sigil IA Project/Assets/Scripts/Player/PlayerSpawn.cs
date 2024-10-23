@@ -24,9 +24,6 @@ public class PlayerSpawn : MonoBehaviour
             float newXvariation = Random.Range(-Xvariation, Xvariation);
             float newZvariation = Random.Range(-Zvariation, Zvariation);
 
-            Debug.Log($"New variation in X is: {newXvariation}");
-            Debug.Log($"New variation in Z is: {newZvariation}");
-
             transform.position = new Vector3(
                 newSpawnPosition.position.x + newXvariation,
                 0,

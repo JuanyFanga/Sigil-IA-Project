@@ -15,7 +15,7 @@ public class NPCModel : Entity
     protected override void Awake()
     {
         base.Awake();
-        _obs = new ObstacleAvoidance(transform, radius, angle, personalArea, obsMask);
+        _obs = new ObstacleAvoidance(transform, radius, angle, obsMask, personalArea);
     }
 
     public override void Move(Vector3 dir)
