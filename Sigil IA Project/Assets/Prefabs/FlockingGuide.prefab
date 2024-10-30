@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 6824406628280366146}
   - component: {fileID: 7465256829221191781}
   - component: {fileID: 661180812144836686}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: DetectionSphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -47,7 +47,10 @@ public class FlockingGuide : Entity
 
     private void IndiceController()
     {
-        if (indice >= patrolPoints.Length - 1) { indice = 0; } else { indice++; }
+        if (indice >= patrolPoints.Length - 1) 
+            { indice = 0; } 
+        else 
+            { indice++; }
         newPatrolPosition.position = patrolPoints[indice].position;
     }
 

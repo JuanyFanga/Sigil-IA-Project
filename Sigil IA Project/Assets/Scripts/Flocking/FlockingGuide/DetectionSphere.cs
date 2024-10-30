@@ -4,21 +4,43 @@ using UnityEngine;
 
 public class DetectionSphere : MonoBehaviour
 {
-    [SerializeField] private Rigidbody _player;
+    //posicionar esfera en el centro de los monks
 
-    private void OnTriggerEnter(Collider other)
+    [SerializeField] GameObject[] monks;
+
+    private void Update()
     {
-        if (other.CompareTag("Player"))
-        {
-            other.GetComponent<PlayerModel>().ModifyDetectable(true);
-        }
+        Vector3 midPoint = CalculateMidPoint();
+        transform.position = midPoint;
     }
 
-    private void OnTriggerExit(Collider other)
+    private Vector3 CalculateMidPoint()
     {
-        if (other.CompareTag("Player"))
+        Vector3 finalPos = Vector3.zero;
+
+        foreach (var item in monks)
         {
-            other.GetComponent<PlayerModel>().ModifyDetectable(false);
+            finalPos += item.transform.position;
         }
+
+        return finalPos / monks.Length;
     }
+
+    //[SerializeField] private Rigidbody _player;
+
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.CompareTag("Player"))
+    //    {
+    //        other.GetComponent<PlayerModel>().ModifyDetectable(true);
+    //    }
+    //}
+
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if (other.CompareTag("Player"))
+    //    {
+    //        other.GetComponent<PlayerModel>().ModifyDetectable(false);
+    //    }
+    //}
 }

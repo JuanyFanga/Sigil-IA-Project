@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 2526065324167540173}
   - component: {fileID: 2212005593504754116}
   - component: {fileID: 1609302922873257237}
+  - component: {fileID: 5738427645040225766}
   - component: {fileID: 1302431852710187178}
   m_Layer: 10
   m_Name: Monk
@@ -104,6 +105,7 @@ MonoBehaviour:
   timePrediction: 1
   angle: 215
   radius: 6
+  flockingGuide: {fileID: 0}
   maskObs:
     serializedVersion: 2
     m_Bits: 64
@@ -210,6 +212,24 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
 --- !u!114 &1609302922873257237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9109836838275029160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63438fa35599b1741a890b40101947be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  multiplier: 1
+  maxPredators: 0
+  rangePredator: 0
+  maskPredator:
+    serializedVersion: 2
+    m_Bits: 0
+--- !u!114 &5738427645040225766
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -9,6 +9,7 @@ public class MonkController : MonoBehaviour
     public float timePrediction;
     public float angle;
     public float radius;
+    [SerializeField] private GameObject flockingGuide;
     public LayerMask maskObs;
     FSM<StateEnum> _fsm;
     Monk _monk;
@@ -23,7 +24,7 @@ public class MonkController : MonoBehaviour
         var obs = new ObstacleAvoidance(_monk.transform, angle, radius, maskObs);
 
         var idle = new MonkIdleState<StateEnum>();
-        var steering = new MonkSteeringState<StateEnum>(_monk, GetComponent<FlockingManager>(), obs);
+        var steering = new MonkSteeringState<StateEnum>(_monk, GetComponent<FlockingManager>(), obs, flockingGuide);
 
         idle.AddTransition(StateEnum.Move, steering);
         steering.AddTransition(StateEnum.Idle, idle);
