@@ -25,7 +25,7 @@ public class EnemyFindState : State<StateEnum>
     public override void Execute()
     {
         base.Execute();
-        Debug.Log(_lastKnowLocation);
+        //Debug.Log(_lastKnowLocation);
         if (_waitTime <= 0f)
         {
             OnwaitOver();

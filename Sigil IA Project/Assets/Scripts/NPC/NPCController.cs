@@ -11,11 +11,18 @@ public class NPCController : MonoBehaviour
     [SerializeField] private float maxFarDistance;
     [SerializeField] private Transform safeHouse;
     [SerializeField] private float callingSphereRadius;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip screamFX;
     private FSM<StateEnum> fsm;
     private ITreeNode root;
 
     //Bools
     private bool alreadyScaped = false;
+
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     private void Start()
     {
@@ -34,7 +41,7 @@ public class NPCController : MonoBehaviour
         IMove entityMove = GetComponent<IMove>();
 
         var idle = new NPCIdleState();
-        var scape = new NPCScapeState(entityMove, new Evade(transform, target, timePrediction), transform, callingSphereRadius);
+        var scape = new NPCScapeState(entityMove, new Evade(transform, target, timePrediction), transform, callingSphereRadius, audioSource, screamFX);
         var goHome = new NPCGoingHomeState(entityMove, transform, new Seek(safeHouse, transform));
         var dead = new NPCDeadState(gameObject);
 

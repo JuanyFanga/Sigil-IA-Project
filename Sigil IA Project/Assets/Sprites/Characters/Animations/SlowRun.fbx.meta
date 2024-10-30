@@ -56,7 +56,21 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.3106796
+        functionName: IPlayFootSteep.PlayFootStepSound
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 5cfb0fc19c91c954f946cdb612d06384, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.818566
+        functionName: IPlayFootSteep.PlayFootStepSound
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 5cfb0fc19c91c954f946cdb612d06384, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

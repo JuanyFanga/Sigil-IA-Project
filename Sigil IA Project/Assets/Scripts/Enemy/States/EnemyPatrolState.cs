@@ -33,7 +33,7 @@ public class EnemyPatrolState : State<StateEnum>
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("Enemigo entro al estado de patrullajeee");
+        //Debug.Log("Enemigo entro al estado de patrullajeee");
     }
 
 

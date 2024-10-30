@@ -23,10 +23,14 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
     private Vector3 LastPlayerPosition;
     private Transform _lastPlayerPos;
 
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip alertedFX;
+
     private void Awake()
     {
         _lastPlayerPos = _target.transform;
         _los = GetComponentInChildren<LineOfSight>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -51,7 +55,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
 
         var idle = new EnemyIdleState();
         var patrol = new EnemyPatrolState(entityMove, new Seek(newPatrolPosition, transform), transform, newPatrolPosition);
-        var chase = new EnemySteeringState(entityMove,new Pursuit(transform, _target, timePrediction));
+        var chase = new EnemySteeringState(entityMove,new Pursuit(transform, _target, timePrediction), audioSource, alertedFX);
         var find = new EnemyFindState(_lastPlayerPos, entityMove, transform,new Seek(_lastPlayerPos, transform));
         var attack = new EnemyAttackState(entityAttack);
 
@@ -131,7 +135,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         return Vector3.Distance(_target.transform.position, transform.position) <= 2f;
     }
 
-    private bool IsAlerted() { return isAlerted; }
+    private bool IsAlerted() {  return isAlerted;   }
 
     private bool PreviousState()
     {
