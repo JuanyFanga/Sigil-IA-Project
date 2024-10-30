@@ -11,8 +11,7 @@ public class NPCController : MonoBehaviour
     [SerializeField] private float maxFarDistance;
     [SerializeField] private Transform safeHouse;
     [SerializeField] private float callingSphereRadius;
-    [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioClip screamFX;
+    private NPCView npcView;
     private FSM<StateEnum> fsm;
     private ITreeNode root;
 
@@ -21,7 +20,7 @@ public class NPCController : MonoBehaviour
 
     private void Awake()
     {
-        audioSource = GetComponent<AudioSource>();
+        npcView = GetComponent<NPCView>();
     }
 
     private void Start()
@@ -41,7 +40,7 @@ public class NPCController : MonoBehaviour
         IMove entityMove = GetComponent<IMove>();
 
         var idle = new NPCIdleState();
-        var scape = new NPCScapeState(entityMove, new Evade(transform, target, timePrediction), transform, callingSphereRadius, audioSource, screamFX);
+        var scape = new NPCScapeState(entityMove, new Evade(transform, target, timePrediction), transform, callingSphereRadius, npcView);
         var goHome = new NPCGoingHomeState(entityMove, transform, new Seek(safeHouse, transform));
         var dead = new NPCDeadState(gameObject);
 
@@ -71,7 +70,7 @@ public class NPCController : MonoBehaviour
 
         root = qIsExist;
     }
-    
+
     private bool InView()
     {
         return los.CheckRange(target.transform) && los.CheckAngle(target.transform) && los.CheckView(target.transform) && target.GetComponent<PlayerModel>().IsDetectable == true;
