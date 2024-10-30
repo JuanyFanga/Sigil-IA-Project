@@ -4,13 +4,32 @@ using UnityEngine;
 
 public class PlayerModel : Entity
 {
-    private bool _isDetectable;
+    private bool _isDetectable = true;
 
-
-    //Hacer un getter para que los Enemies puedan acceder a la información del IsDetectable
-
-    public void ModifyDetectable(bool isDetectable)
+    public bool IsDetectable
     {
-        _isDetectable = isDetectable;
+        get { return _isDetectable; }
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("DetectionSphere"))
+        { 
+            _isDetectable = false;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("DetectionSphere"))
+        {
+            _isDetectable = true;
+        }
+    }
+
+    private void Update()
+    {
+        Debug.Log($"Player is detectable is = {IsDetectable}");
+    }
+
 }

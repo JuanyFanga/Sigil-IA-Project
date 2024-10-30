@@ -93,9 +93,9 @@ GameObject:
   - component: {fileID: 6824406628280366146}
   - component: {fileID: 7465256829221191781}
   - component: {fileID: 661180812144836686}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: DetectionSphere
-  m_TagString: Untagged
+  m_TagString: DetectionSphere
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -140,4 +140,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d34b65a51b817f479d97ae0fef73828, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _player: {fileID: 0}
+  monks: []

@@ -74,7 +74,7 @@ public class NPCController : MonoBehaviour
     
     private bool InView()
     {
-        return los.CheckRange(target.transform) && los.CheckAngle(target.transform) && los.CheckView(target.transform);
+        return los.CheckRange(target.transform) && los.CheckAngle(target.transform) && los.CheckView(target.transform) && target.GetComponent<PlayerModel>().IsDetectable == true;
     }
 
     private bool InProximity()
