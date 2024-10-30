@@ -229,6 +229,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   steepFX: {fileID: 8300000, guid: ac45439e0a587ee4b9d22612a12f41b2, type: 3}
+  alertedFX: {fileID: 8300000, guid: 43847c0d988af674ea0b08fa3dbac432, type: 3}
 --- !u!136 &7276635781821187194
 CapsuleCollider:
   m_ObjectHideFlags: 0

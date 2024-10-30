@@ -10,18 +10,16 @@ public class NPCScapeState : State<StateEnum>
     private ISteering _steering;
     private Transform _entityPos;
     private float _sphereRadius;
-    private AudioSource _audioSource;
-    private AudioClip _screamFX;
+    private NPCView _npcView;
     public Action OnScape = delegate { };
 
-    public NPCScapeState(IMove move, ISteering steering, Transform entityPos, float SphereRadius, AudioSource audioSource, AudioClip screamFX)
+    public NPCScapeState(IMove move, ISteering steering, Transform entityPos, float SphereRadius, NPCView npcView)
     {
         _move = move;
         _steering = steering;
         _entityPos = entityPos;
         _sphereRadius = SphereRadius;
-        _audioSource = audioSource;
-        _screamFX = screamFX;
+        _npcView = npcView;
     }
     public override void Execute()
     {
@@ -33,9 +31,7 @@ public class NPCScapeState : State<StateEnum>
     {
         base.Enter();
 
-        Debug.Log("Entro al estado de ESCAPE");
-
-        _audioSource.PlayOneShot(_screamFX);
+        _npcView.PlayScreamSound();
 
         Collider[] enemies = Physics.OverlapSphere(_entityPos.position, _sphereRadius);
 

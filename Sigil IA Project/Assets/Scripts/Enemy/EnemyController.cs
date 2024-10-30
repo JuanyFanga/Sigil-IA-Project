@@ -22,15 +22,13 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
     private Transform newPatrolPosition;
     private Vector3 LastPlayerPosition;
     private Transform _lastPlayerPos;
-
-    [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioClip alertedFX;
+    private EnemyView enemyView;
 
     private void Awake()
     {
         _lastPlayerPos = _target.transform;
         _los = GetComponentInChildren<LineOfSight>();
-        audioSource = GetComponent<AudioSource>();
+        enemyView = GetComponent<EnemyView>();
     }
 
     private void Start()
@@ -55,7 +53,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
 
         var idle = new EnemyIdleState();
         var patrol = new EnemyPatrolState(entityMove, new Seek(newPatrolPosition, transform), transform, newPatrolPosition);
-        var chase = new EnemySteeringState(entityMove,new Pursuit(transform, _target, timePrediction), audioSource, alertedFX);
+        var chase = new EnemySteeringState(entityMove,new Pursuit(transform, _target, timePrediction), enemyView);
         var find = new EnemyFindState(_lastPlayerPos, entityMove, transform,new Seek(_lastPlayerPos, transform));
         var attack = new EnemyAttackState(entityAttack);
 

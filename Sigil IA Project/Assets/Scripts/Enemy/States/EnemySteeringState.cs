@@ -7,15 +7,13 @@ public class EnemySteeringState : State<StateEnum>
 {
     IMove _move;
     ISteering _steering;
-    private AudioSource _audioSource;
-    private AudioClip _alertedFX;
+    private EnemyView _enemyView;
     public Action OnEnd = delegate { };
-    public EnemySteeringState(IMove move, ISteering steering, AudioSource audioSource, AudioClip alertedFX)
+    public EnemySteeringState(IMove move, ISteering steering, EnemyView enemyView)
     {
         _move = move;
         _steering = steering;
-        _audioSource = audioSource;
-        _alertedFX = alertedFX;
+        _enemyView = enemyView;
     }
 
     public override void Execute()
@@ -29,8 +27,8 @@ public class EnemySteeringState : State<StateEnum>
     public override void Enter()
     {
         base.Enter();
+        _enemyView.PlayAlertedSound();
         Debug.Log("Entró al estado de CHASE");
-        _audioSource.PlayOneShot(_alertedFX);
     }
     public override void Exit()
     {

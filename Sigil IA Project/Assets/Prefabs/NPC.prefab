@@ -211,8 +211,6 @@ MonoBehaviour:
   maxFarDistance: 10
   safeHouse: {fileID: 0}
   callingSphereRadius: 15
-  audioSource: {fileID: 0}
-  screamFX: {fileID: 8300000, guid: 8929b8622bf567744be64db0f4d30e0c, type: 3}
 --- !u!114 &366699712954312391
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,6 +224,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   steepFX: {fileID: 8300000, guid: ac45439e0a587ee4b9d22612a12f41b2, type: 3}
+  screamFX: {fileID: 8300000, guid: 8929b8622bf567744be64db0f4d30e0c, type: 3}
 --- !u!82 &7666477344400285196
 AudioSource:
   m_ObjectHideFlags: 0
