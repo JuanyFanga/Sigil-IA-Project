@@ -23,7 +23,7 @@ public class MonkController : MonoBehaviour
         _fsm = new FSM<StateEnum>();
         var obs = new ObstacleAvoidance(_monk.transform, angle, radius, maskObs);
 
-        var idle = new MonkIdleState<StateEnum>();
+        var idle = new GenericIdleState<StateEnum>();
         var steering = new MonkSteeringState<StateEnum>(_monk, GetComponent<FlockingManager>(), obs, flockingGuide);
 
         idle.AddTransition(StateEnum.Move, steering);

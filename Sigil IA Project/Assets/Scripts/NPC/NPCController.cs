@@ -39,7 +39,7 @@ public class NPCController : MonoBehaviour
     {
         IMove entityMove = GetComponent<IMove>();
 
-        var idle = new NPCIdleState();
+        var idle = new GenericIdleState<StateEnum>();
         var scape = new NPCScapeState(entityMove, new Evade(transform, target, timePrediction), transform, callingSphereRadius, npcView);
         var goHome = new NPCGoingHomeState(entityMove, transform, new Seek(safeHouse, transform));
         var dead = new NPCDeadState(gameObject);
