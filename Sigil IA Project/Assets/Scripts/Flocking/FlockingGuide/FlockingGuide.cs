@@ -6,10 +6,10 @@ public class FlockingGuide : Entity
 {
     private FSM<StateEnum> fsm;
     private Transform newPatrolPosition;
-
+    private StatePathfinding<StateEnum> _statePathfinding;
     private ITreeNode root;
     [SerializeField] private Rigidbody _target;
-
+    private Animator _anim;
     private int indice = 0;
     [SerializeField] Transform[] patrolPoints;
 
@@ -23,9 +23,9 @@ public class FlockingGuide : Entity
     void InitializeFSM()
     {
         IMove entityMove = GetComponent<IMove>();
-
+        _statePathfinding = new StatePathfinding<StateEnum>(transform, entityMove, _anim); // cuenta como estado
         var idle = new GenericIdleState<StateEnum>();
-        var patrol = new EnemyPatrolState(entityMove, new Seek(newPatrolPosition, transform), transform, newPatrolPosition);
+        var patrol = new EnemyPatrolState(entityMove, new Seek(newPatrolPosition, transform), transform, newPatrolPosition,_statePathfinding);
 
         idle.AddTransition(StateEnum.Patrol, patrol);
         patrol.AddTransition(StateEnum.Idle, idle);

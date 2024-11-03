@@ -9,32 +9,30 @@ public class EnemyPatrolState : State<StateEnum>
     private ISteering _steering;
     private Transform _entity;
     private Transform _target;
+    private StatePathfinding<StateEnum> _pathfinding;
     public Action OnArrived = delegate { };
-    public EnemyPatrolState(IMove move, ISteering steering, Transform entity, Transform target)
+    public EnemyPatrolState(IMove move, ISteering steering, Transform entity, Transform target,StatePathfinding<StateEnum> _statePathfinding)
     {
         _move = move;
         _steering = steering;
         _entity = entity;
         _target = target;
+        _pathfinding = _statePathfinding;
     }
     public override void Execute()
     {
         base.Execute();
-        Vector3 dir = _steering.GetDir();
-        _move.Move(dir.normalized);
-        //Debug.Log(_target.position);
+        _pathfinding.Execute();
         if (Vector3.Distance(_entity.position, _target.position) <= 0.5f)
         {
-            //Debug.Log(_target.position);
             OnArrived();
+            _pathfinding.SetPathAStarPlusVector(_target.position,_entity.position);
         }
     }
 
     public override void Enter()
     {
         base.Enter();
-        //Debug.Log("Enemigo entro al estado de patrullajeee");
+        _pathfinding.SetPathAStarPlusVector(_target.position,_entity.position);
     }
-
-
 }

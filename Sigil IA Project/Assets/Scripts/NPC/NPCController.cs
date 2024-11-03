@@ -14,6 +14,8 @@ public class NPCController : MonoBehaviour
     private NPCView npcView;
     private FSM<StateEnum> fsm;
     private ITreeNode root;
+    private Animator _anim;
+    private StatePathfinding<StateEnum> _pathfinding;
 
     //Bools
     private bool alreadyScaped = false;
@@ -38,10 +40,11 @@ public class NPCController : MonoBehaviour
     private void InitializedFSM()
     {
         IMove entityMove = GetComponent<IMove>();
-
-        var idle = new GenericIdleState<StateEnum>();
+        
+        _pathfinding = new StatePathfinding<StateEnum>(transform, entityMove, _anim);
+        var idle = new NPCIdleState();
         var scape = new NPCScapeState(entityMove, new Evade(transform, target, timePrediction), transform, callingSphereRadius, npcView);
-        var goHome = new NPCGoingHomeState(entityMove, transform, new Seek(safeHouse, transform));
+        var goHome = new NPCGoingHomeState(entityMove, transform,safeHouse.position,_pathfinding );
         var dead = new NPCDeadState(gameObject);
 
         idle.AddTransition(StateEnum.Scape, scape);

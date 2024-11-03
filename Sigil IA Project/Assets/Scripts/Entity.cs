@@ -31,4 +31,6 @@ public class Entity : MonoBehaviour, IMove
     {
         _rb.velocity = dir;
     }
+    
+    public void SetPosition(Vector3 pos){}
 }

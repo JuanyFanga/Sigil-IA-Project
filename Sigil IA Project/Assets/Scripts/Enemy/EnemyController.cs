@@ -23,6 +23,8 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
     private Vector3 LastPlayerPosition;
     private Transform _lastPlayerPos;
     private EnemyView enemyView;
+    private StatePathfinding<StateEnum> _statePathfinding;
+    private Animator _anim;
 
     private void Awake()
     {
@@ -51,10 +53,11 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         IMove entityMove = GetComponent<IMove>();
         IAttack entityAttack = GetComponent<IAttack>();
 
+        _statePathfinding = new StatePathfinding<StateEnum>(transform, entityMove, _anim); // cuenta como estado
         var idle = new EnemyIdleState<StateEnum>();
-        var patrol = new EnemyPatrolState(entityMove, new Seek(newPatrolPosition, transform), transform, newPatrolPosition);
+        var patrol = new EnemyPatrolState(entityMove, new Seek(newPatrolPosition, transform), transform, newPatrolPosition,_statePathfinding);
         var chase = new EnemySteeringState(entityMove,new Pursuit(transform, _target, timePrediction), enemyView);
-        var find = new EnemyFindState(_lastPlayerPos, entityMove, transform,new Seek(_lastPlayerPos, transform));
+        var find = new EnemyFindState(_lastPlayerPos, entityMove, transform,new Seek(_lastPlayerPos, transform),_statePathfinding);
         var attack = new EnemyAttackState(entityAttack);
 
 

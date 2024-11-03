@@ -10,7 +10,7 @@ public class Flee : ISteering
     //public Flee(Transform entity, Transform target)
     //{
     //    _entity = entity;
-    //    _target = target;
+    //    Target = target;
     //}
 
     //public Vector3 GetDir()
