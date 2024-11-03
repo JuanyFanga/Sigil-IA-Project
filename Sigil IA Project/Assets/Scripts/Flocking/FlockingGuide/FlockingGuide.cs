@@ -25,7 +25,7 @@ public class FlockingGuide : Entity
         IMove entityMove = GetComponent<IMove>();
         _statePathfinding = new StatePathfinding<StateEnum>(transform, entityMove, _anim); // cuenta como estado
         var idle = new GenericIdleState<StateEnum>();
-        var patrol = new EnemyPatrolState(entityMove, new Seek(newPatrolPosition, transform), transform, newPatrolPosition,_statePathfinding);
+        var patrol = new EnemyPatrolState(entityMove, new Seek(newPatrolPosition, transform), transform, patrolPoints,_statePathfinding);
 
         idle.AddTransition(StateEnum.Patrol, patrol);
         patrol.AddTransition(StateEnum.Idle, idle);

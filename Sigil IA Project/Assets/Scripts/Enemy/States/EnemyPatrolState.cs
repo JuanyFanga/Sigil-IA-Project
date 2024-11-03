@@ -8,10 +8,11 @@ public class EnemyPatrolState : State<StateEnum>
     private IMove _move;
     private ISteering _steering;
     private Transform _entity;
-    private Transform _target;
+    private Transform[] _target;
     private StatePathfinding<StateEnum> _pathfinding;
     public Action OnArrived = delegate { };
-    public EnemyPatrolState(IMove move, ISteering steering, Transform entity, Transform target,StatePathfinding<StateEnum> _statePathfinding)
+    private int _index = 0;
+    public EnemyPatrolState(IMove move, ISteering steering, Transform entity, Transform[] target,StatePathfinding<StateEnum> _statePathfinding)
     {
         _move = move;
         _steering = steering;
@@ -23,16 +24,18 @@ public class EnemyPatrolState : State<StateEnum>
     {
         base.Execute();
         _pathfinding.Execute();
-        if (Vector3.Distance(_entity.position, _target.position) <= 0.5f)
+        if (Vector3.Distance(_entity.position, _target[_index].position) <= 1f)
         {
-            OnArrived();
-            _pathfinding.SetPathAStarPlusVector(_target.position,_entity.position);
+            //OnArrived();
+            if(_index < _target.Length - 1){_index++;}else{_index = 0;}
+            _pathfinding.SetPathAStarPlusVector(_target[_index].position,_entity.position);
         }
     }
 
     public override void Enter()
     {
         base.Enter();
-        _pathfinding.SetPathAStarPlusVector(_target.position,_entity.position);
+        _index = 0;
+        _pathfinding.SetPathAStarPlusVector(_target[_index].position,_entity.position);
     }
 }
