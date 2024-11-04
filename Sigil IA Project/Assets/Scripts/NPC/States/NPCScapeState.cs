@@ -13,12 +13,12 @@ public class NPCScapeState : State<StateEnum>
     private NPCView _npcView;
     public Action OnScape = delegate { };
 
-    public NPCScapeState(IMove move, ISteering steering, Transform entityPos, float SphereRadius, NPCView npcView)
+    public NPCScapeState(IMove move, ISteering steering, Transform entityPos, float sphereradius, NPCView npcView)
     {
         _move = move;
         _steering = steering;
         _entityPos = entityPos;
-        _sphereRadius = SphereRadius;
+        _sphereRadius = sphereradius;
         _npcView = npcView;
     }
     public override void Execute()

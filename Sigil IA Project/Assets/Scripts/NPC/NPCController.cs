@@ -44,7 +44,7 @@ public class NPCController : MonoBehaviour
         _pathfinding = new StatePathfinding<StateEnum>(transform, entityMove, _anim);
         var idle = new NPCIdleState();
         var scape = new NPCScapeState(entityMove, new Evade(transform, target, timePrediction), transform, callingSphereRadius, npcView);
-        var goHome = new NPCGoingHomeState(entityMove, transform,safeHouse.position,_pathfinding );
+        var goHome = new NPCGoingHomeState(entityMove, transform,safeHouse.position,_pathfinding,callingSphereRadius );
         var dead = new NPCDeadState(gameObject);
 
         idle.AddTransition(StateEnum.Scape, scape);
