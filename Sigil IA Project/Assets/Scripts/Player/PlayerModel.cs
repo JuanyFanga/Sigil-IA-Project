@@ -29,7 +29,7 @@ public class PlayerModel : Entity
 
     private void Update()
     {
-        Debug.Log($"Player is detectable is = {IsDetectable}");
+        //Debug.Log($"Player is detectable is = {IsDetectable}");
     }
 
 }

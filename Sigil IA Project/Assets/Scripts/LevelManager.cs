@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
@@ -21,5 +22,11 @@ public class LevelManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    public void Defeat()
+    {
+        SceneManager.LoadScene("DefeatScreen");
+        Debug.Log("ME llaman aaaaaa");
     }
 }

@@ -28,7 +28,7 @@ public class EnemyModel : Entity
 
     public void Attack()
     {
-
+        LevelManager.Instance.Defeat();
     }
 
     private void OnDrawGizmosSelected()

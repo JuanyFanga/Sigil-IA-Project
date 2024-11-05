@@ -7,10 +7,18 @@ public class EnemyView : AnimatedMovement, IPlayFootSteep
     [SerializeField] private AudioClip steepFX;
     [SerializeField] private AudioClip alertedFX;
     private AudioSource audioSource;
+
+    private EnemyController enemyController;
     protected override void Awake()
     {
         base.Awake();
+        enemyController = GetComponent<EnemyController>();
         audioSource = GetComponent<AudioSource>();
+    }
+
+    private void Start()
+    {
+        enemyController.OnAttacking += IsAttacking;
     }
 
     public void PlayAlertedSound()
@@ -21,5 +29,10 @@ public class EnemyView : AnimatedMovement, IPlayFootSteep
     void IPlayFootSteep.PlayFootStepSound()
     {
         audioSource.PlayOneShot(steepFX);
+    }
+
+    public void IsAttacking()
+    {
+        _anim.SetTrigger("Attacking");
     }
 }

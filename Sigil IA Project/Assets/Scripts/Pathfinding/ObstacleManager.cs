@@ -61,8 +61,8 @@ public class ObstacleManager : MonoBehaviour
     }
     public bool IsRightPos(Vector3 point)
     {
-        print(point);
-        print(!_obs.ContainsKey(point));
+        //print(point);
+        //print(!_obs.ContainsKey(point));
         return !_obs.ContainsKey(point);
     }
     List<Vector3> GetPointsInCollider(Collider coll, bool skipY = true)

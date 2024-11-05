@@ -34,7 +34,7 @@ public class StatePathfinding<T> : StateFollowPoints<T>
         }
         else
         {
-            Debug.Log("OnMove skipped as direction vector is zero.");
+            //Debug.Log("OnMove skipped as direction vector is zero.");
         }
     }
     protected override void OnStartPath()

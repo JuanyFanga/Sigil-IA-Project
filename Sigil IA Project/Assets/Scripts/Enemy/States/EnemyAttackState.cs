@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using System;
 
 public class EnemyAttackState : State<StateEnum>
 {
     IAttack _attack;
+    public Action OnAttack = delegate { };
     public EnemyAttackState(IAttack attack)
     {
         _attack = attack;
@@ -13,13 +14,11 @@ public class EnemyAttackState : State<StateEnum>
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("Entro al ataque");
+        OnAttack();
+        //Debug.Log("Entro al ataque");
     }
     public override void Execute()
     {
         base.Execute();
-
-        //Hacer que pase un tiempo y después cargar la escena de derrota
-        SceneManager.LoadScene("DefeatScreen");
     }
 }

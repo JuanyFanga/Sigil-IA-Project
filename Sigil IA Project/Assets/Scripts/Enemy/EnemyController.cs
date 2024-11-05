@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using System;
 
 public class EnemyController : MonoBehaviour, IViolentEnemy
 {
@@ -25,6 +26,8 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
     private EnemyView enemyView;
     private StatePathfinding<StateEnum> _statePathfinding;
     private Animator _anim;
+
+    public Action OnAttacking = delegate { };
 
     private void Awake()
     {
@@ -82,6 +85,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         patrol.OnArrived += IndiceController;
         find.OnwaitOver += WaitisOver;
         chase.OnEnd += OnEndofChase;
+        attack.OnAttack += IsAttacking;
 
         fsm = new FSM<StateEnum>(idle);
     }
@@ -181,14 +185,19 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         newPatrolPosition.position = patrolPoints[indice].position;
     }
 
+    public void KnowingLastPosition()
+    {
+        isAlerted = true;
+    }
+
+    public void IsAttacking()
+    {
+        OnAttacking();
+    }
+
     private void Update()
     {
         fsm.OnUpdate();
         root.Execute();
-    }
-
-    public void KnowingLastPosition()
-    {
-        isAlerted = true;
     }
 }

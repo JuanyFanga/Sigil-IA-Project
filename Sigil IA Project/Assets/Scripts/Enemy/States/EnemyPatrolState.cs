@@ -26,7 +26,6 @@ public class EnemyPatrolState : State<StateEnum>
         _pathfinding.Execute();
         if (Vector3.Distance(_entity.position, _target[_index].position) <= 1f)
         {
-            //OnArrived();
             if(_index < _target.Length - 1){_index++;}else{_index = 0;}
             _pathfinding.SetPathAStarPlusVector(_target[_index].position,_entity.position);
         }
