@@ -59,12 +59,6 @@ public class StatePathfinding<T> : StateFollowPoints<T>
         }
         SetWaypoints(path);
     }
-
-    public void Execute()
-    {
-        base.Execute();
-    }
-    
     
     float GetCost(Vector3 parent, Vector3 child)
     {

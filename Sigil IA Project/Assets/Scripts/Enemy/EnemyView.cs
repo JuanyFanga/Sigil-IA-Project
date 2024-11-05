@@ -14,10 +14,6 @@ public class EnemyView : AnimatedMovement, IPlayFootSteep
         base.Awake();
         enemyController = GetComponent<EnemyController>();
         audioSource = GetComponent<AudioSource>();
-    }
-
-    private void Start()
-    {
         enemyController.OnAttacking += IsAttacking;
     }
 

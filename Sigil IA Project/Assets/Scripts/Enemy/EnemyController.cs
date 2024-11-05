@@ -61,7 +61,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         var patrol = new EnemyPatrolState(entityMove, new Seek(newPatrolPosition, transform), transform, patrolPoints,_statePathfinding);
         var chase = new EnemySteeringState(entityMove,new Pursuit(transform, _target, timePrediction), enemyView);
         var find = new EnemyFindState(_lastPlayerPos, entityMove, transform,new Seek(_lastPlayerPos, transform),_statePathfinding);
-        var attack = new EnemyAttackState(entityAttack);
+        var attack = new EnemyAttackState(entityAttack, entityMove, transform);
 
 
         idle.AddTransition(StateEnum.Patrol, patrol);
@@ -77,10 +77,10 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         find.AddTransition(StateEnum.Chase,chase);
         find.AddTransition(StateEnum.Patrol, patrol);
 
-        attack.AddTransition(StateEnum.Chase,chase);
-        attack.AddTransition(StateEnum.Idle, idle);
-        attack.AddTransition(StateEnum.Patrol, patrol);
-        attack.AddTransition(StateEnum.Find, find);
+        //attack.AddTransition(StateEnum.Chase,chase);
+        //attack.AddTransition(StateEnum.Idle, idle);
+        //attack.AddTransition(StateEnum.Patrol, patrol);
+        //attack.AddTransition(StateEnum.Find, find);
 
         patrol.OnArrived += IndiceController;
         find.OnwaitOver += WaitisOver;

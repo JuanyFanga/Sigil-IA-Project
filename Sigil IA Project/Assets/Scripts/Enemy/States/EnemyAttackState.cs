@@ -6,19 +6,25 @@ using System;
 public class EnemyAttackState : State<StateEnum>
 {
     IAttack _attack;
+    IMove _move;
+    Transform _transform;
     public Action OnAttack = delegate { };
-    public EnemyAttackState(IAttack attack)
+    public EnemyAttackState(IAttack attack, IMove move, Transform transform)
     {
         _attack = attack;
+        _move = move;
+        _transform = transform;
     }
     public override void Enter()
     {
         base.Enter();
         OnAttack();
+        //_move.Velocity(new Vector3(0, 0, 0));
         //Debug.Log("Entro al ataque");
     }
     public override void Execute()
     {
         base.Execute();
+        _move.Move(_transform.position.normalized);
     }
 }

@@ -22,14 +22,14 @@ public class PlayerMoveState : State<StateEnum>
 
         Vector3 dir = new Vector3(h, 0, v);
 
-        if (h == 0 && v == 0)
-        {
-            _fsm.Transition(StateEnum.Idle);
-        }
-        else
+        if (h !=0 || v != 0)
         {
             _move.Move(dir.normalized);
             _move.Look(dir);
+        }
+        else
+        {
+            _fsm.Transition(StateEnum.Idle);
         }
     }
 }

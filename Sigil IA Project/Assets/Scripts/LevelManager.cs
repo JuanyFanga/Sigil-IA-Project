@@ -27,6 +27,5 @@ public class LevelManager : MonoBehaviour
     public void Defeat()
     {
         SceneManager.LoadScene("DefeatScreen");
-        Debug.Log("ME llaman aaaaaa");
     }
 }
