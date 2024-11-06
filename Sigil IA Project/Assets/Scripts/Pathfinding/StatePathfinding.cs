@@ -6,24 +6,28 @@ public class StatePathfinding<T> : StateFollowPoints<T>
 {
     
     IMove _move;
-    Animator _anim;
-    public Transform Target;
+    public Vector3 _target;
     private Transform _current;
     
     
-    public StatePathfinding(Transform entity, IMove move, Animator anim, float distanceToPoint = 0.2F) 
+    public StatePathfinding(Transform entity, IMove move,Vector3 target, float distanceToPoint = 0.2F) 
         : base(entity, distanceToPoint)
     {
         _move = move;
-        _anim = anim;
+        _target= target;
     }
-    public StatePathfinding(Transform entity, IMove move, Animator anim, List<Vector3> waypoints, float distanceToPoint = 0.2f)
+    public StatePathfinding(Transform entity, IMove move, List<Vector3> waypoints, float distanceToPoint = 0.2f)
         : base(entity, waypoints, distanceToPoint)
     {
         _move = move;
-        _anim = anim;
     }
-    
+
+    public override void Enter()
+    {
+        base.Enter();
+        Debug.Log("Enter Pathfinding");
+    }
+
     protected override void OnMove(Vector3 dir)
     {
         base.OnMove(dir);
@@ -32,26 +36,17 @@ public class StatePathfinding<T> : StateFollowPoints<T>
             _move.Move(dir);
             _move.Look(dir);
         }
-        else
-        {
-            //Debug.Log("OnMove skipped as direction vector is zero.");
-        }
     }
     protected override void OnStartPath()
     {
         base.OnStartPath();
         _move.SetPosition(_waypoints[0]);
-        //_anim.SetFloat("Vel", 1);
     }
-    protected override void OnFinishPath()
-    {
-        base.OnFinishPath();
-        //_anim.SetFloat("Vel", 0);
-    }
+
     
-    public void SetPathAStarPlusVector(Vector3 posTarget, Vector3 start)
+    public void SetPathAStarPlusVector(Vector3 start)
     {
-        List<Vector3> path = Astar.Run<Vector3>(start,(x)=>IsSatisfies(x,posTarget),GetConnections,GetCost,(y)=>Heuristic(y,posTarget));
+        List<Vector3> path = Astar.Run<Vector3>(start,IsSatisfies,GetConnections,GetCost,Heuristic);
         if (path.Count <= 0)
         {
             Debug.Log("No Path");
@@ -68,10 +63,10 @@ public class StatePathfinding<T> : StateFollowPoints<T>
         return cost;
     }
 
-    float Heuristic(Vector3 node, Vector3 targetPos)
+    float Heuristic(Vector3 node)
     {
         float h = 0;
-        h += Vector3.Distance(node, targetPos);
+        h += Vector3.Distance(node, _target);
         return h;
     }
     Vector3 GetPoint(Vector3 point)
@@ -79,9 +74,9 @@ public class StatePathfinding<T> : StateFollowPoints<T>
         return Vector3Int.RoundToInt(point);
     }
 
-    bool IsSatisfies(Vector3 current, Vector3 targetPos)
+    bool IsSatisfies(Vector3 current)
     {
-        var pointToGoal = GetPoint(targetPos);
+        var pointToGoal = GetPoint(_target);
         return Vector3.Distance(current,pointToGoal) <= 1f;
     }
 

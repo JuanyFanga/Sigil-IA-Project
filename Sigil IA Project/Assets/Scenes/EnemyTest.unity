@@ -693,6 +693,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 8742528687180652966, guid: d28bcaa128ebb09488353d95fe788eb8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8823105411288360988, guid: d28bcaa128ebb09488353d95fe788eb8, type: 3}
       propertyPath: m_Layer
       value: 8
@@ -1330,7 +1334,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8347810504299062617, guid: 7166087c57f18214f9cc1622ff2e3113, type: 3}
       propertyPath: angle
-      value: 200
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 8347810504299062617, guid: 7166087c57f18214f9cc1622ff2e3113, type: 3}
       propertyPath: speed
@@ -1338,11 +1342,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8347810504299062617, guid: 7166087c57f18214f9cc1622ff2e3113, type: 3}
       propertyPath: radius
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8347810504299062617, guid: 7166087c57f18214f9cc1622ff2e3113, type: 3}
       propertyPath: personalArea
-      value: 4
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 9056533917542991136, guid: 7166087c57f18214f9cc1622ff2e3113, type: 3}
       propertyPath: m_Layer

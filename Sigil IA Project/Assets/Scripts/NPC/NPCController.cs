@@ -41,7 +41,7 @@ public class NPCController : MonoBehaviour
     {
         IMove entityMove = GetComponent<IMove>();
         
-        _pathfinding = new StatePathfinding<StateEnum>(transform, entityMove, _anim);
+        _pathfinding = new StatePathfinding<StateEnum>(transform, entityMove,safeHouse.position);
         var idle = new NPCIdleState();
         var scape = new NPCScapeState(entityMove, new Evade(transform, target, timePrediction), transform, callingSphereRadius, npcView);
         var goHome = new NPCGoingHomeState(entityMove, transform,safeHouse.position,_pathfinding,callingSphereRadius );

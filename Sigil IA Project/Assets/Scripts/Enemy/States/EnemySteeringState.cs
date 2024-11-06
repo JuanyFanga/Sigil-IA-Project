@@ -28,7 +28,7 @@ public class EnemySteeringState : State<StateEnum>
     {
         base.Enter();
         _enemyView.PlayAlertedSound();
-        //Debug.Log("Entró al estado de CHASE");
+        Debug.Log("CHASE State");
     }
     public override void Exit()
     {

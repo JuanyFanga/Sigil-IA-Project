@@ -50,22 +50,4 @@ public class Astar : MonoBehaviour
         }
         return new List<T>();
     }
-    public static List<T> CleanPath<T>(List<T> path, Func<T, T, bool> inView)
-    {
-        if (path == null) return path;
-        if (path.Count <= 2) return path;
-        var newPath = new List<T>();
-        newPath.Add(path[0]);
-
-        for (int i = 2; i < path.Count; i++)
-        {
-            var last = newPath[newPath.Count - 1];
-            if (!inView(last, path[i]))
-            {
-                newPath.Add(path[i - 1]);
-            }
-        }
-        newPath.Add(path[path.Count - 1]);
-        return newPath;
-    }
 }

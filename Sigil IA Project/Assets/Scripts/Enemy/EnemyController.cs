@@ -24,7 +24,6 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
     private Vector3 LastPlayerPosition;
     private Transform _lastPlayerPos;
     private EnemyView enemyView;
-    private StatePathfinding<StateEnum> _statePathfinding;
     private Animator _anim;
 
     public Action OnAttacking = delegate { };
@@ -56,11 +55,11 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         IMove entityMove = GetComponent<IMove>();
         IAttack entityAttack = GetComponent<IAttack>();
 
-        _statePathfinding = new StatePathfinding<StateEnum>(transform, entityMove, _anim); // cuenta como estado
+        var pathfinding = new StatePathfinding<StateEnum>(transform, entityMove,patrolPoints[0].position); 
         var idle = new EnemyIdleState<StateEnum>();
-        var patrol = new EnemyPatrolState(entityMove, new Seek(newPatrolPosition, transform), transform, patrolPoints,_statePathfinding);
+        var patrol = new EnemyPatrolState(entityMove, new Seek(newPatrolPosition, transform), transform, patrolPoints);
         var chase = new EnemySteeringState(entityMove,new Pursuit(transform, _target, timePrediction), enemyView);
-        var find = new EnemyFindState(_lastPlayerPos, entityMove, transform,new Seek(_lastPlayerPos, transform),_statePathfinding);
+        var find = new EnemyFindState(_lastPlayerPos, entityMove, transform,new Seek(_lastPlayerPos, transform));
         var attack = new EnemyAttackState(entityAttack, entityMove, transform);
 
 
@@ -70,12 +69,19 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         patrol.AddTransition(StateEnum.Idle,idle);
         patrol.AddTransition(StateEnum.Chase,chase);
         patrol.AddTransition(StateEnum.Find,find);
+        patrol.AddTransition(StateEnum.Path,pathfinding);
 
         chase.AddTransition(StateEnum.Find,find);
         chase.AddTransition(StateEnum.Attack,attack);
+        chase.AddTransition(StateEnum.Path,pathfinding);
 
         find.AddTransition(StateEnum.Chase,chase);
         find.AddTransition(StateEnum.Patrol, patrol);
+        find.AddTransition(StateEnum.Path,pathfinding);
+        
+        pathfinding.AddTransition(StateEnum.Chase, chase);
+        pathfinding.AddTransition(StateEnum.Patrol, patrol);
+        pathfinding.AddTransition(StateEnum.Find, find);
 
         //attack.AddTransition(StateEnum.Chase,chase);
         //attack.AddTransition(StateEnum.Idle, idle);
@@ -97,8 +103,11 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         var chase = new ActionTree(() => fsm.Transition(StateEnum.Chase));
         var find = new ActionTree(() => fsm.Transition(StateEnum.Find));
         var attack = new ActionTree(() => fsm.Transition(StateEnum.Attack));
+        var pathfind = new ActionTree(() => fsm.Transition(StateEnum.Path));
 
 
+        //var qisInSpot = new QuestionTree(checkSpot, pathfind, patrol);
+        
         var qIsPatrol = new QuestionTree(() => patroller, patrol, idle);
         // Soy un Enemigo que patrulla? - Si(Patrulla) -No(Idle)
 
@@ -107,7 +116,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         var qIsChase = new QuestionTree(PreviousState, qIsOverFind, qIsPatrol);
         // Lo estaba persiguiendo? - Si(Busca al PJ) - No(Se fija si es patrullante?)
 
-        var qIsInRange = new QuestionTree(InRange, attack, chase);
+        var qIsInRange = new QuestionTree(InRange, pathfind, chase);
         // Lo tengo en rango de ataque? - Si(Ataca) - No(Persigue)
         
         var qIsAlerted = new QuestionTree(IsAlerted, find , qIsChase);
@@ -200,4 +209,16 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         fsm.OnUpdate();
         root.Execute();
     }
+
+    // private bool checkSpot()
+    // {
+    //     for (int a = 0; a < patrolPoints.Length - 1; a++)
+    //     {
+    //         if (Vector3.Distance(transform.position, patrolPoints[a].position) < 0.3f)
+    //         {
+    //             return true;
+    //         }
+    //     }
+    //     return false;
+    // }
 }

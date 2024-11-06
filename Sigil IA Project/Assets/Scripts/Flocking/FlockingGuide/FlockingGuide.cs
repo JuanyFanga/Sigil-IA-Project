@@ -23,9 +23,9 @@ public class FlockingGuide : Entity
     void InitializeFSM()
     {
         IMove entityMove = GetComponent<IMove>();
-        _statePathfinding = new StatePathfinding<StateEnum>(transform, entityMove, _anim); // cuenta como estado
+        _statePathfinding = new StatePathfinding<StateEnum>(transform, entityMove,newPatrolPosition.position);
         var idle = new GenericIdleState<StateEnum>();
-        var patrol = new EnemyPatrolState(entityMove, new Seek(newPatrolPosition, transform), transform, patrolPoints,_statePathfinding);
+        var patrol = new EnemyPatrolState(entityMove, new Seek(newPatrolPosition, transform), transform, patrolPoints);
 
         idle.AddTransition(StateEnum.Patrol, patrol);
         patrol.AddTransition(StateEnum.Idle, idle);

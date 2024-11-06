@@ -9,5 +9,6 @@ public enum StateEnum
     Find,
     Attack,
     Dead, 
+    Path,
     Alert
 }
