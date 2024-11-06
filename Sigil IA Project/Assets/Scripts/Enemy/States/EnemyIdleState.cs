@@ -4,5 +4,9 @@ using UnityEngine;
 
 public class EnemyIdleState<T> : State<T>
 {
-
+    public override void Enter()
+    {
+        base.Enter();
+        Debug.Log("Idle State");
+    }
 }

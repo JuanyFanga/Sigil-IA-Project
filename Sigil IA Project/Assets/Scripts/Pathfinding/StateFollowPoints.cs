@@ -39,13 +39,10 @@ public class StateFollowPoints<T> : State<T>
     }
     void MovethePlayer()
     {
-        if (_isFinishPath)
-        {
-            //Debug.Log("Path Finished");
-            return;
-        }
+        if (_isFinishPath) { return; }
+        
         Vector3 point = _waypoints[_index];
-        point.y = _entity.position.y; //Horizontal move
+        point.y = _entity.position.y; 
         Vector3 dir = point - _entity.position;
         if (dir.magnitude < _distanceToPoint)
         {
@@ -58,7 +55,6 @@ public class StateFollowPoints<T> : State<T>
                 return;
             }
         }
-        //Debug.Log("MovethePlayer");
         OnMove(dir.normalized);
     }
     protected virtual void OnMove(Vector3 dir)

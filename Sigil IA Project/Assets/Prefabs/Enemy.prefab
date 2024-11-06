@@ -96,7 +96,6 @@ GameObject:
   - component: {fileID: 8833712804694668979}
   - component: {fileID: 1667084874690617637}
   - component: {fileID: 6152793781313724742}
-  - component: {fileID: 7276635781821187194}
   - component: {fileID: 5896805866441295883}
   m_Layer: 0
   m_Name: Enemy
@@ -149,7 +148,7 @@ CapsuleCollider:
   m_Material: {fileID: 13400000, guid: b063c143d4fd125468a57581340e0ec5, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
+  m_Radius: 0.1831789
   m_Height: 1.8694532
   m_Direction: 1
   m_Center: {x: 0, y: 0.89162314, z: 0}
@@ -195,8 +194,6 @@ MonoBehaviour:
   patroller: 1
   isAlerted: 0
   originPoint: {fileID: 0}
-  audioSource: {fileID: 0}
-  alertedFX: {fileID: 8300000, guid: 43847c0d988af674ea0b08fa3dbac432, type: 3}
 --- !u!114 &1667084874690617637
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,6 +207,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
+  speedRot: 10
   radius: 1
   angle: 200
   personalArea: 0.5
@@ -230,20 +228,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   steepFX: {fileID: 8300000, guid: ac45439e0a587ee4b9d22612a12f41b2, type: 3}
   alertedFX: {fileID: 8300000, guid: 43847c0d988af674ea0b08fa3dbac432, type: 3}
---- !u!136 &7276635781821187194
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7696858741598654070}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 1.8820702
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.8907638, z: 0}
 --- !u!82 &5896805866441295883
 AudioSource:
   m_ObjectHideFlags: 0

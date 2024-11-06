@@ -25,6 +25,11 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
     private Transform _lastPlayerPos;
     private EnemyView enemyView;
     private Animator _anim;
+    private bool ArrivedtoPatrol = false;
+    private bool ArrivedtoFind = false;
+    private List<Vector3> pathtoDraw;
+    private StatePathfinding<StateEnum> pathfinding;
+    private bool _chaseongoing = false;
 
     public Action OnAttacking = delegate { };
 
@@ -55,7 +60,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         IMove entityMove = GetComponent<IMove>();
         IAttack entityAttack = GetComponent<IAttack>();
 
-        var pathfinding = new StatePathfinding<StateEnum>(transform, entityMove,patrolPoints[0].position); 
+        pathfinding = new StatePathfinding<StateEnum>(transform, entityMove,patrolPoints[0].position,StateEnum.Path); 
         var idle = new EnemyIdleState<StateEnum>();
         var patrol = new EnemyPatrolState(entityMove, new Seek(newPatrolPosition, transform), transform, patrolPoints);
         var chase = new EnemySteeringState(entityMove,new Pursuit(transform, _target, timePrediction), enemyView);
@@ -64,16 +69,14 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
 
 
         idle.AddTransition(StateEnum.Patrol, patrol);
-        idle.AddTransition(StateEnum.Chase, chase);
+        idle.AddTransition(StateEnum.Path,pathfinding);
+        idle.AddTransition(StateEnum.Chase,chase);
 
-        patrol.AddTransition(StateEnum.Idle,idle);
         patrol.AddTransition(StateEnum.Chase,chase);
-        patrol.AddTransition(StateEnum.Find,find);
-        patrol.AddTransition(StateEnum.Path,pathfinding);
+        patrol.AddTransition(StateEnum.Idle,idle);
 
         chase.AddTransition(StateEnum.Find,find);
         chase.AddTransition(StateEnum.Attack,attack);
-        chase.AddTransition(StateEnum.Path,pathfinding);
 
         find.AddTransition(StateEnum.Chase,chase);
         find.AddTransition(StateEnum.Patrol, patrol);
@@ -82,15 +85,14 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         pathfinding.AddTransition(StateEnum.Chase, chase);
         pathfinding.AddTransition(StateEnum.Patrol, patrol);
         pathfinding.AddTransition(StateEnum.Find, find);
+        
+        attack.AddTransition(StateEnum.Idle, idle);
 
-        //attack.AddTransition(StateEnum.Chase,chase);
-        //attack.AddTransition(StateEnum.Idle, idle);
-        //attack.AddTransition(StateEnum.Patrol, patrol);
-        //attack.AddTransition(StateEnum.Find, find);
-
-        patrol.OnArrived += IndiceController;
+        pathfinding.OnArrived += Reached;
+        pathfinding.SendList += drawPath;
         find.OnwaitOver += WaitisOver;
         chase.OnEnd += OnEndofChase;
+        chase.OnStart += chaseStarted;
         attack.OnAttack += IsAttacking;
 
         fsm = new FSM<StateEnum>(idle);
@@ -106,50 +108,57 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         var pathfind = new ActionTree(() => fsm.Transition(StateEnum.Path));
 
 
-        //var qisInSpot = new QuestionTree(checkSpot, pathfind, patrol);
+        var qisInSpot = new QuestionTree(()=>ArrivedtoPatrol, patrol, pathfind);
+        //Estoy en la zona de patrullaje?
         
-        var qIsPatrol = new QuestionTree(() => patroller, patrol, idle);
-        // Soy un Enemigo que patrulla? - Si(Patrulla) -No(Idle)
+        //var qIsPatrol = new QuestionTree(() => patroller, qisInSpot, qisInSpot);
+        // Soy un Enemigo que patrulla? 
 
-        var qIsOverFind = new QuestionTree(FindOverCheck, qIsPatrol, find);
-
-        var qIsChase = new QuestionTree(PreviousState, qIsOverFind, qIsPatrol);
-        // Lo estaba persiguiendo? - Si(Busca al PJ) - No(Se fija si es patrullante?)
-
-        var qIsInRange = new QuestionTree(InRange, pathfind, chase);
-        // Lo tengo en rango de ataque? - Si(Ataca) - No(Persigue)
+        var qIsReachedFind = new QuestionTree(()=> ArrivedtoFind, find, pathfind);
+        //llego a la ultima ubicacion del player?
         
-        var qIsAlerted = new QuestionTree(IsAlerted, find , qIsChase);
-        // Esta alertado?
+        var qIsOverFind = new QuestionTree(()=> _chaseongoing,qIsReachedFind, qisInSpot);
+        //Sigo en tiempo de busqueda?
+        
+        var qIsChase = new QuestionTree(PreviousState, qIsOverFind, qisInSpot);
+        // Lo estaba persiguiendo? 
+
+        var qIsInRange = new QuestionTree(InRange, attack, chase);
+        // Lo tengo en rango de ataque? 
+        
+        var qIsAlerted = new QuestionTree(IsAlerted, chase , qIsChase);
+        // Esta alertado por NPC?
 
         var qInView = new QuestionTree(InView, qIsInRange, qIsAlerted);
-        // Lo estoy viendo? - Si(Se fija si esta a alcance de ataque) - No(Se fija si lo estaba persiguiendo)
+        // Lo estoy viendo? 
 
-        var qIsExist = new QuestionTree(() => _target != null, qInView, idle); 
-        // existe el target? - Si(Se fija si lo ve) - No(Se fija si es patrullante)
+        var qIsExist = new QuestionTree(() => _target != null, qInView, qisInSpot); 
+        // existe el target?
 
         root = qIsExist;
     }
 
     private bool InView()
     {
-        if(_los.CheckRange(_target.transform) && _los.CheckAngle(_target.transform) && _los.CheckView(_target.transform)) 
+        if (_los.CheckRange(_target.transform) && _los.CheckAngle(_target.transform) && _los.CheckView(_target.transform) && _target.GetComponent<PlayerModel>().IsDetectable == true)
         {
+            Debug.Log("Lo ve");
             return true;
         }
-
-        else 
-        { 
-            return false; 
+        else
+        {
+            return false;
         }
     }
 
     private bool InRange()
     {
+        if (Vector3.Distance(_target.transform.position, transform.position) <= 2f)
+        { ArrivedtoPatrol = false;}
         return Vector3.Distance(_target.transform.position, transform.position) <= 2f;
     }
 
-    private bool IsAlerted() {  return isAlerted;   }
+    private bool IsAlerted() { return(isAlerted); }
 
     private bool PreviousState()
     {
@@ -166,59 +175,59 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
 
     private void WaitisOver() 
     { 
-        IsOverWaitTime = true;
         isAlerted = false;
+        ArrivedtoPatrol = false;
+        _chaseongoing = false;
+        pathfinding.Reconfig(patrolPoints[0].position,StateEnum.Path);
     }
 
     private void OnEndofChase() 
     {
         IsOverWaitTime = false;
+        LastPlayerPosition = this.transform.position;
+        pathfinding.Reconfig(LastPlayerPosition,StateEnum.Find);
     }
-    private bool FindOverCheck() 
-    { 
-        if( fsm.PreviousState is EnemySteeringState && IsOverWaitTime == true) {  return true; }
-        if (fsm.PreviousState is EnemyFindState && IsOverWaitTime == true) { return true; }
-        return false;
-    }
-
-    private void OnArrivedToPatrol()
+    private void Reached(StateEnum state)
     {
-        hasArrived = true;
-        if (indice >= patrolPoints.Length){ indice = 0; } else{ indice ++; } 
+        if(state == StateEnum.Path){ArrivedtoPatrol = true;}
+        if(state == StateEnum.Find){ArrivedtoFind = true;}
     }
-    private bool HasArrived() { return hasArrived; }
-
-    private void IndiceController()
-    {
-        if (indice >= patrolPoints.Length - 1) { indice = 0; } else { indice++; }
-        newPatrolPosition.position = patrolPoints[indice].position;
-    }
-
     public void KnowingLastPosition()
     {
         isAlerted = true;
     }
-
     public void IsAttacking()
     {
         OnAttacking();
     }
-
     private void Update()
     {
         fsm.OnUpdate();
         root.Execute();
     }
 
-    // private bool checkSpot()
-    // {
-    //     for (int a = 0; a < patrolPoints.Length - 1; a++)
-    //     {
-    //         if (Vector3.Distance(transform.position, patrolPoints[a].position) < 0.3f)
-    //         {
-    //             return true;
-    //         }
-    //     }
-    //     return false;
-    // }
+    private void drawPath(List<Vector3> path)
+    {
+        pathtoDraw = path;
+    }
+
+    private void chaseStarted()
+    {
+        _chaseongoing = true;
+    }
+
+    public void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        if (pathtoDraw != null)
+        {
+            foreach (var item in pathtoDraw)
+            {
+                if (item != null)
+                {
+                    Gizmos.DrawSphere(item, 0.2f);
+                }
+            }
+        }
+    }
 }

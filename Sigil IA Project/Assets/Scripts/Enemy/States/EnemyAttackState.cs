@@ -19,8 +19,7 @@ public class EnemyAttackState : State<StateEnum>
     {
         base.Enter();
         OnAttack();
-        //_move.Velocity(new Vector3(0, 0, 0));
-        //Debug.Log("Entro al ataque");
+        Debug.Log("Attack State");
     }
     public override void Execute()
     {

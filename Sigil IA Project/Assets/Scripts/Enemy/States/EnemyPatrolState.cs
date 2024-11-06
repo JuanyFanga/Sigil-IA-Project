@@ -9,7 +9,6 @@ public class EnemyPatrolState : State<StateEnum>
     private ISteering _steering;
     private Transform _entity;
     private Transform[] _target;
-    public Action OnArrived = delegate { };
     private int _index = 0;
     private Vector3 _dir;
     public EnemyPatrolState(IMove move, ISteering steering, Transform entity, Transform[] target)

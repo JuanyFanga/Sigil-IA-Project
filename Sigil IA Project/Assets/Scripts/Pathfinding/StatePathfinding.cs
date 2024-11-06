@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class StatePathfinding<T> : StateFollowPoints<T>
 {
@@ -8,13 +9,20 @@ public class StatePathfinding<T> : StateFollowPoints<T>
     IMove _move;
     public Vector3 _target;
     private Transform _current;
+    public Action<StateEnum> OnArrived = delegate { };
+    public Action<List<Vector3>> SendList = delegate { };
+    private List<Vector3> path;
+    private StateEnum _state;
+    private float _sphereRadius = 100f;
+    private float _timer;
     
     
-    public StatePathfinding(Transform entity, IMove move,Vector3 target, float distanceToPoint = 0.2F) 
+    public StatePathfinding(Transform entity, IMove move,Vector3 target,StateEnum state, float distanceToPoint = 0.2F) 
         : base(entity, distanceToPoint)
     {
         _move = move;
         _target= target;
+        _state = state;
     }
     public StatePathfinding(Transform entity, IMove move, List<Vector3> waypoints, float distanceToPoint = 0.2f)
         : base(entity, waypoints, distanceToPoint)
@@ -26,8 +34,16 @@ public class StatePathfinding<T> : StateFollowPoints<T>
     {
         base.Enter();
         Debug.Log("Enter Pathfinding");
+        SetPathAStarPlusVector();
+        SendList(path);
+        _timer = 2f;
     }
 
+    protected override void OnFinishPath()
+    {
+        base.OnFinishPath();
+        OnArrived(_state);
+    }
     protected override void OnMove(Vector3 dir)
     {
         base.OnMove(dir);
@@ -42,11 +58,10 @@ public class StatePathfinding<T> : StateFollowPoints<T>
         base.OnStartPath();
         _move.SetPosition(_waypoints[0]);
     }
-
-    
-    public void SetPathAStarPlusVector(Vector3 start)
+    public void SetPathAStarPlusVector()
     {
-        List<Vector3> path = Astar.Run<Vector3>(start,IsSatisfies,GetConnections,GetCost,Heuristic);
+        var start = GetPoint(_entity.position);
+        path = Astar.Run<Vector3>(start,IsSatisfies,GetConnections,GetCost,Heuristic);
         if (path.Count <= 0)
         {
             Debug.Log("No Path");
@@ -54,7 +69,6 @@ public class StatePathfinding<T> : StateFollowPoints<T>
         }
         SetWaypoints(path);
     }
-    
     float GetCost(Vector3 parent, Vector3 child)
     {
         float multiplierDist = 1;
@@ -62,7 +76,6 @@ public class StatePathfinding<T> : StateFollowPoints<T>
         cost += Vector3.Distance(parent, child) * multiplierDist;
         return cost;
     }
-
     float Heuristic(Vector3 node)
     {
         float h = 0;
@@ -73,13 +86,11 @@ public class StatePathfinding<T> : StateFollowPoints<T>
     {
         return Vector3Int.RoundToInt(point);
     }
-
     bool IsSatisfies(Vector3 current)
     {
         var pointToGoal = GetPoint(_target);
         return Vector3.Distance(current,pointToGoal) <= 1f;
     }
-
     List<Vector3> GetConnections(Vector3 current)
     {
         List<Vector3> connections = new List<Vector3>();
@@ -94,6 +105,43 @@ public class StatePathfinding<T> : StateFollowPoints<T>
             }
         }
         return connections;
+    }
+
+    public void Reconfig(Vector3 target,StateEnum state)
+    {
+        _target = target;
+        _state = state;
+    }
+    public override void Execute()
+    {
+        base.Execute();
+        if (_state == StateEnum.GoHome)
+        {
+            if (_timer <= 0)
+            {
+                Detect();
+                _timer = 2f;
+            }
+            else
+            {
+                _timer -= Time.deltaTime;
+            }
+            
+        }
+    }
+    private void Detect()
+    {
+        Collider[] enemies = Physics.OverlapSphere(_entity.position, _sphereRadius);
+        Debug.Log("Alerting");
+        foreach (Collider enemyCollider in enemies)
+        {
+            IViolentEnemy enemy = enemyCollider.GetComponent<IViolentEnemy>();
+
+            if (enemy != null)
+            {
+                enemy.KnowingLastPosition();
+            }
+        }
     }
 }
 

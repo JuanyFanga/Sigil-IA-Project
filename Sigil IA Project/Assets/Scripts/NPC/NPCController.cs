@@ -16,6 +16,7 @@ public class NPCController : MonoBehaviour
     private ITreeNode root;
     private Animator _anim;
     private StatePathfinding<StateEnum> _pathfinding;
+    private List<Vector3> pathtoDraw;
 
     //Bools
     private bool alreadyScaped = false;
@@ -41,19 +42,20 @@ public class NPCController : MonoBehaviour
     {
         IMove entityMove = GetComponent<IMove>();
         
-        _pathfinding = new StatePathfinding<StateEnum>(transform, entityMove,safeHouse.position);
+        _pathfinding = new StatePathfinding<StateEnum>(transform, entityMove,safeHouse.position,StateEnum.GoHome);
         var idle = new NPCIdleState();
         var scape = new NPCScapeState(entityMove, new Evade(transform, target, timePrediction), transform, callingSphereRadius, npcView);
-        var goHome = new NPCGoingHomeState(entityMove, transform,safeHouse.position,_pathfinding,callingSphereRadius );
+        var goHome = _pathfinding;
+        //var goHome = new NPCGoingHomeState(entityMove, transform,safeHouse.position,_pathfinding,callingSphereRadius );
         var dead = new NPCDeadState(gameObject);
 
         idle.AddTransition(StateEnum.Scape, scape);
         idle.AddTransition(StateEnum.GoHome, goHome);
         scape.AddTransition(StateEnum.GoHome, goHome);
-        goHome.AddTransition(StateEnum.Scape, scape);
         goHome.AddTransition(StateEnum.Dead, dead);
 
         scape.OnScape += OnScape;
+        _pathfinding.SendList += drawPath;
 
         fsm = new FSM<StateEnum>(idle);
     }
@@ -66,8 +68,7 @@ public class NPCController : MonoBehaviour
         var dead = new ActionTree(() => fsm.Transition(StateEnum.Dead));
 
         var qIsDead = new QuestionTree(IsCloseToHouse, dead, goHome);
-        var qInProximity = new QuestionTree(InProximity, qIsDead, scape);
-        var qIsScaping = new QuestionTree(HasAlreadyScaped, qInProximity, idle);
+        var qIsScaping = new QuestionTree(HasAlreadyScaped, qIsDead, idle);
         var qInView = new QuestionTree(InView, scape, qIsScaping);
         var qIsExist = new QuestionTree(() => target != null, qInView, idle);
 
@@ -81,7 +82,7 @@ public class NPCController : MonoBehaviour
 
     private bool InProximity()
     {
-        return Vector3.Distance(target.transform.position, transform.position) >= maxFarDistance;
+        return Vector3.Distance(target.transform.position, transform.position) <= maxFarDistance;
     }
 
     private bool HasAlreadyScaped()
@@ -96,7 +97,8 @@ public class NPCController : MonoBehaviour
 
     private bool IsCloseToHouse()
     {
-        return Vector3.Distance(safeHouse.position, transform.position) <= 0.5;
+        Debug.Log(Vector3.Distance(safeHouse.position, transform.position));
+        return Vector3.Distance(safeHouse.position, transform.position) <= 5;
     }
 
     private void Update()
@@ -117,4 +119,30 @@ public class NPCController : MonoBehaviour
             //InView();
         }
     }
+    
+    private void drawPath(List<Vector3> path)
+    {
+        pathtoDraw = path;
+    }
+    
+
+    public void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        if (pathtoDraw != null)
+        {
+            foreach (var item in pathtoDraw)
+            {
+                if (item != null)
+                {
+                    Gizmos.DrawSphere(item, 0.2f);
+                }
+                else
+                {
+                    Debug.Log("Path Empty");
+                }
+            }
+        }
+    }
+
 }

@@ -9,6 +9,7 @@ public class EnemySteeringState : State<StateEnum>
     ISteering _steering;
     private EnemyView _enemyView;
     public Action OnEnd = delegate { };
+    public Action OnStart = delegate { };
     public EnemySteeringState(IMove move, ISteering steering, EnemyView enemyView)
     {
         _move = move;
@@ -28,6 +29,7 @@ public class EnemySteeringState : State<StateEnum>
     {
         base.Enter();
         _enemyView.PlayAlertedSound();
+        OnStart();
         Debug.Log("CHASE State");
     }
     public override void Exit()
