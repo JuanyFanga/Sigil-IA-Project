@@ -176,7 +176,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
     private void OnEndofChase() 
     {
         IsOverWaitTime = false;
-        LastPlayerPosition = this.transform.position;
+        LastPlayerPosition = _target.transform.position;
         pathfinding.Reconfig(LastPlayerPosition,StateEnum.Find);
     }
     private void Reached(StateEnum state)
