@@ -75,7 +75,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1219d9836ddcd745971495c04b44e87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 10
+  range: 7
   angle: 90
   reference: {fileID: 5741834072199216056}
   obsMask:

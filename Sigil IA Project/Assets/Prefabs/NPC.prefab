@@ -76,7 +76,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 5
-  angle: 90
+  angle: 75
   reference: {fileID: 361081565705820986}
   obsMask:
     serializedVersion: 2
