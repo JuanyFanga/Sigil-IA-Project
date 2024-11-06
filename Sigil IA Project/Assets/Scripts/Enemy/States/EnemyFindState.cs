@@ -39,6 +39,7 @@ public class EnemyFindState : State<StateEnum>
         _persuitTime = 8f;
         Debug.Log("Find State");
         _move.Look(Vector3.right);
+        _move.Move(Vector3.zero);
     }
 
     public override void Exit()

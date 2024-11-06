@@ -30,8 +30,8 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
     private List<Vector3> pathtoDraw;
     private StatePathfinding<StateEnum> pathfinding;
     private bool _chaseongoing = false;
-
     public Action OnAttacking = delegate { };
+    private bool visto = false;
 
     private void Awake()
     {
@@ -39,7 +39,6 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         _los = GetComponentInChildren<LineOfSight>();
         enemyView = GetComponent<EnemyView>();
     }
-
     private void Start()
     {
         newPatrolPosition = patrolPoints[0];
@@ -48,13 +47,11 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         InitializedFSM();
         InitializedTree();
     }
-
     private void InitializeEnemy()
     {
         transform.position = originPoint.position;
         transform.rotation = originPoint.rotation;
     }
-
     private void InitializedFSM()
     {
         IMove entityMove = GetComponent<IMove>();
@@ -74,9 +71,11 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
 
         patrol.AddTransition(StateEnum.Chase,chase);
         patrol.AddTransition(StateEnum.Idle,idle);
+        patrol.AddTransition(StateEnum.Path,pathfinding);
 
         chase.AddTransition(StateEnum.Find,find);
         chase.AddTransition(StateEnum.Attack,attack);
+        chase.AddTransition(StateEnum.Path,pathfinding);
 
         find.AddTransition(StateEnum.Chase,chase);
         find.AddTransition(StateEnum.Patrol, patrol);
@@ -97,7 +96,6 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
 
         fsm = new FSM<StateEnum>(idle);
     }
-
     private void InitializedTree()
     {
         var idle = new ActionTree(() => fsm.Transition(StateEnum.Idle));
@@ -126,7 +124,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         var qIsInRange = new QuestionTree(InRange, attack, chase);
         // Lo tengo en rango de ataque? 
         
-        var qIsAlerted = new QuestionTree(IsAlerted, chase , qIsChase);
+        var qIsAlerted = new QuestionTree(IsAlerted, pathfind , qIsOverFind);
         // Esta alertado por NPC?
 
         var qInView = new QuestionTree(InView, qIsInRange, qIsAlerted);
@@ -137,7 +135,6 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
 
         root = qIsExist;
     }
-
     private bool InView()
     {
         if (_los.CheckRange(_target.transform) && _los.CheckAngle(_target.transform) && _los.CheckView(_target.transform) && _target.GetComponent<PlayerModel>().IsDetectable == true)
@@ -150,37 +147,32 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
             return false;
         }
     }
-
     private bool InRange()
     {
-        if (Vector3.Distance(_target.transform.position, transform.position) <= 2f)
-        { ArrivedtoPatrol = false;}
         return Vector3.Distance(_target.transform.position, transform.position) <= 2f;
     }
 
-    private bool IsAlerted() { return(isAlerted); }
-
+    private bool IsAlerted()
+    { return isAlerted; }
     private bool PreviousState()
     {
         if((fsm.PreviousState is EnemySteeringState || fsm.currentState is EnemySteeringState) && !InView()) 
         { 
             return true; 
         }
-
         else
         {
             return false;
         }
     }
-
     private void WaitisOver() 
     { 
         isAlerted = false;
         ArrivedtoPatrol = false;
+        ArrivedtoFind = false;
         _chaseongoing = false;
         pathfinding.Reconfig(patrolPoints[0].position,StateEnum.Path);
     }
-
     private void OnEndofChase() 
     {
         IsOverWaitTime = false;
@@ -190,11 +182,18 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
     private void Reached(StateEnum state)
     {
         if(state == StateEnum.Path){ArrivedtoPatrol = true;}
-        if(state == StateEnum.Find){ArrivedtoFind = true;}
+
+        if (state == StateEnum.Find)
+        {
+            Rigidbody r = GetComponent<Rigidbody>();
+            r.velocity = Vector3.zero;
+            ArrivedtoFind = true;
+        }
     }
     public void KnowingLastPosition()
     {
         isAlerted = true;
+        pathfinding.Reconfig(_target.transform.position,StateEnum.Find);
     }
     public void IsAttacking()
     {
@@ -205,17 +204,14 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         fsm.OnUpdate();
         root.Execute();
     }
-
     private void drawPath(List<Vector3> path)
     {
         pathtoDraw = path;
     }
-
     private void chaseStarted()
     {
         _chaseongoing = true;
     }
-
     public void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;
