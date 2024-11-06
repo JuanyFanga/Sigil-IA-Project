@@ -7,6 +7,8 @@ using System;
 public class EnemyController : MonoBehaviour, IViolentEnemy
 {
     [SerializeField] private Rigidbody _target;
+    [SerializeField] private float _attackRange = 1f;
+    private Rigidbody _rb;
     private LineOfSight _los;
     [SerializeField] private float timePrediction;
     [SerializeField] Transform[] patrolPoints;
@@ -37,6 +39,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
     {
         _lastPlayerPos = _target.transform;
         _los = GetComponentInChildren<LineOfSight>();
+        _rb = GetComponent<Rigidbody>();
         enemyView = GetComponent<EnemyView>();
     }
     private void Start()
@@ -62,7 +65,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         var patrol = new EnemyPatrolState(entityMove, new Seek(newPatrolPosition, transform), transform, patrolPoints);
         var chase = new EnemySteeringState(entityMove,new Pursuit(transform, _target, timePrediction), enemyView);
         var find = new EnemyFindState(_lastPlayerPos, entityMove, transform,new Seek(_lastPlayerPos, transform));
-        var attack = new EnemyAttackState(entityAttack, entityMove, transform);
+        var attack = new EnemyAttackState(entityAttack, entityMove, transform, _rb);
 
 
         idle.AddTransition(StateEnum.Patrol, patrol);
@@ -84,11 +87,9 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         pathfinding.AddTransition(StateEnum.Chase, chase);
         pathfinding.AddTransition(StateEnum.Patrol, patrol);
         pathfinding.AddTransition(StateEnum.Find, find);
-        
-        attack.AddTransition(StateEnum.Idle, idle);
 
         pathfinding.OnArrived += Reached;
-        pathfinding.SendList += drawPath;
+        pathfinding.SendList += DrawPath;
         find.OnwaitOver += WaitisOver;
         chase.OnEnd += OnEndofChase;
         chase.OnStart += chaseStarted;
@@ -149,7 +150,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
     }
     private bool InRange()
     {
-        return Vector3.Distance(_target.transform.position, transform.position) <= 2f;
+        return Vector3.Distance(_target.transform.position, transform.position) <= _attackRange;
     }
 
     private bool IsAlerted()
@@ -204,7 +205,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         fsm.OnUpdate();
         root.Execute();
     }
-    private void drawPath(List<Vector3> path)
+    private void DrawPath(List<Vector3> path)
     {
         pathtoDraw = path;
     }

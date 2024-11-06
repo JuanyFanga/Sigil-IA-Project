@@ -6,12 +6,16 @@ using UnityEngine;
 
 public class PlayerDeadState : State<StateEnum>
 {
-    public PlayerDeadState()
+    IMove _move;
+
+    public PlayerDeadState(IMove move)
     {
+        _move = move;
     }
 
     public override void Enter()
     {
         base.Enter();
+        _move.Move(Vector3.zero);
     }
 }

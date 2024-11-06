@@ -186,6 +186,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _target: {fileID: 408646543124867677, guid: 96f5ce20348387a4b833db3e109038e2, type: 3}
+  _attackRange: 2
   timePrediction: 0.2
   patrolPoints:
   - {fileID: 0}
