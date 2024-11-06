@@ -169,7 +169,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
+  m_Radius: 0.13181087
   m_Height: 1.7692378
   m_Direction: 1
   m_Center: {x: 0, y: 0.8967694, z: 0}
@@ -186,6 +186,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
+  speedRot: 5
   radius: 2
   angle: 200
   personalArea: 1

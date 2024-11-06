@@ -30,7 +30,8 @@ public class NPCScapeState : State<StateEnum>
     public override void Enter()
     {
         base.Enter();
-
+        
+        Debug.Log("NPCScape entered");
         _npcView.PlayScreamSound();
 
         Collider[] enemies = Physics.OverlapSphere(_entityPos.position, _sphereRadius);

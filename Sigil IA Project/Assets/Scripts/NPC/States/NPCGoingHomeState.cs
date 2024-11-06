@@ -38,7 +38,7 @@ public class NPCGoingHomeState : State<StateEnum>
     {
         base.Enter();
         _timer = 2f;
-        _pathfinding.SetPathAStarPlusVector(_target,_entity.position);
+        _pathfinding.SetPathAStarPlusVector();
     }
 
 

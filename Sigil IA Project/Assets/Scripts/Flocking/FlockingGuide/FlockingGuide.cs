@@ -23,14 +23,13 @@ public class FlockingGuide : Entity
     void InitializeFSM()
     {
         IMove entityMove = GetComponent<IMove>();
-        _statePathfinding = new StatePathfinding<StateEnum>(transform, entityMove, _anim); // cuenta como estado
+        _statePathfinding = new StatePathfinding<StateEnum>(transform, entityMove,newPatrolPosition.position,StateEnum.Move);
         var idle = new GenericIdleState<StateEnum>();
-        var patrol = new EnemyPatrolState(entityMove, new Seek(newPatrolPosition, transform), transform, patrolPoints,_statePathfinding);
+        var patrol = new EnemyPatrolState(entityMove, new Seek(newPatrolPosition, transform), transform, patrolPoints);
 
         idle.AddTransition(StateEnum.Patrol, patrol);
         patrol.AddTransition(StateEnum.Idle, idle);
-
-        patrol.OnArrived += IndiceController;
+        
 
         fsm = new FSM<StateEnum>(patrol);
     }
@@ -43,15 +42,6 @@ public class FlockingGuide : Entity
         var qIsExist = new QuestionTree(() => _target != null, patrol, idle);
 
         root = qIsExist;
-    }
-
-    private void IndiceController()
-    {
-        if (indice >= patrolPoints.Length - 1) 
-            { indice = 0; } 
-        else 
-            { indice++; }
-        newPatrolPosition.position = patrolPoints[indice].position;
     }
 
     private void Update()

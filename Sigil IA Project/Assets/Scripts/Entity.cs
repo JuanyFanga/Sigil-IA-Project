@@ -6,6 +6,7 @@ public class Entity : MonoBehaviour, IMove
 {
     private Rigidbody _rb;
     public float speed;
+    public float speedRot = 10;
     protected virtual void Awake()
     {
         _rb = GetComponent<Rigidbody>();
@@ -19,7 +20,14 @@ public class Entity : MonoBehaviour, IMove
     }
     public void Look(Vector3 dir)
     {
-        transform.forward = dir;
+        if (Vector3.Angle(transform.forward, dir) > (Mathf.PI * Mathf.Rad2Deg) / 2)
+        {
+            transform.forward = dir;
+        }
+        else
+        {
+            transform.forward = Vector3.Lerp(transform.forward, dir, speedRot * Time.deltaTime);
+        }
     }
     public void Look(Transform target)
     {

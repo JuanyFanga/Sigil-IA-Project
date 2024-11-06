@@ -6,12 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="2395e24b-f75d-4fa9-b749-dd02f25bf631" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Sigil IA Project/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Sigil IA Project/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/External Assets/Weapons LowPoly/LowPolyWeaponsLite_2020.3.0_HDRP_v1.0.unitypackage.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/External Assets/Weapons LowPoly/LowPolyWeaponsLite_2020.3.0_URP_v1.0.unitypackage.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Level1.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Level1.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Level2.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Level2.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Enemy/EnemyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Enemy/EnemyController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Enemy/States/EnemyPatrolState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Enemy/States/EnemyPatrolState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Flocking/FlockingGuide/FlockingGuide.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Flocking/FlockingGuide/FlockingGuide.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Enemy/States/EnemyFindState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Enemy/States/EnemyFindState.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,7 +33,7 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;AstarFix&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -94,6 +91,8 @@
       <workItem from="1730647628613" duration="26000" />
       <workItem from="1730647674895" duration="846000" />
       <workItem from="1730674658600" duration="323000" />
+      <workItem from="1730863309146" duration="1871000" />
+      <workItem from="1730895282467" duration="20892000" />
     </task>
     <servers />
   </component>

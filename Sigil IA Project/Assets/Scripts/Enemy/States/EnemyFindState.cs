@@ -10,48 +10,36 @@ public class EnemyFindState : State<StateEnum>
     private IMove _move;
     private ISteering _steering;
     private Transform _entity;
-    private float _waitTime = 5f;
     private float _persuitTime = 5f;
     public Action OnwaitOver = delegate{};
-    private StatePathfinding<StateEnum> _pathfinding;
+    private Vector3 _dir;
 
 
 
-    public EnemyFindState(Transform lastKnownLocation, IMove move, Transform entity, ISteering steering,StatePathfinding<StateEnum> _statePathfinding)
+    public EnemyFindState(Transform lastKnownLocation, IMove move, Transform entity, ISteering steering)
     {
         _lastKnownTransform = lastKnownLocation;
         _move = move;
         _entity = entity;
         _steering = steering;
-        _pathfinding = _statePathfinding;
+
     }
     public override void Execute()
     {
         base.Execute();
-        if (_waitTime <= 0f)
-        {
-            OnwaitOver();
-        }
-        else
-        {
-            _pathfinding.Execute();
-            _persuitTime -= Time.deltaTime;
-            if (Vector3.Distance(_entity.position, _lastKnowLocation) <= 2f)
-            {
-                _waitTime -= Time.deltaTime;
-            }
-            if (Vector3.Distance(_lastKnowLocation, _lastKnownTransform.position) >= 4f && _persuitTime <= 0f)
-            {
-                _lastKnowLocation = _lastKnownTransform.position;
-            }
-        }
+        if (_persuitTime <= 0f) { OnwaitOver(); }
+        else { _persuitTime -= Time.deltaTime; }
+        if (_persuitTime == 5f) { _move.Look(Vector3.left); }
+        if(_persuitTime == 3f){_move.Look(Vector3.back);}
+
     }
     public override void Enter()
     {
         base.Enter();
-        _waitTime = 5f;
-        _lastKnowLocation = _lastKnownTransform.position;
-        _pathfinding.SetPathAStarPlusVector(_lastKnowLocation,_entity.position); 
+        _persuitTime = 8f;
+        Debug.Log("Find State");
+        _move.Look(Vector3.right);
+        _move.Move(Vector3.zero);
     }
 
     public override void Exit()

@@ -826,15 +826,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1667084874690617637, guid: 2881cac10806ca84dbe7704c09eeb68b, type: 3}
       propertyPath: speed
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1667084874690617637, guid: 2881cac10806ca84dbe7704c09eeb68b, type: 3}
       propertyPath: radius
-      value: 1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1667084874690617637, guid: 2881cac10806ca84dbe7704c09eeb68b, type: 3}
       propertyPath: personalArea
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1825233480078066012, guid: 2881cac10806ca84dbe7704c09eeb68b, type: 3}
       propertyPath: m_Layer
@@ -930,7 +930,7 @@ PrefabInstance:
       objectReference: {fileID: 797720051}
     - target: {fileID: 8833712804694668979, guid: 2881cac10806ca84dbe7704c09eeb68b, type: 3}
       propertyPath: timePrediction
-      value: 0.1
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 8833712804694668979, guid: 2881cac10806ca84dbe7704c09eeb68b, type: 3}
       propertyPath: patrolPoints.Array.size
@@ -4743,6 +4743,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Vehicle_Truck_color02
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: e218686c5655fad46a02ebfb004972ee, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: e218686c5655fad46a02ebfb004972ee, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -8485,15 +8489,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1667084874690617637, guid: 2881cac10806ca84dbe7704c09eeb68b, type: 3}
       propertyPath: speed
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1667084874690617637, guid: 2881cac10806ca84dbe7704c09eeb68b, type: 3}
       propertyPath: radius
-      value: 1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1667084874690617637, guid: 2881cac10806ca84dbe7704c09eeb68b, type: 3}
       propertyPath: personalArea
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1825233480078066012, guid: 2881cac10806ca84dbe7704c09eeb68b, type: 3}
       propertyPath: m_Layer
@@ -8589,7 +8593,7 @@ PrefabInstance:
       objectReference: {fileID: 1832411976}
     - target: {fileID: 8833712804694668979, guid: 2881cac10806ca84dbe7704c09eeb68b, type: 3}
       propertyPath: timePrediction
-      value: 0.1
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 8833712804694668979, guid: 2881cac10806ca84dbe7704c09eeb68b, type: 3}
       propertyPath: patrolPoints.Array.size
@@ -13301,15 +13305,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1667084874690617637, guid: 2881cac10806ca84dbe7704c09eeb68b, type: 3}
       propertyPath: speed
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1667084874690617637, guid: 2881cac10806ca84dbe7704c09eeb68b, type: 3}
       propertyPath: radius
-      value: 1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1667084874690617637, guid: 2881cac10806ca84dbe7704c09eeb68b, type: 3}
       propertyPath: personalArea
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1825233480078066012, guid: 2881cac10806ca84dbe7704c09eeb68b, type: 3}
       propertyPath: m_Layer
@@ -13401,7 +13405,7 @@ PrefabInstance:
       objectReference: {fileID: 1996290925}
     - target: {fileID: 8833712804694668979, guid: 2881cac10806ca84dbe7704c09eeb68b, type: 3}
       propertyPath: timePrediction
-      value: 0.1
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 8833712804694668979, guid: 2881cac10806ca84dbe7704c09eeb68b, type: 3}
       propertyPath: patrolPoints.Array.data[0]
@@ -14094,7 +14098,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 1af0a2c8773f85c40bdb120f32cd8a8a, type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 1af0a2c8773f85c40bdb120f32cd8a8a, type: 3}
       propertyPath: m_RootOrder
@@ -15462,15 +15466,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1667084874690617637, guid: 2881cac10806ca84dbe7704c09eeb68b, type: 3}
       propertyPath: speed
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1667084874690617637, guid: 2881cac10806ca84dbe7704c09eeb68b, type: 3}
       propertyPath: radius
-      value: 1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1667084874690617637, guid: 2881cac10806ca84dbe7704c09eeb68b, type: 3}
       propertyPath: personalArea
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1825233480078066012, guid: 2881cac10806ca84dbe7704c09eeb68b, type: 3}
       propertyPath: m_Layer
@@ -15566,7 +15570,7 @@ PrefabInstance:
       objectReference: {fileID: 872210084}
     - target: {fileID: 8833712804694668979, guid: 2881cac10806ca84dbe7704c09eeb68b, type: 3}
       propertyPath: timePrediction
-      value: 0.1
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 8833712804694668979, guid: 2881cac10806ca84dbe7704c09eeb68b, type: 3}
       propertyPath: patrolPoints.Array.size
@@ -19824,7 +19828,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 9500f0cdde0097a4aac35ced7c1935d7, type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 9500f0cdde0097a4aac35ced7c1935d7, type: 3}
       propertyPath: m_RootOrder
@@ -20528,31 +20532,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 8fa324388c16b5c4eac9846338b35b17, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 188.37
+      value: 188
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 8fa324388c16b5c4eac9846338b35b17, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 67
+      value: 66.84
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 8fa324388c16b5c4eac9846338b35b17, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -75.17
+      value: -74.66
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 8fa324388c16b5c4eac9846338b35b17, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.44911298
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 8fa324388c16b5c4eac9846338b35b17, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.000000009815684
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 8fa324388c16b5c4eac9846338b35b17, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.893475
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 8fa324388c16b5c4eac9846338b35b17, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000000019527517
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 8fa324388c16b5c4eac9846338b35b17, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -20560,7 +20564,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 8fa324388c16b5c4eac9846338b35b17, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 126.626
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 8fa324388c16b5c4eac9846338b35b17, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -22222,7 +22226,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 00d77ce56096de34eb6645947a0f8925, type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 00d77ce56096de34eb6645947a0f8925, type: 3}
       propertyPath: m_RootOrder
@@ -22310,15 +22314,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1667084874690617637, guid: 2881cac10806ca84dbe7704c09eeb68b, type: 3}
       propertyPath: speed
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1667084874690617637, guid: 2881cac10806ca84dbe7704c09eeb68b, type: 3}
       propertyPath: radius
-      value: 1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1667084874690617637, guid: 2881cac10806ca84dbe7704c09eeb68b, type: 3}
       propertyPath: personalArea
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1825233480078066012, guid: 2881cac10806ca84dbe7704c09eeb68b, type: 3}
       propertyPath: m_Layer
@@ -22418,7 +22422,7 @@ PrefabInstance:
       objectReference: {fileID: 330908166}
     - target: {fileID: 8833712804694668979, guid: 2881cac10806ca84dbe7704c09eeb68b, type: 3}
       propertyPath: timePrediction
-      value: 0.1
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 8833712804694668979, guid: 2881cac10806ca84dbe7704c09eeb68b, type: 3}
       propertyPath: patrolPoints.Array.size
@@ -24048,7 +24052,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 1af0a2c8773f85c40bdb120f32cd8a8a, type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 1af0a2c8773f85c40bdb120f32cd8a8a, type: 3}
       propertyPath: m_RootOrder
