@@ -34,7 +34,7 @@ public class FlockingManager : MonoBehaviour, ISteering
         {
             dir += _behaviours[i].GetDir(_boids, _self);
         }
-
+        Debug.Log("Is getting dir");
         return dir.normalized;
     }
     private void OnDrawGizmosSelected()

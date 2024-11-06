@@ -3907,7 +3907,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1609302922873257237, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: multiplier
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1609302922873257237, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: maxPredators
@@ -3915,7 +3915,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1609302922873257237, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: rangePredator
-      value: 1
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 1609302922873257237, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: maskPredator.m_Bits
@@ -3923,7 +3923,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2212005593504754116, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: multiplier
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2212005593504754116, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: maxPredators
@@ -3936,6 +3936,10 @@ PrefabInstance:
     - target: {fileID: 2212005593504754116, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: maskPredator.m_Bits
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2367231430503566623, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
+      propertyPath: multiplier
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 2526065324167540173, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: target
@@ -3975,7 +3979,7 @@ PrefabInstance:
       objectReference: {fileID: 1179755507}
     - target: {fileID: 9109836838275029138, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: speed
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 9109836838275029141, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: m_RootOrder
@@ -4020,6 +4024,10 @@ PrefabInstance:
     - target: {fileID: 9109836838275029141, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9109836838275029142, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
+      propertyPath: multiplier
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 9109836838275029143, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: multiplier
@@ -8814,7 +8822,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1609302922873257237, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: multiplier
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1609302922873257237, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: maxPredators
@@ -8822,7 +8830,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1609302922873257237, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: rangePredator
-      value: 1
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 1609302922873257237, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: maskPredator.m_Bits
@@ -8830,7 +8838,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2212005593504754116, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: multiplier
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2212005593504754116, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: maxPredators
@@ -8843,6 +8851,10 @@ PrefabInstance:
     - target: {fileID: 2212005593504754116, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: maskPredator.m_Bits
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2367231430503566623, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
+      propertyPath: multiplier
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 2526065324167540173, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: target
@@ -8882,7 +8894,7 @@ PrefabInstance:
       objectReference: {fileID: 1179755507}
     - target: {fileID: 9109836838275029138, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: speed
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 9109836838275029141, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: m_RootOrder
@@ -8935,6 +8947,10 @@ PrefabInstance:
     - target: {fileID: 9109836838275029141, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9109836838275029142, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
+      propertyPath: multiplier
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 9109836838275029143, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: multiplier
@@ -17195,12 +17211,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1720314559}
     - target: {fileID: 1826146205883050887, guid: 9c01367ef4b8f0b47aa32446a632a47f, type: 3}
+      propertyPath: m_Radius
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1826146205883050887, guid: 9c01367ef4b8f0b47aa32446a632a47f, type: 3}
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2394825125569194433, guid: 9c01367ef4b8f0b47aa32446a632a47f, type: 3}
       propertyPath: speed
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2394825125569194433, guid: 9c01367ef4b8f0b47aa32446a632a47f, type: 3}
       propertyPath: patrolPoints.Array.data[0]
@@ -21046,7 +21066,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1609302922873257237, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: multiplier
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1609302922873257237, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: maxPredators
@@ -21054,7 +21074,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1609302922873257237, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: rangePredator
-      value: 1
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 1609302922873257237, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: maskPredator.m_Bits
@@ -21062,7 +21082,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2212005593504754116, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: multiplier
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2212005593504754116, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: maxPredators
@@ -21075,6 +21095,10 @@ PrefabInstance:
     - target: {fileID: 2212005593504754116, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: maskPredator.m_Bits
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2367231430503566623, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
+      propertyPath: multiplier
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 2526065324167540173, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: target
@@ -21114,7 +21138,7 @@ PrefabInstance:
       objectReference: {fileID: 1179755507}
     - target: {fileID: 9109836838275029138, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: speed
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 9109836838275029141, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: m_RootOrder
@@ -21159,6 +21183,10 @@ PrefabInstance:
     - target: {fileID: 9109836838275029141, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9109836838275029142, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
+      propertyPath: multiplier
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 9109836838275029143, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: multiplier
@@ -23530,7 +23558,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1609302922873257237, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: multiplier
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1609302922873257237, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: maxPredators
@@ -23538,7 +23566,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1609302922873257237, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: rangePredator
-      value: 1
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 1609302922873257237, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: maskPredator.m_Bits
@@ -23546,7 +23574,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2212005593504754116, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: multiplier
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2212005593504754116, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: maxPredators
@@ -23559,6 +23587,10 @@ PrefabInstance:
     - target: {fileID: 2212005593504754116, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: maskPredator.m_Bits
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2367231430503566623, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
+      propertyPath: multiplier
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 2526065324167540173, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: target
@@ -23598,7 +23630,7 @@ PrefabInstance:
       objectReference: {fileID: 1179755507}
     - target: {fileID: 9109836838275029138, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: speed
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 9109836838275029141, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: m_RootOrder
@@ -23643,6 +23675,10 @@ PrefabInstance:
     - target: {fileID: 9109836838275029141, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9109836838275029142, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
+      propertyPath: multiplier
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 9109836838275029143, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: multiplier

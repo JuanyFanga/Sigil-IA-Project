@@ -18,8 +18,16 @@ public class LeaderBehaviour : MonoBehaviour, IFlockingBehaviour
     }
     public Vector3 GetDir(List<IBoid> boids, IBoid self)
     {
-        if (target == null) return Vector3.zero;
-        if (_isSeek) return _seek.GetDir() * multiplier;
+        if (target == null)
+        {
+            return Vector3.zero;
+        }
+
+        if (_isSeek)
+        {
+            return _seek.GetDir() * multiplier;
+        }
+
         return _pursuit.GetDir() * multiplier;
     }
 
