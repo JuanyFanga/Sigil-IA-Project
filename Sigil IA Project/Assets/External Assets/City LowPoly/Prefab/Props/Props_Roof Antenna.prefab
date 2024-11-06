@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3300000}
   - component: {fileID: 2300000}
   - component: {fileID: 3728973419203504177}
+  - component: {fileID: 8517717844768301370}
   m_Layer: 0
   m_Name: Props_Roof Antenna
   m_TagString: Untagged
@@ -96,3 +97,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bea67a23e6c32594385d20a4402dd598, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &8517717844768301370
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100000}
+  m_Material: {fileID: 13400000, guid: b063c143d4fd125468a57581340e0ec5, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.4260542, y: 8.10815, z: 1.4256363}
+  m_Center: {x: 0.0012829006, y: 4.046, z: -0.021300346}
