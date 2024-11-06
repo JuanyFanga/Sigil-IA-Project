@@ -33,7 +33,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
     private StatePathfinding<StateEnum> pathfinding;
     private bool _chaseongoing = false;
     public Action OnAttacking = delegate { };
-    private bool visto = false;
+    private float _timer = 3f;
 
     private void Awake()
     {
@@ -145,7 +145,20 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         }
         else
         {
-            return false;
+            if (_chaseongoing && _timer > 0)
+            {
+                _timer -= Time.deltaTime;
+                return true;
+            }
+            else
+            {
+                if (_timer <= 0 && !_chaseongoing)
+                {
+                    _timer = 3f;
+                    
+                }
+                return false;
+            }
         }
     }
     private bool InRange()
