@@ -49,6 +49,7 @@ public class PlayerModel : Entity
         {
             _currentDetector.AlertMonks();
             _currentDetector.gameObject.SetActive(false);
+            _isDetectable = true;
             _timeToAlert = 0;
         }
     }
