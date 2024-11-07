@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using TMPro.Examples;
 using UnityEngine;
 
 public class PlayerModel : Entity
@@ -11,11 +13,18 @@ public class PlayerModel : Entity
         get { return _isDetectable; }
     }
 
+
+    private float _timeToAlert;
+    public float TimerToAlert = 2f;
+    DetectionSphere _currentDetector;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("DetectionSphere"))
         { 
             _isDetectable = false;
+            _timeToAlert = TimerToAlert;
+            _currentDetector = other.GetComponent<DetectionSphere>();
         }
     }
 
@@ -24,12 +33,23 @@ public class PlayerModel : Entity
         if (other.CompareTag("DetectionSphere"))
         {
             _isDetectable = true;
+            _currentDetector = null;
         }
     }
 
     private void Update()
     {
-        //Debug.Log($"Player is detectable is = {IsDetectable}");
-    }
+        Debug.Log($"Time to alert is: {_timeToAlert}");
+        if (_isDetectable == true)
+            return;
 
+        _timeToAlert -= Time.deltaTime;
+        
+        if (_currentDetector != null && _timeToAlert <= 0)
+        {
+            _currentDetector.AlertMonks();
+            _currentDetector.gameObject.SetActive(false);
+            _timeToAlert = 0;
+        }
+    }
 }

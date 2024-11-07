@@ -13,7 +13,7 @@ public class StatePathfinding<T> : StateFollowPoints<T>
     public Action<List<Vector3>> SendList = delegate { };
     private List<Vector3> path;
     private StateEnum _state;
-    private float _sphereRadius = 100f;
+    private float _sphereRadius = 10f;
     private float _timer;
     
     
