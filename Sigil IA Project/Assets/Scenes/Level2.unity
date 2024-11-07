@@ -3948,9 +3948,21 @@ PrefabInstance:
       value: 2048
       objectReference: {fileID: 0}
     - target: {fileID: 9109836838275029137, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 465527088}
+    - target: {fileID: 9109836838275029137, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: target
       value: 
       objectReference: {fileID: 1179755506}
+    - target: {fileID: 9109836838275029137, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
+      propertyPath: safePlace
+      value: 
+      objectReference: {fileID: 1829580282}
+    - target: {fileID: 9109836838275029137, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
+      propertyPath: IsAalerted
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9109836838275029137, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: flockingGuide
       value: 
@@ -6320,6 +6332,11 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 20.000002, y: 0.20000087, z: 20.000002}
   m_Center: {x: 0.0000038146973, y: 0.099998385, z: 0.000015258789}
+--- !u!1 &465527088 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2369471413074136744, guid: 96f5ce20348387a4b833db3e109038e2, type: 3}
+  m_PrefabInstance: {fileID: 1594589941}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &475603548
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8827,9 +8844,21 @@ PrefabInstance:
       value: 2048
       objectReference: {fileID: 0}
     - target: {fileID: 9109836838275029137, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 465527088}
+    - target: {fileID: 9109836838275029137, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: target
       value: 
       objectReference: {fileID: 1179755506}
+    - target: {fileID: 9109836838275029137, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
+      propertyPath: safePlace
+      value: 
+      objectReference: {fileID: 1829580282}
+    - target: {fileID: 9109836838275029137, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
+      propertyPath: IsAalerted
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9109836838275029137, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: flockingGuide
       value: 
@@ -21023,9 +21052,21 @@ PrefabInstance:
       value: 2048
       objectReference: {fileID: 0}
     - target: {fileID: 9109836838275029137, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 465527088}
+    - target: {fileID: 9109836838275029137, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: target
       value: 
       objectReference: {fileID: 1179755506}
+    - target: {fileID: 9109836838275029137, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
+      propertyPath: safePlace
+      value: 
+      objectReference: {fileID: 1829580282}
+    - target: {fileID: 9109836838275029137, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
+      propertyPath: IsAalerted
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9109836838275029137, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: flockingGuide
       value: 
@@ -23489,9 +23530,21 @@ PrefabInstance:
       value: 2048
       objectReference: {fileID: 0}
     - target: {fileID: 9109836838275029137, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 465527088}
+    - target: {fileID: 9109836838275029137, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: target
       value: 
       objectReference: {fileID: 1179755506}
+    - target: {fileID: 9109836838275029137, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
+      propertyPath: safePlace
+      value: 
+      objectReference: {fileID: 1829580282}
+    - target: {fileID: 9109836838275029137, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
+      propertyPath: IsAalerted
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9109836838275029137, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: flockingGuide
       value: 
@@ -23550,7 +23603,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9109836838275029143, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: personalArea
-      value: 2
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 9109836838275029160, guid: 843d7f449e92c5c4caa9b07c70a6927f, type: 3}
       propertyPath: m_Name

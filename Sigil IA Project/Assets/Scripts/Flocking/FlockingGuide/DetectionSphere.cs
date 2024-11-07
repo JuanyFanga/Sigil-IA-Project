@@ -26,6 +26,14 @@ public class DetectionSphere : MonoBehaviour
         return finalPos / monks.Length;
     }
 
+    public void AlertMonks()
+    {
+        foreach (var monk in monks)
+        {
+            monk.GetComponent<Monk>().IsAlerted = true;
+        }
+    }
+
     //[SerializeField] private Rigidbody _player;
 
     //private void OnTriggerEnter(Collider other)
