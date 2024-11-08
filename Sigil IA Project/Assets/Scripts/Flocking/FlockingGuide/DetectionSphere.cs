@@ -31,6 +31,7 @@ public class DetectionSphere : MonoBehaviour
         foreach (var monk in monks)
         {
             monk.GetComponent<Monk>().IsAlerted = true;
+            //monk.GetComponent<CapsuleCollider>().isTrigger = true;
         }
     }
 }
