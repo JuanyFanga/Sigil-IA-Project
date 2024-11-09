@@ -11,6 +11,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private Rigidbody playerRb;
     public Transform SafeZoneTransform => npcSafeHouse;
     public Rigidbody PlayerRb => playerRb;
+    [SerializeField] private Transform[] _violentEnemySpawnPoint;
 
     void Awake()
     {
@@ -27,5 +28,10 @@ public class LevelManager : MonoBehaviour
     public void Defeat()
     {
         SceneManager.LoadScene("DefeatScreen");
+    }
+
+    public Transform SetRandomOrigin()
+    {
+        return _violentEnemySpawnPoint[Random.Range(0, _violentEnemySpawnPoint.Length)];
     }
 }

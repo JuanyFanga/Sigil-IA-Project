@@ -11,6 +11,9 @@ public class EnemyModel : Entity
     public LayerMask obsMask;
     ObstacleAvoidance _obs;
 
+    //Setear esto en el Controller
+    //public Transform OriginPoint;
+
     IAttack _attack;
     protected override void Awake()
     {

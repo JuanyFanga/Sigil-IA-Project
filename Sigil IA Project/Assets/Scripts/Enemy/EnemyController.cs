@@ -37,23 +37,35 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
 
     private void Awake()
     {
-        _lastPlayerPos = _target.transform;
+        
         _los = GetComponentInChildren<LineOfSight>();
         _rb = GetComponent<Rigidbody>();
         enemyView = GetComponent<EnemyView>();
     }
-    private void Start()
+
+    public void InitializeEnemy(EnemyWaypointsInfo newEnemyWaypontsInfo, Rigidbody player)
     {
-        newPatrolPosition = patrolPoints[0];
-        
+        originPoint = newEnemyWaypontsInfo._originPoint;
+        patrolPoints = newEnemyWaypontsInfo._waypoints;
+        _target = player;
+        _lastPlayerPos = _target.transform;
+
+        OnAttacking += GameManager.Instance.OnPlayerDie;
         InitializeEnemy();
-        InitializedFSM();
-        InitializedTree();
     }
+
     private void InitializeEnemy()
     {
-        transform.position = originPoint.position;
-        transform.rotation = originPoint.rotation;
+        if (originPoint != null)
+        {
+            transform.position = originPoint.position;
+            transform.rotation = originPoint.rotation;
+
+            newPatrolPosition = patrolPoints[0];
+            
+            InitializedFSM();
+            InitializedTree();
+        }
     }
     private void InitializedFSM()
     {

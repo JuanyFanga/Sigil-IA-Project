@@ -18,6 +18,11 @@ public class PlayerModel : Entity
     public float TimerToAlert = 2f;
     DetectionSphere _currentDetector;
 
+    private void Start()
+    {
+        _isDetectable = true;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("DetectionSphere"))
