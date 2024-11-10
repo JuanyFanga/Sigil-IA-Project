@@ -42,10 +42,10 @@ public class NPCController : MonoBehaviour
     {
         IMove entityMove = GetComponent<IMove>();
         
-        _pathfinding = new StatePathfinding<StateEnum>(transform, entityMove,safeHouse.position);
+        //_pathfinding = new StatePathfinding<StateEnum>(transform, entityMove,safeHouse.position);
         var idle = new NPCIdleState();
-        var scape = new NPCScapeState(entityMove, new Evade(transform, target, timePrediction), transform, callingSphereRadius, npcView);
-        var goHome = _pathfinding;
+        var scape = new NPCPathfinding<StateEnum>(transform,entityMove, safeHouse.position,target.transform);
+        var goHome = new NPCGoHomePath<StateEnum>(transform,entityMove,safeHouse.position);
         //var goHome = new NPCGoingHomeState(entityMove, transform,safeHouse.position,_pathfinding,callingSphereRadius );
         var dead = new NPCDeadState(gameObject);
 
@@ -55,7 +55,6 @@ public class NPCController : MonoBehaviour
         goHome.AddTransition(StateEnum.Dead, dead);
 
         scape.OnScape += OnScape;
-        _pathfinding.SendList += drawPath;
 
         fsm = new FSM<StateEnum>(idle);
     }

@@ -31,6 +31,5 @@ public class NPCPathfinding<T> : StatePathfinding<T>
         }
     }
     
-    
 }
 
