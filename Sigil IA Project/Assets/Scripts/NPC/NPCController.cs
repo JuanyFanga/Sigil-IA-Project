@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ public class NPCController : MonoBehaviour
     [SerializeField] private float maxFarDistance;
     [SerializeField] private Transform safeHouse;
     [SerializeField] private float callingSphereRadius;
+    [SerializeField] private TextMeshPro _text;
     private NPCView npcView;
     private FSM<StateEnum> fsm;
     private ITreeNode root;
@@ -55,6 +57,7 @@ public class NPCController : MonoBehaviour
         goHome.AddTransition(StateEnum.Dead, dead);
 
         scape.OnScape += OnScape;
+        scape.SendList += drawPath;
 
         fsm = new FSM<StateEnum>(idle);
     }
@@ -108,6 +111,7 @@ public class NPCController : MonoBehaviour
     {
         fsm.OnUpdate();
         root.Execute();
+        _text.text = fsm.currentState.ToString();
     }
 
     private void OnCollisionEnter(Collision collision)
