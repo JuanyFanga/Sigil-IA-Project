@@ -61,8 +61,6 @@ public class ObstacleManager : MonoBehaviour
     }
     public bool IsRightPos(Vector3 point)
     {
-        //print(point);
-        //print(!_obs.ContainsKey(point));
         return !_obs.ContainsKey(point);
     }
     List<Vector3> GetPointsInCollider(Collider coll, bool skipY = true)
@@ -97,10 +95,10 @@ public class ObstacleManager : MonoBehaviour
     }
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        foreach (var item in _obs)
-        {
-            Gizmos.DrawSphere(item.Key, 0.2f);
-        }
+        // Gizmos.color = Color.red;
+        // foreach (var item in _obs)
+        // {
+        //     Gizmos.DrawSphere(item.Key, 0.2f);
+        // }
     }
 }

@@ -33,6 +33,6 @@ public class EnemyPatrolState : State<StateEnum>
     {
         base.Enter();
         _index = 0;
-        Debug.Log("Patrol State");
+        //Debug.Log("Patrol State");
     }
 }

@@ -7,12 +7,11 @@ public class FindPathFinding<T> : StatePathfinding<T>
     IMove _move;
     Vector3 _target;
     StateEnum _state;
-    public FindPathFinding(Transform entity, IMove move, Vector3 target, StateEnum state, float distanceToPoint = 0.2F)
-        : base(entity, move, target, state, distanceToPoint)
+    public FindPathFinding(Transform entity, IMove move, Vector3 target, float distanceToPoint = 0.2F)
+        : base(entity, move, target, distanceToPoint)
     {
         _move = move;
         _target = target;
-        _state = state;
     }
 
     public override void Enter()

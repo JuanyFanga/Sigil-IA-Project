@@ -42,7 +42,7 @@ public class NPCController : MonoBehaviour
     {
         IMove entityMove = GetComponent<IMove>();
         
-        _pathfinding = new StatePathfinding<StateEnum>(transform, entityMove,safeHouse.position,StateEnum.GoHome);
+        _pathfinding = new StatePathfinding<StateEnum>(transform, entityMove,safeHouse.position);
         var idle = new NPCIdleState();
         var scape = new NPCScapeState(entityMove, new Evade(transform, target, timePrediction), transform, callingSphereRadius, npcView);
         var goHome = _pathfinding;
@@ -78,7 +78,7 @@ public class NPCController : MonoBehaviour
     private bool InView()
     {
 
-        Debug.Log($"I´m {gameObject.name} and CheckRange is: {los.CheckRange(target.transform)}, CheckAngle is: {los.CheckAngle(target.transform)}, CheckView is: {los.CheckView(target.transform)}, player IsDetectable is: {target.GetComponent<PlayerModel>().IsDetectable}");
+        //Debug.Log($"Iï¿½m {gameObject.name} and CheckRange is: {los.CheckRange(target.transform)}, CheckAngle is: {los.CheckAngle(target.transform)}, CheckView is: {los.CheckView(target.transform)}, player IsDetectable is: {target.GetComponent<PlayerModel>().IsDetectable}");
 
         return los.CheckRange(target.transform) && los.CheckAngle(target.transform) && los.CheckView(target.transform) && target.GetComponent<PlayerModel>().IsDetectable == true;
 

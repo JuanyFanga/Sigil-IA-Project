@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class StateFollowPoints<T> : State<T>
 {
     protected List<Vector3> _waypoints;
-    int _index;
+    protected int _index;
     protected Transform _entity;
-    float _distanceToPoint = 0.2f;
+    protected float _distanceToPoint = 0.2f;
     bool _isFinishPath;
+    public Action<List<Vector3>> OnStart = delegate { };
+    
     
     public StateFollowPoints(Transform entity, float distanceToPoint = 0.2f)
     {
@@ -26,20 +29,27 @@ public class StateFollowPoints<T> : State<T>
 
     public override void Execute()
     {
-        base.Execute();
         MovethePlayer();
     }
     public void SetWaypoints(List<Vector3> newPoints)
     {
-        if (newPoints.Count == 0) return;
+        if (newPoints.Count == 0)
+        {
+            Debug.Log("No hay PATH");
+            return;
+        }
         _waypoints = newPoints;
         _index = 0;
         _isFinishPath = false;
         OnStartPath();
     }
-    void MovethePlayer()
+    protected virtual void MovethePlayer()
     {
-        if (_isFinishPath) { return; }
+        if (_isFinishPath)
+        {
+            Debug.Log("Finished Path");
+            return;
+        }
         
         Vector3 point = _waypoints[_index];
         point.y = _entity.position.y; 
@@ -70,13 +80,10 @@ public class StateFollowPoints<T> : State<T>
 
     }
     public bool IsFinishPath => _isFinishPath;
-    
-    private void OnDrawGizmos()
+
+    public override void Enter()
     {
-        Gizmos.color = Color.blue;
-        foreach (var item in _waypoints)
-        {
-            Gizmos.DrawSphere(item, 0.2f);
-        }
+        //SetWaypoints(_waypoints);
+        //Debug.Log("Enter FollowPoints");
     }
 }

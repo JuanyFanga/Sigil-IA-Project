@@ -17,12 +17,11 @@ public class StatePathfinding<T> : StateFollowPoints<T>
     private float _timer;
     
     
-    public StatePathfinding(Transform entity, IMove move,Vector3 target,StateEnum state, float distanceToPoint = 0.2F) 
+    public StatePathfinding(Transform entity, IMove move,Vector3 target, float distanceToPoint = 0.2F) 
         : base(entity, distanceToPoint)
     {
         _move = move;
         _target= target;
-        _state = state;
     }
     public StatePathfinding(Transform entity, IMove move, List<Vector3> waypoints, float distanceToPoint = 0.2f)
         : base(entity, waypoints, distanceToPoint)
@@ -32,7 +31,6 @@ public class StatePathfinding<T> : StateFollowPoints<T>
 
     public override void Enter()
     {
-        base.Enter();
         Debug.Log("Enter Pathfinding");
         SetPathAStarPlusVector();
         SendList(path);
@@ -114,33 +112,6 @@ public class StatePathfinding<T> : StateFollowPoints<T>
     public override void Execute()
     {
         base.Execute();
-        if (_state == StateEnum.GoHome)
-        {
-            if (_timer <= 0)
-            {
-                Detect();
-                _timer = 2f;
-            }
-            else
-            {
-                _timer -= Time.deltaTime;
-            }
-            
-        }
-    }
-    private void Detect()
-    {
-        Collider[] enemies = Physics.OverlapSphere(_entity.position, _sphereRadius);
-        Debug.Log("Alerting");
-        foreach (Collider enemyCollider in enemies)
-        {
-            IViolentEnemy enemy = enemyCollider.GetComponent<IViolentEnemy>();
-
-            if (enemy != null)
-            {
-                enemy.KnowingLastPosition();
-            }
-        }
     }
 }
 

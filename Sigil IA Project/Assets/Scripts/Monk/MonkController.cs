@@ -32,7 +32,7 @@ public class MonkController : MonoBehaviour
         _fsm = new FSM<StateEnum>();
         IMove entityMove = GetComponent<IMove>();
         var obs = new ObstacleAvoidance(_monk.transform, angle, radius, maskObs);
-        pathfinding = new StatePathfinding<StateEnum>(transform, entityMove, safePlace.position, StateEnum.GoHome);
+        pathfinding = new StatePathfinding<StateEnum>(transform, entityMove, safePlace.position);
 
         var idle = new GenericIdleState<StateEnum>();
         var steering = new MonkSteeringState<StateEnum>(_monk, GetComponent<FlockingManager>(), obs, flockingGuide);

@@ -3,42 +3,48 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using System;
+using TMPro;
 
 public class EnemyController : MonoBehaviour, IViolentEnemy
 {
-    [SerializeField] private Rigidbody _target;
-    [SerializeField] private float _attackRange = 1f;
-    private Rigidbody _rb;
+    //Privates
     private LineOfSight _los;
-    [SerializeField] private float timePrediction;
-    [SerializeField] Transform[] patrolPoints;
-    [SerializeField] List<Vector3> _patrolPoints = new List<Vector3>();
+    private Rigidbody _rb;
     private FSM<StateEnum> fsm;
     private ITreeNode root;
     private ISteering steering;
-    private ISteering seekSteering;
-    private int indice = 0;
-    [SerializeField] private bool patroller;
-    private bool IsOverWaitTime = false;
-    private bool hasArrived = false;
-    [SerializeField] private bool isAlerted = false;
-    [SerializeField] private Transform originPoint;
-    private Transform newPatrolPosition;
-    private Vector3 LastPlayerPosition;
-    private Transform _lastPlayerPos;
     private EnemyView enemyView;
     private Animator _anim;
+    private Vector3 LastPlayerPosition;
+    private Transform _lastPlayerPos;
+    private List<Vector3> pathtoDraw;
+    private List<Vector3> pathtoDraw2;
+    private Transform newPatrolPosition;
+    //private StatePathfinding<StateEnum> pathfinding;
+
+    //Serializable
+    [SerializeField] private Rigidbody _target;
+    [SerializeField] private float _attackRange = 1f;
+    [SerializeField] private float timePrediction;
+    [SerializeField] private bool patroller;
+    [SerializeField] private Transform originPoint;
+    [SerializeField] List<Vector3> _patrolPoints = new List<Vector3>();
+    [SerializeField] private Transform[] patrolPoints;
+    [SerializeField] private TextMeshPro _text;
+    
+    //EVENTOS
+    public Action OnAttacking = delegate { };
+    
+    //BOOLEANOS
+    private bool isAlerted = false;
+    private bool IsOverWaitTime = false;
+    private bool hasArrived = false;
     private bool ArrivedtoPatrol = false;
     private bool ArrivedtoFind = false;
-    private List<Vector3> pathtoDraw;
-    private StatePathfinding<StateEnum> pathfinding;
-    private bool _chaseongoing = false;
-    public Action OnAttacking = delegate { };
-    private float _timer = 3f;
+    
 
     private void Awake()
     {
-        
         _los = GetComponentInChildren<LineOfSight>();
         _rb = GetComponent<Rigidbody>();
         enemyView = GetComponent<EnemyView>();
@@ -77,13 +83,14 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
     {
         IMove entityMove = GetComponent<IMove>();
         IAttack entityAttack = GetComponent<IAttack>();
-
-        //pathfinding = new StatePathfinding<StateEnum>(transform, entityMove,patrolPoints[0].position,StateEnum.Path); 
+        
+        
         var idle = new EnemyIdleState<StateEnum>();
-        var patrol = new PatrolPathFinding<StateEnum>(transform, entityMove, _patrolPoints);
+        var patrol = new PatrolPathFinding<StateEnum>(transform,entityMove, _patrolPoints);
         var chase = new EnemySteeringState(entityMove,new Pursuit(transform, _target, timePrediction), enemyView);
-        var find = new FindPathFinding<StateEnum>(transform, entityMove, _lastPlayerPos.position, StateEnum.Find);
+        var find = new FindPathFinding<StateEnum>(transform, entityMove, _lastPlayerPos.position);
         var attack = new EnemyAttackState(entityAttack, entityMove, transform, _rb);
+        var pathfinding = new StatePathfinding<StateEnum>(transform, entityMove, _patrolPoints[0]);
 
 
         idle.AddTransition(StateEnum.Patrol, patrol);
@@ -105,16 +112,16 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         pathfinding.AddTransition(StateEnum.Chase, chase);
         pathfinding.AddTransition(StateEnum.Patrol, patrol);
         pathfinding.AddTransition(StateEnum.Find, find);
-
-        //pathfinding.OnArrived += Reached;
-        //pathfinding.SendList += DrawPath;
+        
+        
         //find.OnwaitOver += WaitisOver;
+        pathfinding.SendList += DrawPath;
+        pathfinding.OnArrived += Reached;
         chase.OnEnd += OnEndofChase;
         chase.OnStart += chaseStarted;
         attack.OnAttack += IsAttacking;
-        patrol.OnArrived += Reached;
-        patrol.SendList += DrawPath;
         idle.OnFinishedIdle += StartAgain;
+        patrol.OnStart += DrawPath2;
 
         fsm = new FSM<StateEnum>(idle);
     }
@@ -131,13 +138,11 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         var qisInSpot = new QuestionTree(()=>ArrivedtoPatrol, patrol, pathfind);
         //Estoy en la zona de patrullaje?
         
-        //var qIsPatrol = new QuestionTree(() => patroller, qisInSpot, qisInSpot);
-        // Soy un Enemigo que patrulla? 
 
         var qIsReachedFind = new QuestionTree(()=> ArrivedtoFind, find, pathfind);
         //llego a la ultima ubicacion del player?
         
-        var qIsOverFind = new QuestionTree(()=> _chaseongoing,qIsReachedFind, qisInSpot);
+        var qIsOverFind = new QuestionTree(chaseCheck,qIsReachedFind, qisInSpot);
         //Sigo en tiempo de busqueda?
         
         var qIsChase = new QuestionTree(PreviousState, qIsOverFind, qisInSpot);
@@ -166,20 +171,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         }
         else
         {
-            if (_chaseongoing && _timer > 0)
-            {
-                _timer -= Time.deltaTime;
-                return true;
-            }
-            else
-            {
-                if (_timer <= 0 && !_chaseongoing)
-                {
-                    _timer = 3f;
-                    
-                }
-                return false;
-            }
+            return false;
         }
     }
     private bool InRange()
@@ -188,7 +180,9 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
     }
 
     private bool IsAlerted()
-    { return isAlerted; }
+    {
+        return isAlerted;
+    }
     private bool PreviousState()
     {
         if((fsm.PreviousState is EnemySteeringState || fsm.currentState is EnemySteeringState) && !InView()) 
@@ -205,34 +199,38 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         isAlerted = false;
         ArrivedtoPatrol = false;
         ArrivedtoFind = false;
-        _chaseongoing = false;
-        pathfinding.Reconfig(patrolPoints[0].position);
+        //pathfinding.Reconfig(patrolPoints[0].position);
     }
     private void OnEndofChase() 
     {
         IsOverWaitTime = false;
         LastPlayerPosition = _target.transform.position;
-        pathfinding.Reconfig(LastPlayerPosition);
+        //pathfinding.Reconfig(LastPlayerPosition);
     }
     private void StartAgain()
     {
         ArrivedtoPatrol = false;
     }
+
+    private bool chaseCheck()
+    {
+        if (fsm.currentState is EnemyFindState || fsm.PreviousState is EnemyFindState && !ArrivedtoPatrol)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
     private void Reached()
     {
         ArrivedtoPatrol = true;
-
-        //if (state == StateEnum.Find)
-        //{
-        //    Rigidbody r = GetComponent<Rigidbody>();
-        //    r.velocity = Vector3.zero;
-        //    ArrivedtoFind = true;
-        //}
     }
     public void KnowingLastPosition()
     {
         isAlerted = true;
-        pathfinding.Reconfig(_target.transform.position);
+        //pathfinding.Reconfig(_target.transform.position);
     }
     public void IsAttacking()
     {
@@ -242,14 +240,18 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
     {
         fsm.OnUpdate();
         root.Execute();
+        _text.text = fsm.currentState.ToString();
     }
     private void DrawPath(List<Vector3> path)
     {
         pathtoDraw = path;
     }
+    private void DrawPath2(List<Vector3> path)
+    {
+        pathtoDraw = path;
+    }
     private void chaseStarted()
     {
-        _chaseongoing = true;
     }
     public void OnDrawGizmos()
     {
@@ -257,6 +259,17 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         if (pathtoDraw != null)
         {
             foreach (var item in pathtoDraw)
+            {
+                if (item != null)
+                {
+                    Gizmos.DrawSphere(item, 0.2f);
+                }
+            }
+        }
+        Gizmos.color = Color.yellow;
+        if (pathtoDraw2 != null)
+        {
+            foreach (var item in pathtoDraw2)
             {
                 if (item != null)
                 {

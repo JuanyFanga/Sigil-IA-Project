@@ -44,7 +44,7 @@ public class PlayerModel : Entity
 
     private void Update()
     {
-        Debug.Log($"Time to alert is: {_timeToAlert}");
+        //Debug.Log($"Time to alert is: {_timeToAlert}");
         if (_isDetectable == true)
             return;
 
