@@ -9,7 +9,7 @@ public class StatePathfinding<T> : StateFollowPoints<T>
     IMove _move;
     public Vector3 _target;
     private Transform _current;
-    public Action<StateEnum> OnArrived = delegate { };
+    public Action OnArrived = delegate { };
     public Action<List<Vector3>> SendList = delegate { };
     private List<Vector3> path;
     private StateEnum _state;
@@ -42,7 +42,7 @@ public class StatePathfinding<T> : StateFollowPoints<T>
     protected override void OnFinishPath()
     {
         base.OnFinishPath();
-        OnArrived(_state);
+        OnArrived();
     }
     protected override void OnMove(Vector3 dir)
     {
@@ -107,10 +107,9 @@ public class StatePathfinding<T> : StateFollowPoints<T>
         return connections;
     }
 
-    public void Reconfig(Vector3 target,StateEnum state)
+    public virtual void Reconfig(Vector3 target)
     {
         _target = target;
-        _state = state;
     }
     public override void Execute()
     {

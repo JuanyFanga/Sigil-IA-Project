@@ -12,6 +12,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
     private LineOfSight _los;
     [SerializeField] private float timePrediction;
     [SerializeField] Transform[] patrolPoints;
+    [SerializeField] List<Vector3> _patrolPoints = new List<Vector3>();
     private FSM<StateEnum> fsm;
     private ITreeNode root;
     private ISteering steering;
@@ -50,6 +51,11 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         _target = player;
         _lastPlayerPos = _target.transform;
 
+        foreach (Transform point in patrolPoints)
+        {
+            _patrolPoints.Add(point.position);
+        }
+
         OnAttacking += GameManager.Instance.OnPlayerDie;
         InitializeEnemy();
     }
@@ -72,11 +78,11 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         IMove entityMove = GetComponent<IMove>();
         IAttack entityAttack = GetComponent<IAttack>();
 
-        pathfinding = new StatePathfinding<StateEnum>(transform, entityMove,patrolPoints[0].position,StateEnum.Path); 
+        //pathfinding = new StatePathfinding<StateEnum>(transform, entityMove,patrolPoints[0].position,StateEnum.Path); 
         var idle = new EnemyIdleState<StateEnum>();
-        var patrol = new EnemyPatrolState(entityMove, new Seek(newPatrolPosition, transform), transform, patrolPoints);
+        var patrol = new PatrolPathFinding<StateEnum>(transform, entityMove, _patrolPoints);
         var chase = new EnemySteeringState(entityMove,new Pursuit(transform, _target, timePrediction), enemyView);
-        var find = new EnemyFindState(_lastPlayerPos, entityMove, transform,new Seek(_lastPlayerPos, transform));
+        var find = new FindPathFinding<StateEnum>(transform, entityMove, _lastPlayerPos.position, StateEnum.Find);
         var attack = new EnemyAttackState(entityAttack, entityMove, transform, _rb);
 
 
@@ -100,12 +106,15 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         pathfinding.AddTransition(StateEnum.Patrol, patrol);
         pathfinding.AddTransition(StateEnum.Find, find);
 
-        pathfinding.OnArrived += Reached;
-        pathfinding.SendList += DrawPath;
-        find.OnwaitOver += WaitisOver;
+        //pathfinding.OnArrived += Reached;
+        //pathfinding.SendList += DrawPath;
+        //find.OnwaitOver += WaitisOver;
         chase.OnEnd += OnEndofChase;
         chase.OnStart += chaseStarted;
         attack.OnAttack += IsAttacking;
+        patrol.OnArrived += Reached;
+        patrol.SendList += DrawPath;
+        idle.OnFinishedIdle += StartAgain;
 
         fsm = new FSM<StateEnum>(idle);
     }
@@ -197,29 +206,33 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         ArrivedtoPatrol = false;
         ArrivedtoFind = false;
         _chaseongoing = false;
-        pathfinding.Reconfig(patrolPoints[0].position,StateEnum.Path);
+        pathfinding.Reconfig(patrolPoints[0].position);
     }
     private void OnEndofChase() 
     {
         IsOverWaitTime = false;
         LastPlayerPosition = _target.transform.position;
-        pathfinding.Reconfig(LastPlayerPosition,StateEnum.Find);
+        pathfinding.Reconfig(LastPlayerPosition);
     }
-    private void Reached(StateEnum state)
+    private void StartAgain()
     {
-        if(state == StateEnum.Path){ArrivedtoPatrol = true;}
+        ArrivedtoPatrol = false;
+    }
+    private void Reached()
+    {
+        ArrivedtoPatrol = true;
 
-        if (state == StateEnum.Find)
-        {
-            Rigidbody r = GetComponent<Rigidbody>();
-            r.velocity = Vector3.zero;
-            ArrivedtoFind = true;
-        }
+        //if (state == StateEnum.Find)
+        //{
+        //    Rigidbody r = GetComponent<Rigidbody>();
+        //    r.velocity = Vector3.zero;
+        //    ArrivedtoFind = true;
+        //}
     }
     public void KnowingLastPosition()
     {
         isAlerted = true;
-        pathfinding.Reconfig(_target.transform.position,StateEnum.Find);
+        pathfinding.Reconfig(_target.transform.position);
     }
     public void IsAttacking()
     {
