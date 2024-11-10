@@ -74,7 +74,7 @@ public class StatePathfinding<T> : StateFollowPoints<T>
         cost += Vector3.Distance(parent, child) * multiplierDist;
         return cost;
     }
-    float Heuristic(Vector3 node)
+    protected virtual float Heuristic(Vector3 node)
     {
         float h = 0;
         h += Vector3.Distance(node, _target);
@@ -105,7 +105,7 @@ public class StatePathfinding<T> : StateFollowPoints<T>
         return connections;
     }
 
-    public virtual void Reconfig(Vector3 target)
+    public void Reconfig(Vector3 target)
     {
         _target = target;
     }

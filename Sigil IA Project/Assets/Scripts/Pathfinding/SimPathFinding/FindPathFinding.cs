@@ -4,19 +4,24 @@ using UnityEngine;
 
 public class FindPathFinding<T> : StatePathfinding<T>
 {
-    IMove _move;
-    Vector3 _target;
-    StateEnum _state;
+
+    private float _timer = 5f;
     public FindPathFinding(Transform entity, IMove move, Vector3 target, float distanceToPoint = 0.2F)
-        : base(entity, move, target, distanceToPoint)
-    {
-        _move = move;
-        _target = target;
-    }
+        : base(entity, move, target, distanceToPoint) { }
 
     public override void Enter()
     {
         base.Enter();
         Debug.Log("Entro al findpathfinding");
+        
+    }
+
+    protected override void OnFinishPath()
+    {
+        while (_timer > 0)
+        {
+            _timer -= Time.deltaTime;
+        }
+        base.OnFinishPath();
     }
 }
