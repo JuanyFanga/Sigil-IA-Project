@@ -38,8 +38,8 @@ public class NPCPathfinding<T> : StatePathfinding<T>
     {
         base.Enter();
         _playerpos = _playertransform.position;
-        Debug.Log(path.Count);
-        Debug.Log("Entered NPC Pathfinding");
+        //Debug.Log(path.Count);
+        //Debug.Log("Entered NPC Pathfinding");
     }
 }
 

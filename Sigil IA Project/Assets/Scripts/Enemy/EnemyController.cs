@@ -56,7 +56,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         patrolPoints = newEnemyWaypontsInfo._waypoints;
         _target = player;
         _lastPlayerPos = _target.transform;
-
+        Debug.Log(_lastPlayerPos);
         foreach (Transform point in patrolPoints)
         {
             _patrolPoints.Add(point.position);
@@ -88,7 +88,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         var idle = new EnemyIdleState<StateEnum>();
         var patrol = new PatrolPathFinding<StateEnum>(transform,entityMove, _patrolPoints);
         var chase = new EnemySteeringState(entityMove,new Pursuit(transform, _target, timePrediction), enemyView);
-        var find = new FindPathFinding<StateEnum>(transform, entityMove, _lastPlayerPos.position);
+        var find = new FindPathFinding<StateEnum>(transform, entityMove, _lastPlayerPos.position,_target.transform,_rb);
         var attack = new EnemyAttackState(entityAttack, entityMove, transform, _rb);
         var pathfinding = new StatePathfinding<StateEnum>(transform, entityMove, _patrolPoints[0]);
 
@@ -100,6 +100,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         patrol.AddTransition(StateEnum.Chase,chase);
         patrol.AddTransition(StateEnum.Idle,idle);
         patrol.AddTransition(StateEnum.Path,pathfinding);
+        patrol.AddTransition(StateEnum.Find,find);
 
         chase.AddTransition(StateEnum.Find,find);
         chase.AddTransition(StateEnum.Attack,attack);
@@ -117,6 +118,8 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         //find.OnwaitOver += WaitisOver;
         pathfinding.SendList += DrawPath;
         pathfinding.OnArrived += Reached;
+        find.SendList += DrawPath;
+        find.OnArrived += WaitisOver;
         chase.OnEnd += OnEndofChase;
         chase.OnStart += chaseStarted;
         attack.OnAttack += IsAttacking;
@@ -151,7 +154,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         var qIsInRange = new QuestionTree(InRange, attack, chase);
         // Lo tengo en rango de ataque? 
         
-        var qIsAlerted = new QuestionTree(IsAlerted, pathfind , qIsOverFind);
+        var qIsAlerted = new QuestionTree(IsAlerted, find , qIsOverFind);
         // Esta alertado por NPC?
 
         var qInView = new QuestionTree(InView, qIsInRange, qIsAlerted);
@@ -199,13 +202,11 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         isAlerted = false;
         ArrivedtoPatrol = false;
         ArrivedtoFind = false;
-        //pathfinding.Reconfig(patrolPoints[0].position);
     }
     private void OnEndofChase() 
     {
         IsOverWaitTime = false;
         LastPlayerPosition = _target.transform.position;
-        //pathfinding.Reconfig(LastPlayerPosition);
     }
     private void StartAgain()
     {
@@ -230,7 +231,6 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
     public void KnowingLastPosition()
     {
         isAlerted = true;
-        //pathfinding.Reconfig(_target.transform.position);
     }
     public void IsAttacking()
     {
@@ -252,6 +252,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
     }
     private void chaseStarted()
     {
+        isAlerted = false;
     }
     public void OnDrawGizmos()
     {
