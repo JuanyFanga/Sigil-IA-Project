@@ -47,7 +47,7 @@ public class StateFollowPoints<T> : State<T>
     {
         if (_isFinishPath)
         {
-            Debug.Log("Finished Path");
+            //Debug.Log("Finished Path");
             return;
         }
         

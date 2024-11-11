@@ -103,7 +103,7 @@ public class NPCController : MonoBehaviour
 
     private bool IsCloseToHouse()
     {
-        Debug.Log(Vector3.Distance(safeHouse.position, transform.position));
+        //Debug.Log(Vector3.Distance(safeHouse.position, transform.position));
         return Vector3.Distance(safeHouse.position, transform.position) <= 5;
     }
 

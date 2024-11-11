@@ -11,10 +11,8 @@ public class StatePathfinding<T> : StateFollowPoints<T>
     private Transform _current;
     public Action OnArrived = delegate { };
     public Action<List<Vector3>> SendList = delegate { };
-    private List<Vector3> path;
+    protected private List<Vector3> path;
     private StateEnum _state;
-    private float _sphereRadius = 10f;
-    private float _timer;
     
     
     public StatePathfinding(Transform entity, IMove move,Vector3 target, float distanceToPoint = 0.2F) 
@@ -31,10 +29,8 @@ public class StatePathfinding<T> : StateFollowPoints<T>
 
     public override void Enter()
     {
-        Debug.Log("Enter Pathfinding");
         SetPathAStarPlusVector();
         SendList(path);
-        _timer = 2f;
     }
 
     protected override void OnFinishPath()
@@ -44,7 +40,6 @@ public class StatePathfinding<T> : StateFollowPoints<T>
     }
     protected override void OnMove(Vector3 dir)
     {
-        base.OnMove(dir);
         if (dir != Vector3.zero)
         {
             _move.Move(dir);
@@ -108,10 +103,6 @@ public class StatePathfinding<T> : StateFollowPoints<T>
     public void Reconfig(Vector3 target)
     {
         _target = target;
-    }
-    public override void Execute()
-    {
-        base.Execute();
     }
 }
 

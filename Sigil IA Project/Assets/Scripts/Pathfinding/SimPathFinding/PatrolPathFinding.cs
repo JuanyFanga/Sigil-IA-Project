@@ -12,14 +12,12 @@ public class PatrolPathFinding<T> : StatePathfinding<T>
     public override void Enter()
     {
         SetWaypoints(_waypoints);
-        Debug.Log("Entro al patrolpathfinding");
         OnStart(_waypoints);
     }
     
 
     public override void Exit()
     {
-        Debug.Log("Salgo de patrolpathfinding");
     }
 
     protected override void MovethePlayer()

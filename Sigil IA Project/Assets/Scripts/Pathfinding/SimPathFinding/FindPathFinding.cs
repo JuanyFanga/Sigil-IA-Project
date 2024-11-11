@@ -12,8 +12,6 @@ public class FindPathFinding<T> : StatePathfinding<T>
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("Entro al findpathfinding");
-        
     }
 
     protected override void OnFinishPath()

@@ -22,6 +22,12 @@ public class NPCGoHomePath<T> : StatePathfinding<T>
         }
     }
 
+    public override void Enter()
+    {
+        base.Enter();
+        Debug.Log("Entered GoHomePath");
+    }
+
     private void Detect()
     {
         //_npcView.PlayScreamSound();
