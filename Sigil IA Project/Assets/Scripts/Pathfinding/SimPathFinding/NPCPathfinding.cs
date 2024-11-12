@@ -9,9 +9,8 @@ public class NPCPathfinding<T> : StatePathfinding<T>
     public Action OnScape = delegate { };
     private Vector3 _playerpos;
     private Transform _playertransform;
-    private NPCView _npcView;
 
-    public NPCPathfinding(Transform entity, IMove move, Vector3 target, Transform player, NPCView npcView ,float distanceToPoint = 0.2F)
+    public NPCPathfinding(Transform entity, IMove move, Vector3 target, Transform player, float distanceToPoint = 0.2F)
         : base(entity, move, target, distanceToPoint)
     {
         _playertransform = player;
@@ -40,7 +39,6 @@ public class NPCPathfinding<T> : StatePathfinding<T>
     {
         base.Enter();
         _playerpos = _playertransform.position;
-        _npcView.PlayScreamSound();
         //Debug.Log(path.Count);
         Debug.Log("Entered NPC Pathfinding");
     }
