@@ -6,8 +6,9 @@ public class NPCGoHomePath<T> : StatePathfinding<T>
 {
     private float _timer = 2f;
     private float _sphereRadius = 20f;
-    public NPCGoHomePath(Transform entity, IMove move,Vector3 target, float distanceToPoint = 0.2F) 
-        : base(entity,move,target, distanceToPoint) { }
+    private NPCView _npcView;
+    public NPCGoHomePath(Transform entity, IMove move,Vector3 target, NPCView npcView ,float distanceToPoint = 0.2F) 
+        : base(entity,move,target, distanceToPoint) { _npcView = npcView; }
 
     public override void Execute()
     {
@@ -31,7 +32,7 @@ public class NPCGoHomePath<T> : StatePathfinding<T>
 
     private void Detect()
     {
-        //_npcView.PlayScreamSound();
+        _npcView.PlayScreamSound();
         Debug.Log("Detect");
         Collider[] enemies = Physics.OverlapSphere(_entity.position, _sphereRadius);
 
