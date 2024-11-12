@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class FindPathFinding<T> : StatePathfinding<T>
@@ -23,20 +24,33 @@ public class FindPathFinding<T> : StatePathfinding<T>
         _timer = 5f;
     }
 
-    protected override void OnFinishPath()
+    protected override void MovethePlayer()
     {
-        _rb.velocity = Vector3.zero;
-        Debug.Log(_timer);
-        while (_timer > 0)
+        Vector3 point = _waypoints[_index];
+        point.y = _entity.position.y;
+        Vector3 dir = point - _entity.position;
+        if (dir.magnitude < _distanceToPoint)
         {
-            _timer -= Time.deltaTime;
-        }
+            if (_index + 1 < _waypoints.Count)
+                _index++;
+            else
+            {
+                _rb.velocity = Vector3.zero;
+                Debug.Log(_timer);
+                if (_timer > 0)
+                {
+                    _timer -= Time.deltaTime;
+                }
 
-        if (_timer <= 0)
-        {
-            _timer = 5f;
-            Exit();
+                if (_timer <= 0)
+                {
+                    _timer = 5f;
+                    Exit();
+                }
+            }
         }
+        if(_timer == 5) { OnMove(dir.normalized); }
+        
     }
 
     public override void Exit()
