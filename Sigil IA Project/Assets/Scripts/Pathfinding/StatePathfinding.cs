@@ -53,8 +53,8 @@ public class StatePathfinding<T> : StateFollowPoints<T>
     }
     public void SetPathAStarPlusVector()
     {
-        //var start = GetPoint(_entity.position);
-        path = Astar.Run<Vector3>(_entity.position, IsSatisfies,GetConnections,GetCost,Heuristic);
+        var start = GetPoint(_entity.position);
+        path = Astar.Run<Vector3>(start,IsSatisfies,GetConnections,GetCost,Heuristic);
         if (path.Count <= 0)
         {
             Debug.Log("No Path");
@@ -75,14 +75,14 @@ public class StatePathfinding<T> : StateFollowPoints<T>
         h += Vector3.Distance(node, _target);
         return h;
     }
-    //Vector3 GetPoint(Vector3 point)
-    //{
-    //    return Vector3Int.RoundToInt(point);
-    //}
+    Vector3 GetPoint(Vector3 point)
+    {
+        return Vector3Int.RoundToInt(point);
+    }
     bool IsSatisfies(Vector3 current)
     {
-        //var pointToGoal = GetPoint(_target);
-        return Vector3.Distance(current, _entity.position) <= 1f;
+        var pointToGoal = GetPoint(_target);
+        return Vector3.Distance(current,pointToGoal) <= 1f;
     }
     List<Vector3> GetConnections(Vector3 current)
     {
