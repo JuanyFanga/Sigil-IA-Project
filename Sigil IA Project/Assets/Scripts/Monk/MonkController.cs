@@ -15,6 +15,7 @@ public class MonkController : MonoBehaviour
     public LayerMask maskObs;
     FSM<StateEnum> _fsm;
     Monk _monk;
+    NPCView monkView;
     private ITreeNode root;
     [SerializeField] private Transform safePlace;
     private StatePathfinding<StateEnum> pathfinding;

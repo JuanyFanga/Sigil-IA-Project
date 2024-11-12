@@ -59,6 +59,9 @@ public class NPCController : MonoBehaviour
         scape.OnScape += OnScape;
         scape.SendList += drawPath;
 
+        goHome.OnScream += npcView.PlayScreamSound;
+        scape.OnScream += npcView.PlayScreamSound;
+
         fsm = new FSM<StateEnum>(idle);
     }
 

@@ -7,6 +7,7 @@ using System.IO;
 public class NPCPathfinding<T> : StatePathfinding<T>
 {
     public Action OnScape = delegate { };
+    public Action OnScream = delegate { };
     private Vector3 _playerpos;
     private Transform _playertransform;
 
@@ -38,6 +39,7 @@ public class NPCPathfinding<T> : StatePathfinding<T>
     {
         base.Enter();
         _playerpos = _playertransform.position;
+        OnScream();
         //Debug.Log(path.Count);
         //Debug.Log("Entered NPC Pathfinding");
     }
