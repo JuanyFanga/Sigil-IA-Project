@@ -14,7 +14,6 @@ public class NPCPathfinding<T> : StatePathfinding<T>
         : base(entity, move, target, distanceToPoint)
     {
         _playertransform = player;
-        _npcView = npcView;
     }
 
     protected override float Heuristic(Vector3 node)
@@ -40,7 +39,7 @@ public class NPCPathfinding<T> : StatePathfinding<T>
         base.Enter();
         _playerpos = _playertransform.position;
         //Debug.Log(path.Count);
-        Debug.Log("Entered NPC Pathfinding");
+        //Debug.Log("Entered NPC Pathfinding");
     }
 }
 
