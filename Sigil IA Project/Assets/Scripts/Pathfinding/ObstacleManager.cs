@@ -95,10 +95,10 @@ public class ObstacleManager : MonoBehaviour
     }
     private void OnDrawGizmos()
     {
-        // Gizmos.color = Color.red;
-        // foreach (var item in _obs)
-        // {
-        //     Gizmos.DrawSphere(item.Key, 0.2f);
-        // }
+        Gizmos.color = Color.red;
+        foreach (var item in _obs)
+        {
+            Gizmos.DrawSphere(item.Key, 0.2f);
+        }
     }
 }

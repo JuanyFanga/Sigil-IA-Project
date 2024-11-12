@@ -54,6 +54,11 @@ public class StatePathfinding<T> : StateFollowPoints<T>
     public void SetPathAStarPlusVector()
     {
         var start = GetPoint(_entity.position);
+        if (!ObstacleManager.Singleton.IsRightPos(start)) 
+        { 
+           List<Vector3> list = GetConnections(start);
+           start = list[0];
+        }
         path = Astar.Run<Vector3>(start,IsSatisfies,GetConnections,GetCost,Heuristic);
         if (path.Count <= 0)
         {
@@ -92,7 +97,7 @@ public class StatePathfinding<T> : StateFollowPoints<T>
             for (int z = -1; z <= 1; z++)
             {
                 if(x == 0 && z == 0) continue;
-                var point = new Vector3(current.x + x, current.y, current.z + z);
+                var point = GetPoint(new Vector3(current.x + x, current.y, current.z + z));
                 if (!ObstacleManager.Singleton.IsRightPos(point)) continue;
                 connections.Add(point);
             }

@@ -154,7 +154,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
         var qIsInRange = new QuestionTree(InRange, attack, chase);
         // Lo tengo en rango de ataque? 
         
-        var qIsAlerted = new QuestionTree(IsAlerted, find , qIsOverFind);
+        var qIsAlerted = new QuestionTree(IsAlerted, find , qIsChase);
         // Esta alertado por NPC?
 
         var qInView = new QuestionTree(InView, qIsInRange, qIsAlerted);
@@ -215,7 +215,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
 
     private bool chaseCheck()
     {
-        if (fsm.currentState is EnemyFindState || fsm.PreviousState is EnemyFindState && !ArrivedtoPatrol)
+        if (fsm.currentState is FindPathFinding<StateEnum> || fsm.PreviousState is FindPathFinding<StateEnum> && !ArrivedtoPatrol)
         {
             return true;
         }

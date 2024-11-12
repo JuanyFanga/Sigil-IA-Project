@@ -5,7 +5,7 @@ using UnityEngine;
 public class NPCGoHomePath<T> : StatePathfinding<T>
 {
     private float _timer = 2f;
-    private float _sphereRadius = 20f;
+    private float _sphereRadius = 25f;
     public NPCGoHomePath(Transform entity, IMove move,Vector3 target, float distanceToPoint = 0.2F) 
         : base(entity,move,target, distanceToPoint) { }
 
