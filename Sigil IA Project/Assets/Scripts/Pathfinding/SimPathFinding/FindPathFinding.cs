@@ -36,7 +36,7 @@ public class FindPathFinding<T> : StatePathfinding<T>
             else
             {
                 _rb.velocity = Vector3.zero;
-                Debug.Log(_timer);
+                
                 if (_timer > 0)
                 {
                     _timer -= Time.deltaTime;
