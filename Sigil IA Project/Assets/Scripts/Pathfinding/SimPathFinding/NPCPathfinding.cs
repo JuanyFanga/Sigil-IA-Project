@@ -19,8 +19,15 @@ public class NPCPathfinding<T> : StatePathfinding<T>
 
     protected override float Heuristic(Vector3 node)
     {
-        float h = 0;
-        h += Vector3.Distance(node, _target);
+        //Obtenemos el cálculo de la heurística original
+        float h = base.Heuristic(node);
+
+        // Tener una distancia máxima
+        // Diferencia entre distancia actual menos la distancia máxima
+        // Que no se supere la distancia máxima
+        // Clampear de un mínimo a un máximo
+        // Math.Clamp(distance, 0, maxDistance) - maxDistance;
+
         float distanceToPlayer = Vector3.Distance(node, _playerpos);
         float proximityCost = 1 / Mathf.Max(distanceToPlayer, 1);
         return h;

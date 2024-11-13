@@ -77,7 +77,7 @@ public class StateFollowPoints<T> : State<T>
     }
     protected virtual void OnFinishPath()
     {
-
+        // agregar indice = 0 en el override
     }
     public bool IsFinishPath => _isFinishPath;
 
