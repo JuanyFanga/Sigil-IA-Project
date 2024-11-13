@@ -252,7 +252,7 @@ public class EnemyController : MonoBehaviour, IViolentEnemy
     }
     private void chaseStarted()
     {
-        isAlerted = false;
+        isAlerted = true;
     }
     public void OnDrawGizmos()
     {

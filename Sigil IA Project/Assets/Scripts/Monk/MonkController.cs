@@ -71,7 +71,7 @@ public class MonkController : MonoBehaviour
 
     private bool IsCloseToHouse()
     {
-        Debug.Log(Vector3.Distance(safePlace.position, transform.position));
+        //Debug.Log(Vector3.Distance(safePlace.position, transform.position));
         return Vector3.Distance(safePlace.position, transform.position) <= 3;
     }
 
